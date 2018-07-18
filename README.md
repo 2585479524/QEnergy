@@ -25,3 +25,9 @@ v1.3.8
 - weexpack: v1.2.3
 - weex-builder: v0.4.0
 - weex-previewer: v1.5.1
+
+项目初始化
+```weex create QEnergy```
+
+加载依赖
+```npm i```
