@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "D:\\Github\\QEnergy\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_action_refresh.png",
+        "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xhdpi\\ic_action_refresh.png"
+    },
+    {
+        "merged": "D:\\Github\\QEnergy\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_action_scan.png",
+        "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xhdpi\\ic_action_scan.png"
+    }
+]

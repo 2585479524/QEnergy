@@ -27,7 +27,35 @@ v1.3.8
 - weex-previewer: v1.5.1
 
 项目初始化
+
 ```weex create QEnergy```
 
 加载依赖
+
 ```npm i```
+
+启动编译,webpack watch模式
+
+```npm run dev```
+
+启动HotReload服务器，web端开发预览
+
+```npm run serve```
+
+打包生成JS Bundle
+
+```npm run build```
+
+添加android应用支持
+
+```weex platform add android```
+
+报错找不到common.jar,原因jcenter不在支持对该jar包下载，需要将maven路径提前
+
+style 一定要添加scoped限定局部
+
+试图使用vue-router，但是好像weex不支持
+
+万恶的index.vue默认style，折腾一天
+
+修改路由配置没有用，原因修改路由配置必须重启服务
