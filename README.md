@@ -1,4 +1,4 @@
-# weex
+# QEnegy
 weex构建移动端大学生规划软件
 
 基本功能：
@@ -50,12 +50,27 @@ v1.3.8
 
 ```weex platform add android```
 
+# 开发日志
+
+## 2018.7.18
+
 报错找不到common.jar,原因jcenter不在支持对该jar包下载，需要将maven路径提前
 
 style 一定要添加scoped限定局部
 
-试图使用vue-router，但是好像weex不支持
+试图使用vue-router，但是weex不支持，
 
 万恶的index.vue默认style，折腾一天
 
 修改路由配置没有用，原因修改路由配置必须重启服务
+
+## 2018.7.19
+
+今天试图找找做好的weex demo能套就套用一下，事实证明，你真的不要以为他们会做出什么幺蛾子来，跟你的需求完全不沾边，此路不通
+
+删除了昨天的假导航，感谢weex ui提供的wxc-tab-bar实现了真正意义上的导航
+
+web端图片能够正确加载
+
+明天任务：需要处理手机端路径问题、图片样式问题、安装weex debug
+
