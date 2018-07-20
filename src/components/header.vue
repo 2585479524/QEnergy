@@ -2,9 +2,10 @@
   <wxc-tab-bar :tab-titles="tabTitles" :tab-styles="tabStyles" title-type="icon" @wxcTabBarCurrentTabSelected="wxcTabBarCurrentTabSelected">
     <!--The first page content-->
     <div class="item-container" :style="contentStyle">
-      <text>Home</text>
+      <text>
+        番茄
+      </text>
     </div>
-
     <!--The second page content-->
     <div class="item-container" :style="contentStyle">
       <text>Hot</text>
@@ -39,6 +40,8 @@
 <script>
 import { WxcTabBar, Utils } from "weex-ui";
 
+  import { WxcSlideNav } from 'weex-ui';
+
 // https://github.com/alibaba/weex-ui/blob/master/example/tab-bar/config.js
 import Config from "./config";
 
@@ -46,7 +49,8 @@ export default {
   components: { WxcTabBar },
   data: () => ({
     tabTitles: Config.tabTitles,
-    tabStyles: Config.tabStyles
+    tabStyles: Config.tabStyles,
+    items: new Array(50)
   }),
   created() {
     const tabPageHeight = Utils.env.getPageHeight();
@@ -59,6 +63,15 @@ export default {
     wxcTabBarCurrentTabSelected(e) {
       const index = e.page;
       // console.log(index);
+    },
+    onScroll(e) {
+      WxcSlideNav.handleScroll.call(
+        this,
+        e,
+        this.$refs.scroller,
+        this.$refs.topNav,
+        this.$refs.bottomNav
+      );
     }
   }
 };

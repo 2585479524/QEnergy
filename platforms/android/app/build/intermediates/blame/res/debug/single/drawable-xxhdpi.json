@@ -4,7 +4,47 @@
         "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\ic_action_scan.png"
     },
     {
+        "merged": "D:\\Github\\QEnergy\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\icon_diary.png",
+        "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\icon_diary.png"
+    },
+    {
+        "merged": "D:\\Github\\QEnergy\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\icon_mine.png",
+        "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\icon_mine.png"
+    },
+    {
         "merged": "D:\\Github\\QEnergy\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_action_refresh.png",
         "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\ic_action_refresh.png"
+    },
+    {
+        "merged": "D:\\Github\\QEnergy\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\icon_active_tomato.png",
+        "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\icon_active_tomato.png"
+    },
+    {
+        "merged": "D:\\Github\\QEnergy\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\icon_active_diary.png",
+        "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\icon_active_diary.png"
+    },
+    {
+        "merged": "D:\\Github\\QEnergy\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\icon_active_discuss.png",
+        "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\icon_active_discuss.png"
+    },
+    {
+        "merged": "D:\\Github\\QEnergy\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\icon_discuss.png",
+        "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\icon_discuss.png"
+    },
+    {
+        "merged": "D:\\Github\\QEnergy\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\icon_bill.png",
+        "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\icon_bill.png"
+    },
+    {
+        "merged": "D:\\Github\\QEnergy\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\icon_active_bill.png",
+        "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\icon_active_bill.png"
+    },
+    {
+        "merged": "D:\\Github\\QEnergy\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\icon_active_mine.png",
+        "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\icon_active_mine.png"
+    },
+    {
+        "merged": "D:\\Github\\QEnergy\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\icon_tomato.png",
+        "source": "D:\\Github\\QEnergy\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\icon_tomato.png"
     }
 ]

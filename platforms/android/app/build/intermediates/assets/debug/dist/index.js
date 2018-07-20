@@ -4366,7 +4366,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
 
 exports.default = {
   components: { WxcTabBar: _weexUi.WxcTabBar },
@@ -21065,26 +21064,26 @@ exports.default = {
   // 正常模式的tab title配置
   tabTitles: [{
     title: '番茄时钟',
-    icon: 'https://gw.alicdn.com/tfs/TB1MWXdSpXXXXcmXXXXXXXXXXXX-72-72.png',
-    activeIcon: 'https://gw.alicdn.com/tfs/TB1kCk2SXXXXXXFXFXXXXXXXXXX-72-72.png'
+    icon: 'http://l.rebright.top/icon_tomato.png',
+    activeIcon: 'http://l.rebright.top/icon_active_tomato.png'
   }, {
     title: '心情日记',
-    icon: '../common/icon_tomato.png',
-    activeIcon: 'https://gw.alicdn.com/tfs/TB19Z72SXXXXXamXFXXXXXXXXXX-72-72.png'
+    icon: 'http://l.rebright.top/icon_diary.png',
+    activeIcon: 'http://l.rebright.top/icon_active_diary.png'
   }, {
     title: '账单统计',
-    icon: 'https://gw.alicdn.com/tfs/TB1VKMISXXXXXbyaXXXXXXXXXXX-72-72.png',
-    activeIcon: 'https://gw.alicdn.com/tfs/TB1aTgZSXXXXXazXFXXXXXXXXXX-72-72.png',
+    icon: 'http://l.rebright.top/icon_bill.png',
+    activeIcon: 'http://l.rebright.top/icon_active_bill.png',
     badge: 5
   }, {
     title: '讨论交流',
-    icon: 'https://gw.alicdn.com/tfs/TB1Do3tSXXXXXXMaFXXXXXXXXXX-72-72.png',
-    activeIcon: 'https://gw.alicdn.com/tfs/TB1LiNhSpXXXXaWXXXXXXXXXXXX-72-72.png',
+    icon: 'http://l.rebright.top/icon_discuss.png',
+    activeIcon: 'http://l.rebright.top/icon_active_discuss.png',
     dot: true
   }, {
     title: '我的主页',
-    icon: 'https://gw.alicdn.com/tfs/TB1Do3tSXXXXXXMaFXXXXXXXXXX-72-72.png',
-    activeIcon: 'https://gw.alicdn.com/tfs/TB1LiNhSpXXXXaWXXXXXXXXXXXX-72-72.png',
+    icon: 'http://l.rebright.top/icon_mine.png',
+    activeIcon: 'http://l.rebright.top/icon_active_mine.png',
     dot: true
   }],
   tabStyles: {
@@ -21154,15 +21153,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: ["item-container"],
     style: _vm.contentStyle
-  }, [_c('image', {
-    staticStyle: {
-      width: "500px",
-      height: "500px"
-    },
-    attrs: {
-      "src": "/src/common/icon_tomato.png"
-    }
-  }), _c('text', [_vm._v("Home")])]), _c('div', {
+  }, [_c('text', [_vm._v("Home")])]), _c('div', {
     staticClass: ["item-container"],
     style: _vm.contentStyle
   }, [_c('text', [_vm._v("Hot")])]), _c('div', {
