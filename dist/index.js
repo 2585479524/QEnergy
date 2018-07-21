@@ -4336,13 +4336,52 @@ var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 exports.default = {
   components: { WxcTabBar: _weexUi.WxcTabBar },
   data: function data() {
     return {
       tabTitles: _config2.default.tabTitles,
-      tabStyles: _config2.default.tabStyles,
-      items: new Array(50)
+      tabStyles: _config2.default.tabStyles
     };
   },
   created: function created() {
@@ -4358,53 +4397,11 @@ exports.default = {
     wxcTabBarCurrentTabSelected: function wxcTabBarCurrentTabSelected(e) {
       var index = e.page;
       // console.log(index);
-    },
-    onScroll: function onScroll(e) {
-      _weexUi.WxcSlideNav.handleScroll.call(this, e, this.$refs.scroller, this.$refs.topNav, this.$refs.bottomNav);
     }
   }
 };
 
 // https://github.com/alibaba/weex-ui/blob/master/example/tab-bar/config.js
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /***/ }),
 /* 20 */
