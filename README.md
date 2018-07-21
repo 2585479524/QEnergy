@@ -1,21 +1,54 @@
-# qe
+# QEnegy
+weex构建移动端大学生规划软件
 
-> A Vue.js project
+基本功能：
+- 番茄时钟
+- 心情日记
+- 账单统计
+- 讨论交流
 
-## Build Setup
+# 开发环境版本校准
 
-``` bash
-# install dependencies
-npm install
+```node -v```
 
-# serve with hot reload at localhost:8080
-npm run dev
+v8.11.2
 
-# build for production with minification
-npm run build
+```npm -v```
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
+6.2.0
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+```vue-cli```
+
+2.9.5
+
+```iview```
+
+2.14.3
+
+```iview-loader```
+
+1.2.1
+
+项目初始化
+
+```vue init webpack QEnergy```
+
+加载依赖
+
+```npm i```
+
+
+# 开发日志
+
+## 2018.7.21
+
+了解到HBuilder可以将vue的项目打包成app！！！
+
+果断转换思路，重新开新的分支构建项目
+
+vue-router构建导航，导航置底未实现
+
+安装iview
+
+iview-loader中Circle问题,通过重命名components解决
+
