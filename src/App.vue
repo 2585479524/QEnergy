@@ -54,6 +54,24 @@
 </template>
 
 <script>
+import Mock from 'mockjs'
+
+// 使用 Mock
+var data = Mock.mock({
+    // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
+    'todolist|1-10': [{
+        // 属性 id 是一个自增数，起始值为 1，每次增 1
+        'cid|1-100': 1,
+        'clable': '@word',
+        'cinfo': '@cparagraph',
+        'cstart': '@datetime("y-MM-dd HH:mm:ss")', 
+        'ctarget': '@datetime("y-MM-dd HH:mm:ss")'
+    }]
+},
+)
+// 输出结果
+console.log(JSON.stringify(data, null, 4))
+
 export default {
   name: 'App',
   data() {
