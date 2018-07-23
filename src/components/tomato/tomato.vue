@@ -1,6 +1,6 @@
 <template>
     <div class="tomato">
-        <div class="up">
+        <div class="up-wrapper">
             <!-- circle组件 -->
             <xCircle :percent="percent" :stroke-color="color" :size="200">
                 <Icon v-if="percent == 100" type="ios-checkmark-empty" size="60" style="color: #5cb85c"></Icon>
@@ -8,9 +8,7 @@
             </xCircle>
 
             <span class="time">剩余时间:{{ `${min}分钟 ${sec}秒` }}</span>
-            
             <Button type="primary" @click="showModal = true">完成</Button>
-
         </div>
         
         <Modal
@@ -33,14 +31,22 @@
                 <Button type="primary" long :loading="modal_loading" @click="countdown">确定</Button>
             </div>
         </Modal>
-        
-        
-        <div class="list">
-            <ul>
-                <li v-for="(item, index) in tomatoTodo">
-                    {{item}}
-                </li>
-            </ul>
+
+        <div class="down-wrapper" ref="downWrapper">
+            <div class="marginx">
+                <div class="content">
+                <Card class="historyCard" v-for="(item, index) in 10">
+                    <span class="count">学习</span>
+                    <div class="text">
+                        <span>开始时间：18:30</span><br>
+                        <span>番茄时长：25:00</span>
+                    </div>
+                    <br><br>
+                    <span class="remarks">备注：asdasddasdasdasasdasddasxfvxdfxcvzxdfdfzdffsdsdfdas</span>
+                </Card>
+            </div>
+            </div>
+            
         </div>
     </div>
     
@@ -48,6 +54,7 @@
 </template>
 
 <script>
+import BScroll from "better-scroll";
 import {
   Button,
   Circle,
@@ -57,19 +64,15 @@ import {
   Input,
   RadioGroup,
   Radio,
-  TimePicker
+  TimePicker,
+  Card,
+  Badge
 } from "iview";
 
 export default {
   data() {
     return {
-      tomatoTodo: [
-        "asdasddasdasasdasdasd",
-        "asdasddasdasasdasdasd",
-        "asdasddasdasasdasdasd",
-        "asdasddasdasasdasdasd",
-        "asdasddasdasasdasdasd"
-      ],
+      tomatoTodo: [],
       percent: 0,
       duration: "",
       now: Date.parse(new Date()),
@@ -80,7 +83,7 @@ export default {
       min: 0,
       sec: 0,
       value: "",
-      msec: 0
+      msec: 0,
     };
   },
   components: {
@@ -92,7 +95,10 @@ export default {
     Input,
     RadioGroup,
     Radio,
-    TimePicker
+    TimePicker,
+    Card,
+    Badge,
+    BScroll
   },
   computed: {
     color() {
@@ -112,15 +118,27 @@ export default {
       return this.msec;
     },
     percentCeil() {
-        // 解决显示数据与真实数据的精度问题
+      // 解决显示数据与真实数据的精度问题
       return Math.ceil(this.percent);
     }
   },
+  created() {
+    this.$nextTick(function() {
+      this._initScroll();
+    });
+  },
   methods: {
+    _initScroll() {
+      this.downScroll = new BScroll(this.$refs.downWrapper, {
+        probeType: 3,
+        click: true
+      });
+      
+    },
     countdown() {
       this.percent = 0;
       this.showModal = false;
-    //   不可省略
+      //   不可省略
       console.log(this.durationNum);
       console.log(this.msec);
 
@@ -144,13 +162,52 @@ export default {
 </script>
 
 <style>
-.tomato .up {
+.tomato .up-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 40px;
+  padding-top: 40px;
 }
-.tomato .up .time {
+.tomato .up-wrapper .time {
   font-size: 24px;
+}
+.tomato .down-wrapper {
+  height: 320px;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #e2e2e2, #c0c0c0);
+}
+
+.marginx {
+  padding:  20px 0 60px;
+}
+.ivu-card {
+  margin: 0 20px 20px;
+}
+.ivu-card-body {
+  position: relative;
+  height: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tomato .down-wrapper .count {
+  position: absolute;
+  top: 15px;
+  padding: 0 10px;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 5px;
+  background: rgb(4, 209, 148);
+  text-align: center;
+  color: #fff;
+}
+.tomato .down-wrapper .text {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+.tomato .down-wrapper .remarks {
+  padding-left: 8px;
 }
 </style>
