@@ -1,8 +1,8 @@
 <template>
     <div class="login">
         <div class="mainLogin">
-            <Input v-model="this.userLogin.userId" placeholder="请输入账号" clearable style="width: 200px"></Input>
-            <Input v-model="this.userLogin.pwd" type="password" placeholder="请输入密码" clearable style="width: 200px"></Input>
+            <Input v-model="userLogin.userId" placeholder="请输入账号" clearable style="width: 200px"></Input>
+            <Input v-model="userLogin.pwd" type="password" placeholder="请输入密码" clearable style="width: 200px"></Input>
 
             <Button type="success" style="width: 200px" @click="login">登录</Button>
             <Button type="warning" style="width: 200px" @click="clickRegister">注册</Button>
@@ -53,7 +53,7 @@ export default {
     return {
       userLogin: {
         userId: "",
-        userName: "",
+        pwd: "",
         authCode: "",
       },
       userInfo: {
@@ -80,7 +80,7 @@ export default {
   methods: {
     ...mapMutations(["update"]),
     login() {
-      if (this.userInfo.userId == "" || this.userInfo.pwd == "") {
+      if (this.userLogin.userId == "" || this.userLogin.pwd == "") {
         this.$Message.warning("请输入账号或密码");
       } else {
         router.push("/footer/tomato");
