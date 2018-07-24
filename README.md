@@ -60,12 +60,14 @@ iview-loader中Circle问题,通过重命名components解决
 
 打包导出之后app图标不显示问题[打包到生产环境时， woff 字体引用问题 ](https://github.com/iview/iview/issues/515)
 
-底部导航完成
+底部导航样式调整成功
 
 番茄时钟基本完成
 
 ## 2018.7.24 
 
 完成番茄时钟剩余布局调整和设置时间部分
+
+像通过$Message这种调用的组件，不能用component注册，需要把属性绑到Vue实例上，即在main.js里面 import以后，Vue.prototype.$Message = Message 这样注册
 
 着手做注册登录界面

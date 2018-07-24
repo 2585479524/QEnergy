@@ -35,7 +35,7 @@
         <div class="down-wrapper" ref="downWrapper">
             <div class="marginx">
                 <div class="content">
-                <Card class="historyCard" v-for="(item, index) in 10">
+                <Card class="historyCard" v-for="(item, index) in 10" :key="index">
                     <span class="count">学习</span>
                     <div class="text">
                         <span>开始时间：18:30</span><br>

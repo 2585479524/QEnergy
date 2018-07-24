@@ -1,50 +1,15 @@
 <template>
   <div id="app">
-    
     <router-view/>
-
-    <div class="tab">
-        <div class="tab-item" >
-          <router-link to="/tomato">
-            <img :src="imgUrl.tomato" class="icon">
-          <span class="text">番茄时钟</span>
-          </router-link>
-        </div>
-        
-        <div class="tab-item">
-          <router-link to="/diary">
-              <img :src="imgUrl.diary" class="icon">
-            <span class="text">心情日记</span>
-          </router-link>
-        </div>
-        
-        <div class="tab-item">
-          <router-link to="/bill">
-              <img :src="imgUrl.bill" class="icon">
-            <span class="text">账单统计</span>
-          </router-link>
-        </div>
-        
-        <div class="tab-item">
-          <router-link to="/discuss">
-            <img :src="imgUrl.discuss" class="icon">
-          <span class="text">讨论交流</span>
-          </router-link>
-        </div>
-        
-        <div class="tab-item">
-          <router-link to="/mine">
-              <img :src="imgUrl.mine" class="icon">
-            <span class="text">我的主页</span>
-          </router-link>
-        </div>
-      </div>
   </div>
 </template>
 
 <script>
 import Mock from "mockjs";
 
+import router from "./router";
+import store from "./store/store";
+import { mapState, mapGetters } from "vuex";
 // 使用 Mock
 var data = Mock.mock({
   // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
@@ -64,16 +29,23 @@ var data = Mock.mock({
 
 export default {
   name: "App",
-  data() {
-    return {
-      imgUrl: {
-        tomato: "http://l.rebright.top/icon_tomato.png",
-        diary: "http://l.rebright.top/icon_diary.png",
-        bill: "http://l.rebright.top/icon_bill.png",
-        discuss: "http://l.rebright.top/icon_discuss.png",
-        mine: "http://l.rebright.top/icon_mine.png"
-      }
-    };
+  computed: {
+    ...mapState(["count", "userInfo"])
+  },
+  store,
+  watch: {
+    $route: "checkLogin"
+  },
+  methods: {
+    checkLogin() {},
+    toLogin() {
+      this.userInfo = {
+        nick: "Doterlin",
+        ulevel: 20,
+        uid: "10000"
+      };
+      this.$store.commit("updateUserInfo", this.userInfo);
+    }
   }
 };
 </script>
