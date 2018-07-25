@@ -24,7 +24,6 @@ router.beforeEach((to, from, next) => {
       console.log(1);
       next();
     } else {
-
       next({
         path: "/login"
       });

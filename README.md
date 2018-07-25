@@ -66,10 +66,14 @@ iview-loader中Circle问题,通过重命名components解决
 
 ## 2018.7.24 
 
-完成番茄时钟剩余布局调整和设置时间部分
+完成番茄时钟剩余布局调整
 
-登录鉴权，vuex
+登录鉴权，vuex，还有问题！！
 
 像通过$Message这种调用的组件，不能用component注册，需要把属性绑到Vue实例上，即在main.js里面import以后，Vue.prototype.$Message = Message 这样注册
 
 注册登录界面完成
+
+## 2018.7.25
+
+番茄时钟设置优化
