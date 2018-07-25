@@ -79,3 +79,5 @@ iview-loader中Circle问题,通过重命名components解决
 番茄时钟设置优化
 
 心情日记基本完成
+
+添加删除日记功能
