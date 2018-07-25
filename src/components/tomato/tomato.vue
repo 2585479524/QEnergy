@@ -34,10 +34,10 @@
         </Modal>
 
         <div class="down-wrapper" ref="downWrapper">
-            <div class="marginx">
+            <div class="content-out">
                 <div class="content">
-                <Card class="historyCard" v-for="(item, index) in 10" :key="index">
-                    <span class="count">学习</span>
+                <Card class="historyCard" v-for="(item, index) in 5" :key="index">
+                    <span class="label">学习</span>
                     <div class="text">
                         <span>开始时间：18:30</span><br>
                         <span>番茄时长：25:00</span>
@@ -46,8 +46,7 @@
                     <span class="remarks">备注：asdasddasdasdasasdasddasxfvxdfxcvzxdfdfzdffsdsdfdas</span>
                 </Card>
             </div>
-            </div>
-            
+          </div>
         </div>
     </div>
     
@@ -195,34 +194,34 @@ export default {
 .tomato .up-wrapper .time {
   font-size: 20px;
 }
+.tomato .modal-wrapper .ivu-modal-footer {
+  border: none;
+}
+.tomato .modal-wrapper .text {
+  display: inline-block;
+  width: 100px;
+  text-align: right;
+}
+
 .tomato .down-wrapper {
   height: 320px;
   overflow: hidden;
   background: linear-gradient(to bottom, #e2e2e2, #c0c0c0);
 }
-.ivu-modal-footer {
-  border: none;
-}
-.modal-wrapper .text {
-  display: inline-block;
-  width: 100px;
-  text-align: right;
-}
-.marginx {
+.tomato .down-wrapper .content-out {
   padding: 20px 0 60px;
 }
-.ivu-card {
+.tomato .down-wrapper .ivu-card {
   margin: 0 20px 20px;
 }
-.ivu-card-body {
+.tomato .down-wrapper .ivu-card-body {
   position: relative;
   height: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.tomato .down-wrapper .count {
+.tomato .down-wrapper .label {
   position: absolute;
   top: 15px;
   padding: 0 10px;

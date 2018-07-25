@@ -1,45 +1,241 @@
 <template>
+<div class="diary">
+    <div class="show-wrapper" ref="showWrapper">
+        <div class="content-out">
+            <div class="content">
+                <!-- 对组件添加事件要加.native -->
+                <Card class="historyCard" v-for="(item, index) in 3" :key="index" @click.native="showDetail(index)">
+                    <span class="label">{{diaryDetail[index].weather}}</span>
+                    <div class="text">
+                        <span>{{diaryDetail[index].date}}</span>
+                    </div>
+                    <br><br>
+                    <span class="remarks">{{diaryDetail[index].content}}</span>
+                </Card>
+            </div>
+        </div>
+    </div>
+    <Button class="addBtn" type="primary" shape="circle" icon="ios-plus-empty" @click="edit"></Button>
+    
 
-    <Timeline>
-        <TimelineItem>
-            <p class="time">1976年</p>
-            <p class="content">Apple I 问世</p>
-        </TimelineItem>
-        <TimelineItem>
-            <p class="time">1984年</p>
-            <p class="content">发布 Macintosh</p>
-        </TimelineItem>
-        <TimelineItem>
-            <p class="time">2007年</p>
-            <p class="content">发布 iPhone</p>
-        </TimelineItem>
-        <TimelineItem>
-            <p class="time">2010年</p>
-            <p class="content">发布 iPad</p>
-        </TimelineItem>
-        <TimelineItem>
-            <p class="time">2011年10月5日</p>
-            <p class="content">史蒂夫·乔布斯去世</p>
-        </TimelineItem>
-    </Timeline>
+    <Modal v-model="showModalDetail" width="360":styles="{top: '20px'}">
+            <p slot="header" style="color:#57a3f3; text-align:center">
+                <Icon type="edit"></Icon>
+                <span>心情日记</span>
+            </p>
+            <div style="text-align:center">
+                <span class="text">日记时间：</span>
+                <DatePicker format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 200px" v-model="axy" @on-change="selectDate"></DatePicker>
+                <br><br>
+                <span class="text">天气：</span>
+                <RadioGroup v-model="diaryDetail[clickIndex].weather" type="button">
+                    <Radio label="晴"></Radio>
+                    <Radio label="阴"></Radio>
+                    <Radio label="雨"></Radio>
+                    <Radio label="雪"></Radio>
+                </RadioGroup>
+                <br><br>
+                <span class="text">心情：</span>
+                <RadioGroup v-model="diaryDetail[clickIndex].mood" type="button">
+                    <Radio label="愉快"></Radio>
+                    <Radio label="失落"></Radio>
+                    <Radio label="悲伤"></Radio>
+                    <Radio label="高兴"></Radio>
+                </RadioGroup>
+                <br><br>
+                <span class="text">日记内容</span>
+                <Input :value="diaryDetail[clickIndex].content" type="textarea" :autosize="{minRows: 10,maxRows: 15}" placeholder="Enter something..."></Input>
+                <br><br>
+            </div>
+            <div slot="footer">
+                <Button type="primary" size="large" long>完成编辑</Button>
+            </div>
+        </Modal>
+        <Modal v-model="showModalEdit" width="360":styles="{top: '20px'}">
+            <p slot="header" style="color:#57a3f3; text-align:center">
+                <Icon type="edit"></Icon>
+                <span>心情日记</span>
+            </p>
+            <div style="text-align:center">
+                <span class="text">日记时间：</span>
+                <DatePicker format="yyyy-MM-dd" type="date" placeholder="选择日期" style="width: 200px" v-model="axy" @on-change="selectDate"></DatePicker>
+                <br><br>
+                <span class="text">天气：</span>
+                <RadioGroup v-model="diaryEdit.weather" type="button">
+                    <Radio label="晴"></Radio>
+                    <Radio label="阴"></Radio>
+                    <Radio label="雨"></Radio>
+                    <Radio label="雪"></Radio>
+                </RadioGroup>
+                <br><br>
+                <span class="text">心情：</span>
+                <RadioGroup v-model="diaryEdit.mood" type="button">
+                    <Radio label="愉快"></Radio>
+                    <Radio label="失落"></Radio>
+                    <Radio label="悲伤"></Radio>
+                    <Radio label="高兴"></Radio>
+                </RadioGroup>
+                <br><br>
+                <span class="text">日记内容</span>
+                <Input :value="diaryEdit.content" type="textarea" :autosize="{minRows: 10,maxRows: 15}" placeholder="Enter something..."></Input>
+                <br><br>
+            </div>
+            <div slot="footer">
+                <Button type="primary" size="large" long>完成编辑</Button>
+            </div>
+        </Modal>
+</div>
 </template>
 
 <script>
-import {Timeline, TimelineItem} from 'iview'
+import BScroll from "better-scroll";
+import {
+  Card,
+  Button,
+  Modal,
+  Icon,
+  DatePicker,
+  Radio,
+  RadioGroup,
+  Input
+} from "iview";
 export default {
-    components: {
-        Timeline,
-        TimelineItem,
+  data() {
+    return {
+      diaryDetail: [
+        {
+          date: "2018年5月30日 18:30",
+          weather: "晴",
+          mood: "愉快",
+          content: "asdasddasdasdasasdasddasxfvxdfxcvzxdfdfzdffsdsdfdas"
+        },
+        {
+          date: "2018年5月31日 19:30",
+          weather: "阴",
+          mood: "高兴",
+          content: "asdasddasdaasdasddasasdfsdsdfdas"
+        },
+        {
+          date: "2018年6月1日 20:30",
+          weather: "晴",
+          mood: "愉快",
+          content: "asdasdddfzdffsdsdfdas"
+        }
+      ],
+      diaryEdit: {
+          date: "",
+          weather: "",
+          mood: "",
+          content: ""
+        },
+      showModalDetail: false,
+      showModalEdit: false,
+      weatherLable: "晴",
+      moodLable: "愉快",
+      clickIndex: 0,
+      axy: ""
+    };
+  },
+  components: {
+    Card,
+    Button,
+    Modal,
+    Icon,
+    DatePicker,
+    Radio,
+    RadioGroup,
+    Input
+  },
+  created() {
+    this.$nextTick(function() {
+      this._initScroll();
+    });
+  },
+  methods: {
+    _initScroll() {
+      this.showScroll = new BScroll(this.$refs.showWrapper, {
+        probeType: 3,
+        click: true
+      });
+    },
+    showDetail(index) {
+    //   let date = new Date();
+      this.clickIndex = index;
+    //   let time = date.getHours() + ":" + date.getMinutes();
+
+      this.axy = this.diaryDetail[this.clickIndex].date;
+      console.log(this.axy);
+
+      this.showModalDetail = true;
+
+    },
+    selectDate(date) {
+      this.axy = date;
+      console.log(this.axy);
+    },
+    edit() {
+        
+      this.axy = '';
+        this.showModalEdit = true;
     }
+  }
 };
 </script>
 
 <style>
-.time {
-  font-size: 14px;
-  font-weight: bold;
+.diary {
+  position: relative;
 }
-.content {
-  padding-left: 5px;
+.diary .show-wrapper {
+  height: 570px;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #e2e2e2, #c0c0c0);
+}
+.diary .show-wrapper .content-out {
+  padding: 20px 0 60px;
+}
+.ivu-modal {
+  top: 20px;
+}
+.diary .addBtn {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  bottom: 20px;
+  right: 20px;
+}
+.diary .addBtn .ivu-icon {
+  font-size: 50px;
+  font-weight: 700;
+}
+.diary .show-wrapper .ivu-card {
+  margin: 0 20px 20px;
+}
+.diary .show-wrapper .ivu-card-body {
+  position: relative;
+  height: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.diary .show-wrapper .label {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 0 10px;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 5px;
+  background: rgb(4, 209, 148);
+  text-align: center;
+  color: #fff;
+}
+.diary .show-wrapper .text {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+.diary .show-wrapper .remarks {
+  padding-left: 0px;
 }
 </style>
