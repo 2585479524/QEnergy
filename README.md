@@ -80,4 +80,4 @@ iview-loader中Circle问题,通过重命名components解决
 
 心情日记基本完成
 
-添加删除日记功能
+添加删除日记功能,解决只有icon能点击的问题，将icon转块

@@ -113,7 +113,6 @@ export default {
     durationNum() {
       let arr = this.duration.split(":");
       this.msec = (Number(arr[0]) * 60 + Number(arr[1])) * 1000;
-      console.log(this.msec);
 
       return this.msec;
     },

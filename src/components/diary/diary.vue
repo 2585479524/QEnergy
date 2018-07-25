@@ -4,7 +4,7 @@
         <div class="content-out">
             <div class="content">
                 <!-- 对组件添加事件要加.native -->
-                <Card v-show="diaryDetail" class="historyCard" v-for="(item, index) in diaryDetail" :key="index" @click.native.stop="showDetail(index)">
+                <Card v-show="diaryDetail" class="historyCard" v-for="(item, index) in diaryDetail" :key="index" @click.native="showDetail(index)">
                     <span class="label">{{item.weather}}</span>
                     <!-- 防止点击事件继续传播 -->
                     <Button class="delButton" type="ghost" shape="circle" icon="trash-a" @click.stop="delDiary(index)"></Button>
@@ -53,7 +53,7 @@
     </div>
 
     <Button class="addBtn" type="primary" shape="circle" icon="ios-plus-empty" @click="edit"></Button>
-    
+
     <Modal v-model="showModalEdit" width="360":styles="{top: '20px'}">
         <p slot="header" style="color:#57a3f3; text-align:center">
             <Icon type="edit"></Icon>
@@ -91,6 +91,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import BScroll from "better-scroll";
 import {
   Card,
@@ -100,8 +101,11 @@ import {
   DatePicker,
   Radio,
   RadioGroup,
-  Input
+  Input,
+  Message
 } from "iview";
+
+Vue.prototype.$Message = Message;
 export default {
   data() {
     return {
@@ -126,11 +130,11 @@ export default {
         }
       ],
       diaryEdit: {
-          date: "",
-          weather: "",
-          mood: "",
-          content: ""
-        },
+        date: "",
+        weather: "",
+        mood: "",
+        content: ""
+      },
       showModalDetail: false,
       showModalEdit: false,
       weatherLable: "晴",
@@ -161,29 +165,31 @@ export default {
       });
     },
     showDetail(index) {
-    //   let date = new Date();
-    //   let time = date.getHours() + ":" + date.getMinutes();
+      //   let date = new Date();
+      //   let time = date.getHours() + ":" + date.getMinutes();
 
       this.axy = this.diaryDetail[index].date;
       console.log(this.axy);
 
       this.showModalDetail = true;
-
     },
     selectDate(date) {
       this.axy = date;
       console.log(this.axy);
     },
     edit() {
-        
-      this.axy = '';
-        this.showModalEdit = true;
+      this.axy = "";
+      this.showModalEdit = true;
     },
     delDiary(index) {
-        console.log(index);
-        if(index > -1) {
+      this.$Message.warning({
+        content: "已删除该日记",
+        duration: 0.5
+      });
+      console.log(this.diaryDetail[index]);
+      if (index > -1) {
         this.diaryDetail.splice(index, 1);
-        }
+      }
     }
   }
 };
@@ -240,6 +246,10 @@ export default {
   position: absolute;
   top: 10px;
   right: 15px;
+}
+.diary .show-wrapper .ivu-card-body .delButton .ivu-icon {
+    display: block;
+    padding: 6px 5px;
 }
 .diary .show-wrapper .text {
   position: absolute;

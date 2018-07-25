@@ -18,10 +18,8 @@ new Vue({
   template: '<App/>'
 })
 router.beforeEach((to, from, next) => {
-  console.log(to);
   if (to.meta.checkLogined) {
     if (store.state.userInfo != '') {
-      console.log(1);
       next();
     } else {
       next({
