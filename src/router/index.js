@@ -5,6 +5,7 @@ import footer from '@/components/footer/footer'
 import tomato from '@/components/tomato/tomato'
 import diary from '@/components/diary/diary'
 import bill from '@/components/bill/bill'
+import editBill from '@/components/editBill/editBill'
 import discuss from '@/components/discuss/discuss'
 import mine from '@/components/mine/mine'
 
@@ -32,35 +33,39 @@ export default new Router({
           path: 'tomato',
           name: 'tomato',
           component: tomato,
-          meta: {checkLogined: true},
+          meta: { checkLogined: true },
         },
         {
           path: 'diary',
           name: 'diary',
           component: diary,
-          meta: {checkLogined: true},
+          meta: { checkLogined: true },
         },
         {
           path: 'bill',
           name: 'bill',
           component: bill,
-          meta: {checkLogined: true},
+          meta: { checkLogined: true },
         },
         {
           path: 'discuss',
           name: 'discuss',
           component: discuss,
-          meta: {checkLogined: true},
+          meta: { checkLogined: true },
         },
         {
           path: 'mine',
           name: 'mine',
           component: mine,
-          meta: {checkLogined: true},
+          meta: { checkLogined: true },
         }
       ]
     },
-
+    {
+      path: '/footer/bill/editBill',
+      name: 'editBill',
+      component: editBill,
+    }
   ],
   linkActiveClass: 'active' //  将 router-link-active  改为 active（方便样式操作）
 })

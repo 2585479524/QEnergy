@@ -211,11 +211,12 @@ export default {
   top: 20px;
 }
 .diary .addBtn {
+    display: block;
   position: absolute;
   width: 70px;
   height: 70px;
-  bottom: 20px;
-  right: 20px;
+  bottom: 30px;
+  right: 30px;
 }
 .diary .addBtn .ivu-icon {
   font-size: 50px;
@@ -238,7 +239,7 @@ export default {
   height: 24px;
   line-height: 24px;
   border-radius: 5px;
-  background: rgb(4, 209, 148);
+  background: rgb(231, 58, 130);
   text-align: center;
   color: #fff;
 }
@@ -248,8 +249,8 @@ export default {
   right: 15px;
 }
 .diary .show-wrapper .ivu-card-body .delButton .ivu-icon {
-    display: block;
-    padding: 6px 5px;
+  display: block;
+  padding: 6px 5px;
 }
 .diary .show-wrapper .text {
   position: absolute;
