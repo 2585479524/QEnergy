@@ -82,13 +82,14 @@ iview-loader中Circle问题,通过重命名components解决
 
 添加删除日记功能,解决只有icon能点击的问题，将icon转块
 
-下角add有问题，宽高不支持自定义
 
 ## 2018.7.26
 
 账单统计主页面基本完成
 
-页面切换有问题Location.hash
+页面切换有问题Location.hash!!!未解决
+
+下角add有问题，宽高不支持自定义!!!未解决
 
 计算器部分受阻
 
