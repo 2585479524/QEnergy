@@ -11,49 +11,27 @@
             <div class="content-out">
                 <div class="content" v-for="(icons, index) in showIcon">
                     <div class="content-in" v-for="(icon, index) in icons">
-                        <i class="iconfont" :class="icon.iconCode">{{icon.iconName}}</i>
+                        <div class="iconGroup" @click="showCalculator(0)">
+                            <div class="iconShowCode">
+                                
+                                <i class="iconfont" :class="icon.iconCode"></i>
+                            </div>
+                            <span class="text">{{icon.iconName}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="calculator">
-            <div class="calMain">
-                <div class="calRow">
-                    <Button type="ghost">7</Button>
-                    <Button type="ghost">8</Button>
-                    <Button type="ghost">9</Button>
-                    <Button type="ghost">待定</Button>
-                </div>
-                <br>
-                <div class="calRow">
-                    <Button type="ghost">4</Button>
-                    <Button type="ghost">5</Button>
-                    <Button type="ghost">6</Button>
-                    <Button type="ghost">+</Button>
-                </div>
-                <br>
-                <div class="calRow">
-                    <Button type="ghost">1</Button>
-                    <Button type="ghost">2</Button>
-                    <Button type="ghost">3</Button>
-                    <Button type="ghost">-</Button>
-                </div>
-                <br>
-                <div class="calRow">
-                    <Button type="ghost">.</Button>   
-                    <Button type="ghost">0</Button>   
-                    <Button type="ghost">x</Button>    
-                    <Button type="ghost">完成</Button>  
-                </div>
-            </div>
-        </div>
+        <calculator class="calShow" v-show="calShow"></calculator>
     </div>
 </template>
 
 <script>
-import BScroll from "better-scroll";
-import { Button, Icon, Select, Option, Input, } from "iview";
+import {mapState, mapMutations} from 'vuex'
+import store from "../../store/store"
+import calculator from "../calculator/calculator"
+import BScroll from "better-scroll"
+import { Button, Icon, Select, Option, Input, } from "iview"
 export default {
   data() {
     return {
@@ -184,14 +162,19 @@ export default {
       ]
     };
   },
+  store,
   components: {
     Button,
     Icon,
     Select,
     Option,
     Input,
+    calculator
   },
   computed: {
+      ...mapState([
+          "calShow"
+      ]),
     showIcon() {
       if (this.showSwitch == "支出") {
         return this.payIcon;
@@ -203,10 +186,14 @@ export default {
   created() {
     this.$nextTick(function() {
       this._initScroll();
+      this.showCalculator(1);
     });
   },
-
+store,
   methods: {
+      ...mapMutations([
+          "showCalculator"
+      ]),
     _initScroll() {
       this.showScroll = new BScroll(this.$refs.showWrapper, {
         probeType: 3,
@@ -214,7 +201,7 @@ export default {
       });
     },
     closeEdit() {
-      location.hash = "/footer/bill";
+        this.$router.go(-1);
     }
   }
 };
@@ -235,7 +222,7 @@ export default {
   right: 10px;
 }
 .bill-edit .show-wrapper {
-  height: 650px;
+  height: 570px;
   overflow: hidden;
   background: linear-gradient(to bottom, #e2e2e2, #c0c0c0);
 }
@@ -246,18 +233,32 @@ export default {
   display: flex;
   justify-content: space-around;
 }
+.bill-edit .show-wrapper .content-out .content .iconGroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 10px;
+}.bill-edit .show-wrapper .content-out .content .iconGroup .iconShowCode {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    border-radius: 35px;
+    background: #4574db;
+}
+.bill-edit .show-wrapper .content-out .content .iconGroup i {
+    font-size: 30px;
+}
+.bill-edit .show-wrapper .content-out .content .iconGroup .text{
+    text-align: center;
+}
 .bill-edit .show-wrapper .content-out .content .option {
   width: 50px;
   height: 50px;
   margin: 20px 0;
   font-size: 30px;
 }
-.calculator {
+.calShow {
   position: absolute;
-  display: flex;
-  top: 300px;
-  width: 100%;
-  justify-content: space-around;
-  background: #e2e2e2;
+  bottom: 0;
 }
 </style>

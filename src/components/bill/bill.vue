@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <Button class="addBtn" type="primary" shape="circle" icon="ios-plus-empty" @click="edit"></Button>
+        <Button class="addBtn" type="primary" shape="circle" icon="ios-plus-empty"  @click="edit"></Button>
     </div>
 </template>
 
@@ -45,14 +45,14 @@ export default {
               label: "日常",
               info: "无",
               type: "支出",
-              money: "50"
+              money: "50.00"
             },
             {
               billId: 2,
               label: "日常",
               info: "无",
               type: "支出",
-              money: "50"
+              money: "50.00"
             }
           ]
         },
@@ -64,7 +64,7 @@ export default {
               label: "日常",
               info: "无",
               type: "支出",
-              money: "50"
+              money: "50.00"
             }
           ]
         },
@@ -76,7 +76,7 @@ export default {
               label: "日常",
               info: "无",
               type: "收入",
-              money: "50"
+              money: "50.00"
             }
           ]
         },
@@ -88,7 +88,7 @@ export default {
               label: "日常",
               info: "无",
               type: "收入",
-              money: "50"
+              money: "50.00"
             }
           ]
         },
@@ -100,7 +100,7 @@ export default {
               label: "日常",
               info: "无",
               type: "收入",
-              money: "50"
+              money: "50.00"
             }
           ]
         }
@@ -138,11 +138,8 @@ export default {
       this.showModalDetail = true;
     },
     edit() {
-        console.log(location.href);
-        
-      location.hash = "/footer/bill/editBill";
-    //   不明原因
-    //   location.reload()
+        this.$router.push("/editBill");
+        console.log(this.$router.history);
     },
   }
 };
@@ -175,8 +172,6 @@ export default {
 .bill .addBtn {
   display: block;
   position: absolute;
-  width: 40px;
-  height: 40px;
   bottom: 20px;
   right: 30px;
 }

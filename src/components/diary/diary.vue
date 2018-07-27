@@ -211,15 +211,13 @@ export default {
   top: 20px;
 }
 .diary .addBtn {
-    display: block;
+  display: block;
   position: absolute;
-  width: 70px;
-  height: 70px;
   bottom: 30px;
   right: 30px;
 }
 .diary .addBtn .ivu-icon {
-  font-size: 50px;
+  font-size: 30px;
   font-weight: 700;
 }
 .diary .show-wrapper .ivu-card {

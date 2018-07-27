@@ -6,6 +6,7 @@ import tomato from '@/components/tomato/tomato'
 import diary from '@/components/diary/diary'
 import bill from '@/components/bill/bill'
 import editBill from '@/components/editBill/editBill'
+import calculator from '@/components/calculator/calculator'
 import discuss from '@/components/discuss/discuss'
 import mine from '@/components/mine/mine'
 
@@ -22,6 +23,17 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/editBill',
+      name: 'editBill',
+      component: editBill,
+      meta: { checkLogined: true },
+    },
+    {
+      path: '/calculator',
+      name: 'calculator',
+      component: calculator
     },
     {
       path: '/footer',
@@ -61,11 +73,6 @@ export default new Router({
         }
       ]
     },
-    {
-      path: '/footer/bill/editBill',
-      name: 'editBill',
-      component: editBill,
-    }
   ],
   linkActiveClass: 'active' //  将 router-link-active  改为 active（方便样式操作）
 })
