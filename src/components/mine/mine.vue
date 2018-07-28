@@ -9,7 +9,7 @@
         <div class="down-wrapper" ref="downWrapper">
             <div class="content-out">
                 <div class="content">
-                    <Card class="historyCard" v-for="(item, index) in mineContent" :key="index">
+                    <Card class="historyCard" v-for="(item, index) in mineContent" :key="index" @click.native="showAna(item)">
                         <span>{{item}}</span>
                     </Card>
                 </div>
@@ -24,14 +24,14 @@ import { Card, Icon, Avatar } from "iview";
 export default {
   data() {
     return {
-        mineContent:{
-            myTomato: "我的番茄",
-            myDiary: "日记时光轴",
-            myBill: "账单汇总",
-            myDiscuss: "我的讨论",
-            about: "关于",
-            exitApp: "退出",
-        }
+      mineContent: {
+        myTomato: "我的番茄",
+        myDiary: "日记时光轴",
+        myBill: "账单汇总",
+        myDiscuss: "我的讨论",
+        about: "关于",
+        exitApp: "退出"
+      }
     };
   },
   components: {
@@ -52,6 +52,24 @@ export default {
         probeType: 3,
         click: true
       });
+    },
+    showAna(name) {
+      let url = "";
+      if (name == "我的番茄") {
+        url = "/myTomato";
+      } else if (name == "日记时光轴") {
+        url = "/myDiary";
+      } else if (name == "账单汇总") {
+        url = "/myBill";
+      } else if (name == "我的讨论") {
+        url = "/myDiscuss";
+      } else if (name == "退出") {
+          url = "/login"
+      }
+      this.$router.push(url);
+      console.log(this.$router);
+      
+      
     }
   }
 };
@@ -59,22 +77,22 @@ export default {
 
 <style>
 .mine .avatar {
-    display: flex;
-    height: 150px;
-    justify-content: center;
+  display: flex;
+  height: 150px;
+  justify-content: center;
 }
 .mine .avatar .avatar-in {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
 }
 .mine .avatar .ivu-avatar {
-    font-size: 40px;
-    line-height: 70px;
-    width: 70px;
-    height: 70px;
-    border-radius: 35px;
+  font-size: 40px;
+  line-height: 70px;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
 }
 .mine .down-wrapper {
   height: 420px;
@@ -89,10 +107,9 @@ export default {
   display: flex;
   font-size: 15px;
   padding: 10px;
-  justify-content: center
+  justify-content: center;
 }
 .mine .down-wrapper .historyCard .ivu-card-body {
-    padding: 0;
+  padding: 0;
 }
-
 </style>

@@ -139,7 +139,6 @@ export default {
     },
     edit() {
         this.$router.push("/editBill");
-        console.log(this.$router.history);
     },
   }
 };

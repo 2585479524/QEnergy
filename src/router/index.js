@@ -9,6 +9,10 @@ import editBill from '@/components/editBill/editBill'
 import calculator from '@/components/calculator/calculator'
 import discuss from '@/components/discuss/discuss'
 import mine from '@/components/mine/mine'
+import myTomato from '@/components/myTomato/myTomato'
+import myDiary from '@/components/myDiary/myDiary'
+import myBill from '@/components/myBill/myBill'
+import myDiscuss from '@/components/myDiscuss/myDiscuss'
 
 Vue.use(Router)
 
@@ -34,6 +38,26 @@ export default new Router({
       path: '/calculator',
       name: 'calculator',
       component: calculator
+    },
+    {
+      path: '/myTomato',
+      name: 'myTomato',
+      component: myTomato
+    },
+    {
+      path: '/myDiary',
+      name: 'myDiary',
+      component: myDiary
+    },
+    {
+      path: '/myBill',
+      name: 'myBill',
+      component: myBill
+    },
+    {
+      path: '/myDiscuss',
+      name: 'myDiscuss',
+      component: myDiscuss
     },
     {
       path: '/footer',

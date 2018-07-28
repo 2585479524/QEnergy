@@ -207,7 +207,7 @@ store,
 </script>
 
 <style>
-@import url("//at.alicdn.com/t/font_765377_wa7cj0ab72l.css");
+@import url("../../assets/iconfont.css");
 .bill-edit {
   position: relative;
 }
