@@ -15,9 +15,18 @@
                             adsjklasdlkhnjasd
                         </div>
                         <div class="footer">
-                            <span>转发</span>
-                            <span>评论</span>
-                            <span>点赞</span>
+                            <div class="footerIcon">
+                              <Icon type="share"></Icon>
+                              转发20
+                            </div>
+                            <div class="footerIcon">
+                              <Icon type="compose"></Icon>
+                              评论5
+                            </div>
+                            <div class="footerIcon">
+                              <Icon type="thumbsup"></Icon>
+                              点赞70
+                            </div>
                         </div>
                     </Card>
                 </div>
@@ -94,7 +103,7 @@ export default {
   bottom: 10px;
   justify-content: space-around;
 }
-.discuss .down-wrapper .content-out .footer span {
+.discuss .down-wrapper .content-out .footer .footerIcon {
   display: inline-block;
   width: 33.3%;
   height: 24px;

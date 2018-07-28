@@ -13,7 +13,6 @@
                     <div class="content-in" v-for="(icon, index) in icons">
                         <div class="iconGroup" @click="showCalculator(0)">
                             <div class="iconShowCode">
-                                
                                 <i class="iconfont" :class="icon.iconCode"></i>
                             </div>
                             <span class="text">{{icon.iconName}}</span>
