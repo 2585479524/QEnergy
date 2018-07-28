@@ -29,6 +29,30 @@ export default new Router({
       component: login
     },
     {
+      path: '/myTomato',
+      name: 'myTomato',
+      component: myTomato,
+      meta: { checkLogined: true },
+    },
+    {
+      path: '/myDiary',
+      name: 'myDiary',
+      component: myDiary,
+      meta: { checkLogined: true },
+    },
+    {
+      path: '/myBill',
+      name: 'myBill',
+      component: myBill,
+      meta: { checkLogined: true },
+    },
+    {
+      path: '/myDiscuss',
+      name: 'myDiscuss',
+      component: myDiscuss,
+      meta: { checkLogined: true },
+    },
+    {
       path: '/editBill',
       name: 'editBill',
       component: editBill,
@@ -38,26 +62,6 @@ export default new Router({
       path: '/calculator',
       name: 'calculator',
       component: calculator
-    },
-    {
-      path: '/myTomato',
-      name: 'myTomato',
-      component: myTomato
-    },
-    {
-      path: '/myDiary',
-      name: 'myDiary',
-      component: myDiary
-    },
-    {
-      path: '/myBill',
-      name: 'myBill',
-      component: myBill
-    },
-    {
-      path: '/myDiscuss',
-      name: 'myDiscuss',
-      component: myDiscuss
     },
     {
       path: '/footer',
@@ -94,7 +98,7 @@ export default new Router({
           name: 'mine',
           component: mine,
           meta: { checkLogined: true },
-        }
+        },
       ]
     },
   ],

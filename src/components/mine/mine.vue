@@ -54,9 +54,11 @@ export default {
       });
     },
     showAna(name) {
+      console.log(this.$router);
       let url = "";
       if (name == "我的番茄") {
         url = "/myTomato";
+      this.$router.push(url);
       } else if (name == "日记时光轴") {
         url = "/myDiary";
       } else if (name == "账单汇总") {
@@ -66,10 +68,6 @@ export default {
       } else if (name == "退出") {
           url = "/login"
       }
-      this.$router.push(url);
-      console.log(this.$router);
-      
-      
     }
   }
 };

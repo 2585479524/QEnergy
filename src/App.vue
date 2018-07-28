@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-cloak>
     <router-view/>
   </div>
 </template>
@@ -51,6 +51,8 @@ export default {
 </script>
 
 <style>
+
+[v-cloak] {display: none;}
 * {
   box-sizing: border-box;
 }

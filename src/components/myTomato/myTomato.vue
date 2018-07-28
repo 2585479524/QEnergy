@@ -1,6 +1,7 @@
 <template>
 <div class="my-tomato">
     <div class="down-wrapper" ref="downWrapper">
+      <Button class="closeBtn" type="text" @click="closeMy">取消</Button>
         <div class="content-out">
             <div class="content">
                 <span>累计数据</span>
@@ -33,7 +34,7 @@
                         
                     </div>
                 </div>
-                 <VeLine :data="chartData"></VeLine>
+                 <VePie :data="chartData"></VePie>
             </div>
         </div>
     </div>
@@ -42,9 +43,9 @@
 </template>
 
 <script>
-import { Card } from "iview";
+import { Card, Button } from "iview";
 import axios from "axios";
-import VeLine from "v-charts/lib/pie.common";
+import VePie from "v-charts/lib/pie.common";
 export default {
   data() {
     return {
@@ -54,7 +55,7 @@ export default {
           { lable: "吃饭", duration: 1393 },
           { lable: "学习", duration: 3530 },
           { lable: "睡觉", duration: 2923 },
-          { lable: "游戏", duration: 1723 },
+          { lable: "游戏", duration: 1723 }
         ]
       },
       total: {}
@@ -62,7 +63,8 @@ export default {
   },
   components: {
     Card,
-    VeLine
+    VePie,
+    Button
   },
   created() {
     axios
@@ -78,15 +80,25 @@ export default {
         this.rows = res.data.clockAnalysis;
       })
       .catch(err => {});
+  },
+  methods: {
+    closeMy() {
+      this.$router.go(-1);
+    }
   }
 };
 </script>
 
 <style>
+
 .my-tomato .down-wrapper {
   height: 620px;
   overflow: hidden;
   background: linear-gradient(to bottom, #e2e2e2, #c0c0c0);
+}
+.my-tomato .closeBtn {
+  position: absolute;
+  right: 10px;
 }
 .my-tomato .down-wrapper .content-out {
   padding: 20px 0 60px;
