@@ -19,7 +19,7 @@
         <TimePicker format="HH:mm" :steps="[1, 10]" placeholder="Select time" style="width: 112px" v-model="duration"></TimePicker>
         <br><br>
         <span class="text">请选择番茄标签：</span>
-        <RadioGroup v-model="tomatoLable" type="button">
+        <RadioGroup v-model="tomatoLabel" type="button">
             <Radio label="学习"></Radio>
             <Radio label="喝酒"></Radio>
             <Radio label="吃饭"></Radio>
@@ -27,7 +27,7 @@
         </RadioGroup>
         <br><br>
         <span class="text">请输入备注：</span>
-        <Input v-model="value" placeholder="备注" style="width: 240px"></Input>
+        <Input v-model="remark" placeholder="备注" style="width: 240px"></Input>
         <div slot="footer">
             <Button type="primary" long :loading="modal_loading" @click="countdown">确定</Button>
         </div>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import {
   Button,
   Circle,
@@ -54,14 +55,17 @@ export default {
   data() {
     return {
       percent: 0,
-      duration: "",
+
       now: Date.parse(new Date()),
+
+      duration: "",
+      tomatoLabel: "学习",
+      remark: "",
+      clockId: 0,
       showModal: false,
-      tomatoLable: "学习",
       modal_loading: false,
       min: 0,
       sec: 0,
-      value: "",
       msec: 0,
       setTomatoName: "设置时钟"
     };
@@ -77,7 +81,7 @@ export default {
     Radio,
     TimePicker,
     Card,
-    Badge,
+    Badge
   },
   computed: {
     color() {
@@ -107,13 +111,42 @@ export default {
         this.percent = 0;
         this.showModal = true;
       } else if (this.setTomatoName == "提前完成") {
-        this.setTomatoName = "设置时钟";
-        this.percent = 100;
-        this.sec = 0;
-        this.min = 0;
+        console.log(this.setTomatoName);
+
+        axios
+          .post(
+            "http://120.78.86.45/tomato/interruptClock",
+            JSON.stringify({
+              userId: 1,
+              clockId: this.clockId
+            })
+          )
+          .then(res => {
+            if (res.data.isInterrupt == true) {
+              this.setTomatoName = "设置时钟";
+              this.percent = 100;
+              this.sec = 0;
+              this.min = 0;
+            }
+          })
+          .catch(err => {});
       }
     },
     countdown() {
+      axios
+        .post(
+          "http://120.78.86.45/tomato/createClock",
+          JSON.stringify({
+            userId: 1,
+            clockLabel: this.tomatoLabel,
+            clockInfo: this.remark,
+            clockDuration: this.durationNum
+          })
+        )
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(err => {});
       let time;
       this.percent = 0;
       this.showModal = false;
@@ -135,6 +168,7 @@ export default {
         this.sec = sec > 9 ? sec : "0" + sec;
 
         if (this.percent + rat > 100) {
+          
           this.percent = 100;
           this.min = 0;
           this.sec = 0;
@@ -149,7 +183,7 @@ export default {
 
 <style>
 .circleTime {
-    background: #fff;
+  background: #fff;
 }
 .circleTime .up-wrapper {
   display: flex;

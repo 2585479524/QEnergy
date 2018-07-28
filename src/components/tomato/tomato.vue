@@ -5,7 +5,7 @@
             <circleTime></circleTime>
                 <div class="content">
                 <Card class="historyCard" v-for="(item, index) in clockList" :key="index">
-                    <span class="label">{{item.clockLable}}</span>
+                    <span class="label">{{item.clockLabel}}</span>
                     <div class="text">
                         <span>开始时间：{{item.clockStart}}</span><br>
                         <span>番茄时长：{{item.clockDuration}}</span>
