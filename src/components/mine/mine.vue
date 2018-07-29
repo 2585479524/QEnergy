@@ -58,16 +58,16 @@ export default {
       let url = "";
       if (name == "我的番茄") {
         url = "/myTomato";
-      this.$router.push(url);
       } else if (name == "日记时光轴") {
         url = "/myDiary";
       } else if (name == "账单汇总") {
         url = "/myBill";
       } else if (name == "我的讨论") {
         url = "/myDiscuss";
-      } else if (name == "退出") {
+      } else if (name == "退出登录") {
           url = "/login"
       }
+      this.$router.push(url);
     }
   }
 };

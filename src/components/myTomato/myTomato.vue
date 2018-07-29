@@ -72,7 +72,8 @@ export default {
         "http://120.78.86.45/tomato/showAnalysis",
         JSON.stringify({
           userId: 1
-        })
+        }),
+        (headerConfig = { withCredentials: true })
       )
       .then(res => {
         console.log(res);
@@ -90,7 +91,6 @@ export default {
 </script>
 
 <style>
-
 .my-tomato .down-wrapper {
   height: 620px;
   overflow: hidden;
@@ -127,10 +127,6 @@ export default {
   position: relative;
 }
 .my-tomato .down-wrapper .showDate .down .count .pi {
-  position: absolute;
-  width: 20px;
-  left: 35px;
-  bottom: 10px;
   font-size: 10px;
 }
 .my-tomato .down-wrapper .showDate :last-child {

@@ -37,7 +37,9 @@
 </template>
 
 <script>
+import Vue from "vue";
 import axios from "axios";
+import { mapState, mapMutations } from "vuex";
 import {
   Button,
   Circle,
@@ -51,6 +53,9 @@ import {
   Card,
   Badge
 } from "iview";
+
+axios.defaults.withCredentials = true;
+Vue.prototype.$Modal = Modal;
 export default {
   data() {
     return {
@@ -61,13 +66,13 @@ export default {
       duration: "",
       tomatoLabel: "学习",
       remark: "",
-      clockId: 0,
       showModal: false,
       modal_loading: false,
       min: 0,
       sec: 0,
       msec: 0,
-      setTomatoName: "设置时钟"
+      setTomatoName: "设置时钟",
+      clockX: 0
     };
   },
   components: {
@@ -84,6 +89,7 @@ export default {
     Badge
   },
   computed: {
+    ...mapState(["clockId"]),
     color() {
       // 蓝
       let color = "#2db7f5";
@@ -110,26 +116,32 @@ export default {
         this.duration = "";
         this.percent = 0;
         this.showModal = true;
-      } else if (this.setTomatoName == "提前完成") {
-        console.log(this.setTomatoName);
-
-        axios
-          .post(
-            "http://120.78.86.45/tomato/interruptClock",
-            JSON.stringify({
-              userId: 1,
-              clockId: this.clockId
-            })
-          )
-          .then(res => {
-            if (res.data.isInterrupt == true) {
-              this.setTomatoName = "设置时钟";
-              this.percent = 100;
-              this.sec = 0;
-              this.min = 0;
-            }
-          })
-          .catch(err => {});
+      } else if (this.setTomatoName == "中断番茄") {
+        this.$Modal.confirm({
+          title: "警告",
+          content: "<p>点击确定后，番茄时钟中断，该番茄不会被记录</p>",
+          okText: "确定",
+          cancelText: "取消",
+          onOk: () => {
+            axios
+              .post("http://120.78.86.45/tomato/interruptClock", {
+                headers: {
+                  "Content-Type": "application/json;charset=utf-8"
+                },
+                withCredentials: true
+              })
+              .then(res => {
+                console.log(1);
+                if (res.data.isInterrupt == true) {
+                  this.setTomatoName = "设置时钟";
+                  this.percent = 100;
+                  this.sec = 0;
+                  this.min = 0;
+                }
+              })
+              .catch(err => {});
+          }
+        });
       }
     },
     countdown() {
@@ -144,13 +156,13 @@ export default {
           })
         )
         .then(res => {
-          console.log(res.data);
+          this.clockX = res.data.clockId;
         })
         .catch(err => {});
       let time;
       this.percent = 0;
       this.showModal = false;
-      this.setTomatoName = "提前完成";
+      this.setTomatoName = "中断番茄";
       //   不可省略
       console.log(this.durationNum);
       console.log(this.msec);
@@ -168,7 +180,6 @@ export default {
         this.sec = sec > 9 ? sec : "0" + sec;
 
         if (this.percent + rat > 100) {
-          
           this.percent = 100;
           this.min = 0;
           this.sec = 0;
