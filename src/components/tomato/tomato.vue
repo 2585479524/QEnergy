@@ -48,7 +48,6 @@ export default {
       )
       .then(res => {
         this.clockList = res.data.clockList;
-        console.log(res.data);
       })
       .catch(err => {
         console.log(err);

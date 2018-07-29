@@ -1,44 +1,32 @@
 <template>
-<div class="my-tomato">
-    <div class="down-wrapper" ref="downWrapper">
-      <Button class="closeBtn" type="text" @click="closeMy">取消</Button>
-        <div class="content-out">
-            <div class="content">
-                <span>累计数据</span>
-                <div class="showDate">
-                    <div class="up">
-                        <span class="name">番茄个数</span>
-                        <span class="name">累计时长</span>
-                    </div>
-                    <div class="down">
-                        <span class="count">{{total.totalCount}}</span>
-                        <span class="count">
-                            {{total.totalDuration}}
-                            <span class="pi">分钟</span>
-                        </span>
-                    </div>
-                </div>
-                
-                <span>当日数据</span>
-                <div class="showDate">
-                    <div class="up">
-                        <span class="name">番茄个数</span>
-                        <span class="name">累计时长</span>
-                    </div>
-                    <div class="down">
-                        <span class="count">{{total.todayCount}}</span>
-                        <span class="count">
-                            {{total.todayDuration}}
-                            <span class="pi">分钟</span>
-                        </span>
-                        
-                    </div>
-                </div>
-                 <VePie :data="chartData"></VePie>
+    <div class="my-tomato">
+      <Button class="close-btn"  @click="closePage" type="info" ghost>取消</Button>
+      <div class="content">
+        <span class="title">累计数据</span>
+        <div class="showDate">
+            <div class="left">
+                <span class="name">番茄个数</span>
+                <span class="count">{{total.totalCount}}</span>
+            </div>
+            <div class="right">
+                <span class="name">累计时长</span>
+                <span class="count">{{total.totalDuration}}<span class="pi">分钟</span></span>
             </div>
         </div>
+        <span class="title">当日数据</span>
+        <div class="showDate">
+            <div class="left">
+                <span class="name">番茄个数</span>
+                <span class="count">{{total.todayCount}}</span>
+            </div>
+            <div class="right">
+                <span class="name">累计时长</span>
+                <span class="count">{{total.todayDuration}}<span class="pi">分钟</span></span>
+            </div>
+        </div>
+      </div>
+      <VePie :data="chartData"></VePie>
     </div>
-</div>
     
 </template>
 
@@ -72,8 +60,7 @@ export default {
         "http://120.78.86.45/tomato/showAnalysis",
         JSON.stringify({
           userId: 1
-        }),
-        (headerConfig = { withCredentials: true })
+        })
       )
       .then(res => {
         console.log(res);
@@ -91,48 +78,47 @@ export default {
 </script>
 
 <style>
-.my-tomato .down-wrapper {
-  height: 620px;
-  overflow: hidden;
-  background: linear-gradient(to bottom, #e2e2e2, #c0c0c0);
+.my-tomato {
+  background: linear-gradient(to bottom, #b6c7e7, #71ffb8);
 }
-.my-tomato .closeBtn {
+.my-tomato .close-btn {
   position: absolute;
   right: 10px;
 }
-.my-tomato .down-wrapper .content-out {
-  padding: 20px 0 60px;
+.my-tomato .content {
+  padding: 20px 20px 10px;
 }
-.my-tomato .down-wrapper .content-out .content {
-  margin: 0 20px 20px;
-}
-.my-tomato .down-wrapper .showDate {
+.my-tomato .showDate {
   display: flex;
   font-size: 15px;
-  height: 100px;
+  height: 80px;
+  justify-content: space-around;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.my-tomato .title {
+  display: block;
+  padding: 3px 0;
+  font-size: 14px;
+}
+.my-tomato .showDate .left, .right {
+  display: flex;
   flex-direction: column;
   justify-content: space-around;
-  background: #fff;
 }
-.my-tomato .down-wrapper .showDate .up {
-  display: flex;
-  justify-content: space-around;
+.my-tomato .showDate .name {
+  text-align: center;
+  font-size: 13px;
 }
-.my-tomato .down-wrapper .showDate .down {
-  display: flex;
-  font-size: 35px;
-  justify-content: space-around;
-}
-.my-tomato .down-wrapper .showDate .down .count {
+.my-tomato .showDate .count {
+  display: block;
   position: relative;
+  font-size: 25px;
+  text-align: center;
 }
-.my-tomato .down-wrapper .showDate .down .count .pi {
+.my-tomato .showDate .pi {
   font-size: 10px;
-}
-.my-tomato .down-wrapper .showDate :last-child {
-  border-right: none;
-}
-.my-tomato .down-wrapper .historyCard .showDate-body {
-  padding: 0;
+  padding: 3px;
 }
 </style>
