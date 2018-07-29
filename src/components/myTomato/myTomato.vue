@@ -1,6 +1,6 @@
 <template>
     <div class="my-tomato">
-      <Button class="close-btn"  @click="closePage" type="info" ghost>取消</Button>
+      <Button  @click="closePage" type="ghost">取消</Button>
       <div class="content">
         <span class="title">累计数据</span>
         <div class="showDate">
@@ -70,7 +70,7 @@ export default {
       .catch(err => {});
   },
   methods: {
-    closeMy() {
+    closePage() {
       this.$router.go(-1);
     }
   }
@@ -81,12 +81,16 @@ export default {
 .my-tomato {
   background: linear-gradient(to bottom, #b6c7e7, #71ffb8);
 }
-.my-tomato .close-btn {
+
+.my-tomato .ivu-btn-ghost {
   position: absolute;
+  top: 10px;
   right: 10px;
+  color: azure;
+  background-color: rgba(255, 255, 255, 0.3)
 }
 .my-tomato .content {
-  padding: 20px 20px 10px;
+  padding: 35px 20px 10px;
 }
 .my-tomato .showDate {
   display: flex;
@@ -102,7 +106,8 @@ export default {
   padding: 3px 0;
   font-size: 14px;
 }
-.my-tomato .showDate .left, .right {
+.my-tomato .showDate .left,
+.right {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
