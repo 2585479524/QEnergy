@@ -96,8 +96,12 @@ export default {
             userLogin: this.userLogin
           })
           .then(res => {
-            this.$Message.success("登陆成功");
-            this.$router.push("footer/tomato");
+            if (res.data.isLogin == true) {
+              this.$Message.success("登陆成功");
+              this.$router.push("footer/tomato");
+            } else {
+              this.$Message.error("对不起，登陆失败！");
+            }
           })
           .catch();
       }
