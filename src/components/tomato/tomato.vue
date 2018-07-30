@@ -1,20 +1,18 @@
 <template>
     <div class="tomato">
+        <circleTime></circleTime>
         <div class="down-wrapper" ref="downWrapper">
-            <div class="content-out">
-            <circleTime></circleTime>
-                <div class="content">
-                <Card class="historyCard" v-for="(item, index) in clockList" :key="index">
-                    <span class="label">{{item.clockLabel}}</span>
-                    <div class="text">
-                        <span>开始时间：{{item.clockStart}}</span><br>
-                        <span>番茄时长：{{item.clockDuration}}</span>
-                    </div>
-                    <br><br>
-                    <span class="remarks">备注：{{item.clockInfo}}</span>
-                </Card>
+            <div class="content">
+              <Card class="historyCard" v-for="(item, index) in clockList" :key="index">
+                  <span class="label">{{item.clockLabel}}</span>
+                  <div class="text">
+                      <span>开始时间：{{item.clockStart}}</span><br>
+                      <span>番茄时长：{{item.clockDuration}}</span>
+                  </div>
+                  <br><br>
+                  <span class="remarks" v-if="item.clockInfo">备注：{{item.clockInfo}}</span>
+              </Card>
             </div>
-          </div>
         </div>
     </div>
     
@@ -42,9 +40,6 @@ export default {
     axios
       .post(
         "http://120.78.86.45/tomato/showTodoList",
-        JSON.stringify({
-          userId: 1
-        })
       )
       .then(res => {
         this.clockList = res.data.clockList;

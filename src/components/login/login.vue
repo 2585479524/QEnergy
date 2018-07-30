@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <div class="mainLogin">
-            <Input v-model="userLogin.userId" placeholder="请输入账号" clearable style="width: 200px"></Input>
+            <Input v-model="userLogin.telNumber" placeholder="请输入账号" clearable style="width: 200px"></Input>
             <Input v-model="userLogin.pwd" type="password" placeholder="请输入密码" clearable style="width: 200px"></Input>
 
             <Button type="success" style="width: 200px" @click="login">登录</Button>
@@ -13,29 +13,27 @@
                 <span>注册账号</span>
             </p>
             <div class="registerModal" style="text-align:center">
-                <span class="text">账号：</span>
-                <Input v-model="userInfo.userId" placeholder="请输入账号" clearable style="width: 200px"></Input>
+                <span class="text">手机号：</span>
+                <Input v-model="userInfo.telNumber" placeholder="请输入手机号" clearable style="width: 200px" @on-blur="checkTel"></Input>
                 <br><br>
                 <span class="text">昵称：</span>
-                <Input v-model="userInfo.userName" placeholder="请输入昵称" clearable style="width: 200px"></Input>
+                <Input v-model="userInfo.userName" placeholder="请输入昵称" clearable style="width: 200px" @on-blur="checkName"></Input>
                 <br><br>
                 <span class="text">密码：</span>
-                <Input v-model="userInfo.pwd" placeholder="请输入密码" clearable style="width: 200px"></Input>
+                <Input v-model="userInfo.pwd" type="password" placeholder="请输入密码" clearable style="width: 200px" @on-blur="checkPwd"></Input>
                 <br><br>
                 <span class="text">确认密码：</span>
-                <Input v-model="confirmPwd" placeholder="请再次输入密码" clearable style="width: 200px"></Input>
-                <br><br>
-                <span class="text">手机号：</span>
-                <Input v-model="userInfo.telNumber" placeholder="请输入手机号" clearable style="width: 200px"></Input>
+                <Input v-model="confirmPwd" type="password" placeholder="请再次输入密码" clearable style="width: 200px" @on-blur="checkConfirmPwd"></Input>
                 <br><br>
                 <span class="text">真实姓名：</span>
                 <Input v-model="userInfo.realName" placeholder="请输入真实姓名" clearable style="width: 200px"></Input>
                 <br><br>
                 <span class="text">身份证号：</span>
-                <Input v-model="userInfo.idCard" placeholder="请输入身份证号" clearable style="width: 200px"></Input>
+                <Input v-model="userInfo.idCard" placeholder="请输入身份证号" clearable style="width: 200px" @on-blur="checkCard"></Input>
+                <br>
             </div>
             <div slot="footer">
-                <Button type="primary" size="large" long @click="submitRegister">注册</Button>
+                <Button type="primary" size="large" long @click.prevent="submitRegister">注册</Button>
             </div>
         </Modal>
     </div>
@@ -43,29 +41,39 @@
 
 <script>
 import Vue from "vue";
+import axios from "axios";
 import { Input, Button, Message, Modal, Icon } from "iview";
 import router from "../../router";
 import store from "../../store/store";
 import { mapState, mapMutations } from "vuex";
+
+axios.defaults.withCredentials = true;
 Vue.prototype.$Message = Message;
 export default {
   data() {
     return {
       userLogin: {
         userId: "",
-        pwd: "",
-        authCode: "",
+        pwd: ""
       },
       userInfo: {
-        userId: "",
         userName: "",
         pwd: "",
         telNumber: "",
         realName: "",
         idCard: ""
       },
+      regUser: {
+        // 手机号
+        telNumber: /(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}/,
+        // 用户名： 中文、英文、数字，不包括下划线等特殊符号
+        userName: /[\u4E00-\u9FA5A-Za-z0-9]+$/,
+        // 密码： 字母数字下划线，6-16位
+        pwd: /\w{6,16}/,
+        // 身份证
+        idCard: /(?:1[1-5]|2[1-3]|3[1-7]|4[1-6]|5[0-4]|6[1-5])\d{4}(?:1[89]|20)\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])\d{3}(?:\d|[xX])/
+      },
       confirmPwd: "",
-      showWarning: false,
       showModal: false
     };
   },
@@ -80,22 +88,87 @@ export default {
   methods: {
     ...mapMutations(["update"]),
     login() {
-      if (this.userLogin.userId == "" || this.userLogin.pwd == "") {
+      if (this.userLogin.telNumber == "" || this.userLogin.pwd == "") {
         this.$Message.warning("请输入账号或密码");
       } else {
-        router.push("/footer/tomato");
+        axios
+          .post("http://120.78.86.45/auth/login", {
+            userLogin: this.userLogin
+          })
+          .then(res => {
+            this.$Message.success("登陆成功");
+            this.$router.push("footer/tomato");
+          })
+          .catch();
+      }
+    },
+    checkTel() {
+      if (
+        this.userInfo.telNumber != "" &&
+        !this.regUser.telNumber.test(this.userInfo.telNumber)
+      ) {
+        this.$Message.warning("手机号不符合要求");
+      } else {
+        return true;
+      }
+    },
+    checkName() {
+      if (
+        this.userInfo.userName != "" &&
+        !this.regUser.userName.test(this.userInfo.userName)
+      ) {
+        this.$Message.warning("昵称不符合要求");
+      } else {
+        return true;
+      }
+    },
+    checkPwd() {
+      if (
+        this.userInfo.pwd != "" &&
+        !this.regUser.pwd.test(this.userInfo.pwd)
+      ) {
+        this.$Message.warning("密码不符合要求");
+      } else {
+        return true;
+      }
+    },
+    checkConfirmPwd() {
+      if (this.confirmPwd != "" && this.confirmPwd != this.userInfo.pwd) {
+        this.$Message.warning("两次输入密码不一致");
+      } else {
+        return true;
+      }
+    },
+    checkCard() {
+      if (
+        this.userInfo.idCard != "" &&
+        !this.regUser.idCard.test(this.userInfo.idCard)
+      ) {
+        this.$Message.warning("请输入真实的身份证号");
+      } else {
+        return true;
       }
     },
     clickRegister() {
       this.showModal = true;
     },
     submitRegister() {
-        // userId  字母开头，字母、数字组成，6-15位
-      let regUserId = new RegExp("^[a-zA-z]\w{6,15}$");
-      if (false) {
-        this.$Message.warning("必须是数字");
-      } else {
-        this.showModal = false;
+      if (
+        this.checkTel() &&
+        this.checkName() &&
+        this.checkPwd() &&
+        this.checkConfirmPwd() &&
+        this.checkCard()
+      ) {
+        axios
+          .post("http://120.78.86.45/auth/register", {
+            userInfo: this.userInfo
+          })
+          .then(res => {
+            this.$Message.success("注册成功");
+            this.$router.push("/footer/tomato");
+          })
+          .catch();
       }
     }
   }

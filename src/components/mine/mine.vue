@@ -64,9 +64,11 @@ export default {
         url = "/myBill";
       } else if (name == "我的讨论") {
         url = "/myDiscuss";
-      } else if (name == "退出登录") {
-          url = "/login"
+      } else if (name == "退出") {
+          url = "/";
       }
+      console.log(this.$router);
+      
       this.$router.push(url);
     }
   }

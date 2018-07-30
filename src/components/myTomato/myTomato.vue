@@ -38,13 +38,8 @@ export default {
   data() {
     return {
       chartData: {
-        columns: ["lable", "duration"],
-        rows: [
-          { lable: "吃饭", duration: 1393 },
-          { lable: "学习", duration: 3530 },
-          { lable: "睡觉", duration: 2923 },
-          { lable: "游戏", duration: 1723 }
-        ]
+        columns: ["label", "duration"],
+        rows: [],
       },
       total: {}
     };
@@ -58,14 +53,11 @@ export default {
     axios
       .post(
         "http://120.78.86.45/tomato/showAnalysis",
-        JSON.stringify({
-          userId: 1
-        })
       )
       .then(res => {
         console.log(res);
         this.total = res.data;
-        this.rows = res.data.clockAnalysis;
+        this.chartData.rows = res.data.clockAnalysis;
       })
       .catch(err => {});
   },
