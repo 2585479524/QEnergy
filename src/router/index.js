@@ -21,13 +21,7 @@ export default new Router({
     {
       path: '/',
       name: 'login',
-      redirect: 'login'
-    },
-    {
-      path: '/login',
-      name: 'login',
       component: login,
-      meta: { checkLogined: true },
     },
     {
       path: '/myTomato',

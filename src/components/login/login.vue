@@ -86,18 +86,13 @@ export default {
     Icon
   },
   created() {
-    if (!window.localStorage) {
-      console.log("不支持");
-    } else {
-      console.log("支持");
-      let storage = window.localStorage;
-      if (storage.getItem("telNumber") && storage.getItem("pwd")) {
-        let userLogin = {
-          telNumber: storage.getItem("telNumber"),
-          pwd: storage.getItem("pwd")
-        };
-        this._loginPost(userLogin);
-      }
+    let storage = window.localStorage;
+    if (storage.getItem("telNumber") && storage.getItem("pwd")) {
+      let userLogin = {
+        telNumber: storage.getItem("telNumber"),
+        pwd: storage.getItem("pwd")
+      };
+      this._loginPost(userLogin);
     }
   },
   methods: {

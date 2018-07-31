@@ -5,27 +5,9 @@
 </template>
 
 <script>
-import Mock from "mockjs";
-
 import router from "./router";
 import store from "./store/store";
 import { mapState, mapGetters } from "vuex";
-// 使用 Mock
-var data = Mock.mock({
-  // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
-  "list|1-10": [
-    {
-      // 属性 id 是一个自增数，起始值为 1，每次增 1
-      "cid|1-100": 1,
-      clable: "@word",
-      cinfo: "@cparagraph",
-      cstart: '@datetime("y-MM-dd HH:mm:ss")',
-      ctarget: '@datetime("y-MM-dd HH:mm:ss")'
-    }
-  ]
-});
-// // 输出结果
-// console.log(JSON.stringify(data, null, 4))
 
 export default {
   name: "App",
@@ -37,22 +19,38 @@ export default {
     $route: "checkLogin"
   },
   methods: {
-    checkLogin() {},
-    toLogin() {
-      this.userInfo = {
-        nick: "Doterlin",
-        ulevel: 20,
-        uid: "10000"
-      };
-      this.$store.commit("updateUserInfo", this.userInfo);
+    checkLogin() {
+      router.beforeEach((to, from, next) => {
+        if (to.meta.checkLogined) {
+          if (
+            window.localStorage.getItem("telNumber") &&
+            window.localStorage.getItem("pwd")
+          ) {
+            console.log(to);
+
+            next();
+          } else {
+            console.log("未登录");
+
+            next({
+              path: "/"
+            });
+          }
+        } else {
+          console.log("不需要鉴权");
+
+          next();
+        }
+      });
     }
   }
 };
 </script>
 
 <style>
-
-[v-cloak] {display: none;}
+[v-cloak] {
+  display: none;
+}
 * {
   box-sizing: border-box;
 }

@@ -9,7 +9,7 @@
         <div class="down-wrapper" ref="downWrapper">
             <div class="content-out">
                 <div class="content">
-                    <Card class="historyCard" v-for="(item, index) in mineContent" :key="index" @click.native="showAna(item)">
+                    <Card class="historyCard" v-for="(item, index) in mineContent" :key="index" @click.native.self="showAna(item)">
                         <span>{{item}}</span>
                     </Card>
                 </div>
@@ -65,8 +65,7 @@ export default {
       } else if (name == "我的讨论") {
         url = "/myDiscuss";
       } else if (name == "退出") {
-        let storage = window.localStorage;
-        storage.clear();
+        window.localStorage.clear();
         url = "/";
       }
       console.log(this.$router);
