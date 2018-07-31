@@ -41,7 +41,12 @@ export default {
         columns: ["label", "duration"],
         rows: [],
       },
-      total: {}
+      total: {
+        totalCount: 0,
+        totalDuration: 0,
+        todayCount: 0,
+        todayDuration: 0,
+      }
     };
   },
   components: {

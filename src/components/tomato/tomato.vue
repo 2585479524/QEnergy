@@ -1,6 +1,6 @@
 <template>
     <div class="tomato">
-        <circleTime ref="ct"></circleTime>
+        <circleTime @refreshProps="refreshOk"></circleTime>
         <div class="down-wrapper" ref="downWrapper">
             <div class="content">
               <Card class="historyCard" v-for="(item, index) in clockList" :key="index">
@@ -28,7 +28,7 @@ import { Card } from "iview";
 export default {
   data() {
     return {
-      clockList: [],
+      clockList: []
     };
   },
   components: {
@@ -37,20 +37,9 @@ export default {
     circleTime
   },
   created() {
-    axios
-      .post(
-        "http://120.78.86.45/tomato/showTodoList",
-      )
-      .then(res => {
-        this.clockList = res.data.clockList;
-      })
-      .catch(err => {
-        console.log(err);
-      });
     this.$nextTick(function() {
+      this._initRefresh();
       this._initScroll();
-      
-    console.log(this.$refs.ct);
     });
   },
   methods: {
@@ -59,6 +48,21 @@ export default {
         probeType: 3,
         click: true
       });
+    },
+    _initRefresh() {
+      axios
+        .post("http://120.78.86.45/tomato/showTodoList")
+        .then(res => {
+          this.clockList = res.data.clockList;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    refreshOk(msg) {
+      if (msg == true) {
+        this._initRefresh();
+      }
     }
   }
 };

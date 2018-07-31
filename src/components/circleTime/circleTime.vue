@@ -191,20 +191,20 @@ export default {
       if (
         this.customizeDurationProps < 1 ||
         this.customizeDurationProps == 25 ||
-        this.customizeDurationProps == 35
+        this.customizeDurationProps == 35 ||
+        this.customizeDurationProps > 99999
       ) {
         this.cusDurationWarn = true;
       } else {
         this.cusDurationWarn = false;
       }
     },
-    // 用户自定义时长OK
+    // 用户自定义时长点击确定，检测是否有警告
     cusDurationOk() {
       if (this.cusDurationWarn == false) {
         this.showCustomizeDuration = false;
-
-        this.newDuration = this.customizeDurationProps + "分钟";
-        this.durationList[this.durationList.length - 1] = this.newDuration;
+        this.durationList[this.durationList.length - 1] =
+          this.customizeDurationProps + "分钟";
       }
     },
 
@@ -230,10 +230,7 @@ export default {
     cusLabelOk() {
       if (this.cusLabelWarn == false) {
         this.showCustomizeLabel = false;
-        this.newLabel = this.customizeLabelProps;
-        console.log(this.newLabel);
-
-        this.labelList[this.labelList.length - 1] = this.newLabel;
+        this.labelList[this.labelList.length - 1] = this.customizeLabelProps;
       }
     },
     // 时钟开启，当用户点击“中断番茄”，确认中断后执行此函数
@@ -309,7 +306,8 @@ export default {
       this.newDuration = this.durationList[0];
       this.newLabel = this.labelList[0];
       this.percent = 0;
-    }
+      this.$emit("refreshProps", this.refreshProps);
+    },
   }
 };
 </script>

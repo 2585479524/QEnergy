@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       userLogin: {
-        userId: "",
+        telNumber: "",
         pwd: ""
       },
       userInfo: {
@@ -85,25 +85,46 @@ export default {
     Modal,
     Icon
   },
+  created() {
+    if (!window.localStorage) {
+      console.log("不支持");
+    } else {
+      console.log("支持");
+      let storage = window.localStorage;
+      if (storage.getItem("telNumber") && storage.getItem("pwd")) {
+        let userLogin = {
+          telNumber: storage.getItem("telNumber"),
+          pwd: storage.getItem("pwd")
+        };
+        this._loginPost(userLogin);
+      }
+    }
+  },
   methods: {
     ...mapMutations(["update"]),
+    _loginPost(userLogin) {
+      axios
+        .post("http://120.78.86.45/auth/login", {
+          userLogin: userLogin
+        })
+        .then(res => {
+          if (res.data.isLogin == true) {
+            let storage = window.localStorage;
+            storage.setItem("telNumber", this.userLogin.telNumber);
+            storage.setItem("pwd", this.userLogin.pwd);
+            this.$Message.success(res.data.message);
+            this.$router.push("footer/tomato");
+          } else {
+            this.$Message.error(res.data.message);
+          }
+        })
+        .catch();
+    },
     login() {
       if (this.userLogin.telNumber == "" || this.userLogin.pwd == "") {
         this.$Message.warning("请输入账号或密码");
       } else {
-        axios
-          .post("http://120.78.86.45/auth/login", {
-            userLogin: this.userLogin
-          })
-          .then(res => {
-            if (res.data.isLogin == true) {
-              this.$Message.success(res.data.message);
-              this.$router.push("footer/tomato");
-            } else {
-              this.$Message.error(res.data.message);
-            }
-          })
-          .catch();
+        this._loginPost(this.userLogin);
       }
     },
     checkTel() {
@@ -169,10 +190,14 @@ export default {
             userInfo: this.userInfo
           })
           .then(res => {
-            this.$Message.success("注册成功");
-            this.$router.push("/footer/tomato");
+            if (res.data.isRegister == true) {
+              this.$Message.success(res.data.message);
+              this.$router.push("/footer/tomato");
+            } else {
+              this.$Message.error(res.data.message);
+            }
           })
-          .catch();
+          .catch(res => {});
       }
     }
   }

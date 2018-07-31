@@ -65,10 +65,12 @@ export default {
       } else if (name == "我的讨论") {
         url = "/myDiscuss";
       } else if (name == "退出") {
-          url = "/";
+        let storage = window.localStorage;
+        storage.clear();
+        url = "/";
       }
       console.log(this.$router);
-      
+
       this.$router.push(url);
     }
   }
