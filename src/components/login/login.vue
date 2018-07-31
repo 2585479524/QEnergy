@@ -97,10 +97,10 @@ export default {
           })
           .then(res => {
             if (res.data.isLogin == true) {
-              this.$Message.success("登陆成功");
+              this.$Message.success(res.data.message);
               this.$router.push("footer/tomato");
             } else {
-              this.$Message.error("对不起，登陆失败！");
+              this.$Message.error(res.data.message);
             }
           })
           .catch();

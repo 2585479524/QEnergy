@@ -135,6 +135,8 @@ export default {
       showCustomizeLabel: false,
       // 非法自定义标签
       cusLabelWarn: false,
+      // 刷新控制参数
+      refreshProps: false,
 
       min: 0,
       sec: 0,
@@ -230,7 +232,7 @@ export default {
         this.showCustomizeLabel = false;
         this.newLabel = this.customizeLabelProps;
         console.log(this.newLabel);
-        
+
         this.labelList[this.labelList.length - 1] = this.newLabel;
       }
     },
@@ -303,7 +305,7 @@ export default {
       }, 1000);
     },
     refreshOk() {
-      this.showFinish = false;
+      (this.refreshProps = true), (this.showFinish = false);
       this.newDuration = this.durationList[0];
       this.newLabel = this.labelList[0];
       this.percent = 0;

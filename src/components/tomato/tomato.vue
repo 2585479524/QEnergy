@@ -1,6 +1,6 @@
 <template>
     <div class="tomato">
-        <circleTime></circleTime>
+        <circleTime ref="ct"></circleTime>
         <div class="down-wrapper" ref="downWrapper">
             <div class="content">
               <Card class="historyCard" v-for="(item, index) in clockList" :key="index">
@@ -49,6 +49,8 @@ export default {
       });
     this.$nextTick(function() {
       this._initScroll();
+      
+    console.log(this.$refs.ct);
     });
   },
   methods: {
