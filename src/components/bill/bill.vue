@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import BScroll from "better-scroll";
 import { DatePicker, Card, Button, Icon } from "iview";
 export default {
@@ -56,54 +57,6 @@ export default {
             }
           ]
         },
-        {
-          date: "2018年6月30日",
-          dayDetail: [
-            {
-              billId: 3,
-              label: "日常",
-              info: "无",
-              type: "支出",
-              money: "50.00"
-            }
-          ]
-        },
-        {
-          date: "2018年6月30日",
-          dayDetail: [
-            {
-              billId: 3,
-              label: "日常",
-              info: "无",
-              type: "收入",
-              money: "50.00"
-            }
-          ]
-        },
-        {
-          date: "2018年6月30日",
-          dayDetail: [
-            {
-              billId: 3,
-              label: "日常",
-              info: "无",
-              type: "收入",
-              money: "50.00"
-            }
-          ]
-        },
-        {
-          date: "2018年6月30日",
-          dayDetail: [
-            {
-              billId: 3,
-              label: "日常",
-              info: "无",
-              type: "收入",
-              money: "50.00"
-            }
-          ]
-        }
       ],
       showModalDetail: false,
       showModalEdit: false,
@@ -117,6 +70,9 @@ export default {
     Icon
   },
   created() {
+    axios.post("120.78.86.45/bill/showTodoList", {
+
+    }).then().catch()
     this.$nextTick(function() {
       this._initScroll();
     });
@@ -129,9 +85,6 @@ export default {
       });
     },
     showDetail(index) {
-      //   let date = new Date();
-      //   let time = date.getHours() + ":" + date.getMinutes();
-
       this.axy = this.diaryDetail[index].date;
       console.log(this.axy);
 

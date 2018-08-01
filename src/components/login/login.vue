@@ -104,9 +104,6 @@ export default {
         })
         .then(res => {
           if (res.data.isLogin == true) {
-            let storage = window.localStorage;
-            storage.setItem("telNumber", this.userLogin.telNumber);
-            storage.setItem("pwd", this.userLogin.pwd);
             this.$Message.success(res.data.message);
             this.$router.push("footer/tomato");
           } else {
@@ -114,6 +111,9 @@ export default {
           }
         })
         .catch();
+      let storage = window.localStorage;
+      storage.setItem("telNumber", this.userLogin.telNumber);
+      storage.setItem("pwd", this.userLogin.pwd);
     },
     login() {
       if (this.userLogin.telNumber == "" || this.userLogin.pwd == "") {

@@ -19,14 +19,3 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
-router.beforeEach((to, from, next) => {
-  if (to.meta.checkLogined) {
-    if (store.state.userInfo != '') {
-      next();
-    } else {
-      next({
-        path: "/login"
-      });
-    }
-  }
-});
