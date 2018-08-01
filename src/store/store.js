@@ -9,6 +9,12 @@ const state = {
     calShow: false,
     result: "0.00",
     enter: "",
+    iconCode: "",
+    icon: {
+        iconName: "",
+        iconCode: ""
+    },
+    billType: "",
 }
 const mutations = {
     // 更新账号密码
@@ -17,9 +23,12 @@ const mutations = {
         state.pwd = pwd;
     },
     // 显示计算器
-    showCalculator(state, btnType) {
+    showCalculator(state, btnType, icon, billType) {
         state.result = "0";
         state.enter = "";
+        state.icon = icon;
+        
+        state.billType = billType;
         if (btnType == 0) {
             state.calShow = true;
         } else if (btnType == 1) {

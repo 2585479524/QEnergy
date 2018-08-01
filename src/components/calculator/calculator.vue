@@ -37,6 +37,7 @@
 <script>
 import { Button, Icon, Input } from "iview";
 import { mapState, mapMutations } from "vuex";
+import axios from 'axios';
 import store from "../../store/store";
 export default {
   data() {
@@ -50,11 +51,20 @@ export default {
     Input
   },
   computed: {
-    ...mapState(["result", "enter"])
+    ...mapState(["result", "enter", "icon", "billType"])
   },
   methods: {
     ...mapMutations(["showCalculator", "calculate"]),
     back() {
+      axios.post("http://120.78.86.45/bill/createBill", {
+        label: this.icon.iconName,
+        iconCode: this.icon.iconCode,
+        type: this.billType,
+        money: this.result,
+      }).then(res => {
+        console.log(res);
+        
+      }).catch();
       // 触发ajax提交参数
       // 返回页面后触发ajax重新获取数据
       this.$router.go(-1);

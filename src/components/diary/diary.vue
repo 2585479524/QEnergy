@@ -134,15 +134,8 @@ export default {
     Input
   },
   created() {
-    axios
-      .post("http://120.78.86.45/diary/showTodoList")
-      .then(res => {
-        console.log(res);
-
-        this.diaryList = res.data.diaryList;
-      })
-      .catch();
     this.$nextTick(function() {
+      this._initGet();
       this._initScroll();
     });
   },
@@ -156,6 +149,16 @@ export default {
     }
   },
   methods: {
+    _initGet() {
+      axios
+        .post("http://120.78.86.45/diary/showTodoList")
+        .then(res => {
+          console.log(res);
+
+          this.diaryList = res.data.diaryList;
+        })
+        .catch();
+    },
     _initScroll() {
       this.showScroll = new BScroll(this.$refs.showWrapper, {
         probeType: 3,
@@ -193,6 +196,8 @@ export default {
           }
         })
         .catch();
+        this._initGet();
+        this.showModalDetail;
     },
     // 提交新的日记
     editNewDiary() {
@@ -210,6 +215,7 @@ export default {
           }
         })
         .catch();
+        this._initGet();
       this.showModalEdit = false;
     },
     // 删除日记
@@ -226,6 +232,7 @@ export default {
           }
         })
         .catch();
+        this._initGet();
     }
   }
 };

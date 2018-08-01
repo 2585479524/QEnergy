@@ -6,17 +6,19 @@
          <div class="incomeAndPay">
              <div class="income">
                  <span class="name">收入</span>
-                 <span class="count">0.00</span>
+                 <span class="count" v-if="billList.totalIncome">{{billList.totalIncome}}</span>
+                 <span class="count" v-else>0</span>
              </div>
              <div class="pay">
                  <span class="name">支出</span>
-                 <span class="count">0.00</span>
+                 <span class="count" v-if="billList.totalPay">{{billList.totalPay}}</span>
+                 <span class="count" v-else>0</span>
              </div>
          </div>
          <div class="show-wrapper" ref="showWrapper">
             <div class="content-out">
                 <div v-show="billList" class="content" v-for="(itemBill, index) in billList">
-                    <h3>{{itemBill.date}}</h3>
+                    <h3>{{itemBill.dateFull}}</h3>
                     <!-- 对组件添加事件要加.native -->
                     <Card v-show="itemBill.dayDetail" class="historyCard" v-for="(item, index) in itemBill.dayDetail" :key="index">
                         <span class="label"><Icon type="icecream"></Icon></span>
@@ -31,36 +33,16 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 import BScroll from "better-scroll";
 import { DatePicker, Card, Button, Icon } from "iview";
 export default {
   data() {
     return {
-      billList: [
-        {
-          date: "2018年5月30日",
-          dayDetail: [
-            {
-              billId: 1,
-              label: "日常",
-              info: "无",
-              type: "支出",
-              money: "50.00"
-            },
-            {
-              billId: 2,
-              label: "日常",
-              info: "无",
-              type: "支出",
-              money: "50.00"
-            }
-          ]
-        },
-      ],
+      billList: [],
       showModalDetail: false,
       showModalEdit: false,
-      dateMain: "2018-8"
+      dateMain: "2018-08"
     };
   },
   components: {
@@ -70,9 +52,19 @@ export default {
     Icon
   },
   created() {
-    axios.post("120.78.86.45/bill/showTodoList", {
-
-    }).then().catch()
+    axios
+      .post("http://120.78.86.45/bill/showTodoList", {
+        yearMonth: this.dateMain,
+      })
+      .then(res => {
+        console.log(res);
+        
+        this.billList = res.data.billList;
+      })
+      .catch(err => {
+        console.log(err);
+        
+      });
     this.$nextTick(function() {
       this._initScroll();
     });
@@ -91,8 +83,8 @@ export default {
       this.showModalDetail = true;
     },
     edit() {
-        this.$router.push("/editBill");
-    },
+      this.$router.push("/editBill");
+    }
   }
 };
 </script>
@@ -114,9 +106,9 @@ export default {
 .bill .show-wrapper .content-out {
   padding: 20px 0 60px;
 }
-.bill .show-wrapper .content-out .content h3{
+.bill .show-wrapper .content-out .content h3 {
   padding: 0 0 5px 20px;
-  color:dimgrey;
+  color: dimgrey;
 }
 .ivu-modal {
   top: 20px;
