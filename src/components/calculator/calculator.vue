@@ -53,7 +53,7 @@ export default {
     Input
   },
   computed: {
-    ...mapState(["result", "enter", "icon", "billType"]),
+    ...mapState(["result", "enter", "icon", "billType", "refresh"]),
     dateTime() {
       let dateTime = new Date();
       let str = dateTime.toJSON().substring(0, 10);
@@ -61,7 +61,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["showCalculator", "calculate"]),
+    ...mapMutations(["showCalculator", "calculate", "refreshOk"]),
     back() {
       console.log(this.dateTime);
 
@@ -82,6 +82,7 @@ export default {
             }
           })
           .catch();
+          this.refreshOk(true);
         this.$router.go(-1);
       }
     }

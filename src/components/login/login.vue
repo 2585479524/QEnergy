@@ -192,7 +192,7 @@ export default {
               this.$Message.error(res.data.message);
             }
           })
-          .catch(res => {});
+          .catch(err => {});
       }
     }
   }

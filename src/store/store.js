@@ -14,6 +14,7 @@ const state = {
         iconCode: ""
     },
     billType: "",
+    refresh: false,
 }
 const mutations = {
     // 更新账号密码
@@ -47,6 +48,9 @@ const mutations = {
             state.enter += value;
             state.result = eval(state.enter)
         }
+    },
+    refreshOk(state, boo) {
+        state.refresh = boo;
     }
 }
 export default new Vuex.Store({

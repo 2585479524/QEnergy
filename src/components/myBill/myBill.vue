@@ -1,56 +1,93 @@
 <template>
 <div class="my-bill">
-    
-        <Col span="12">
-            <DatePicker type="month" placeholder="Select month" style="width: 200px"></DatePicker>
-        </Col>
-    <!-- <VeRing :data="chartData1"></VeRing> -->
-    <VeLine :data="chartData2" :settings="chartSettings"></VeLine>
+  <Button  @click="closePage" type="ghost">取消</Button>
+  <div class="date-wrapper">
+    <DatePicker :value="dateMain" type="month" placeholder="Select month" style="width: 200px"></DatePicker>
+  </div>
+  <div class="line-wrapper">
+    <VeLine :data="charLine" height="300px" :settings="chartSetLine"></VeLine>
+  </div>
+    <hr>
+    <div class="bar-wrapper">
+      <VeBar :data="chartBar" height="300px" :settings="chartSetBar"></VeBar>
+    </div>
 </div>
 </template>
 
 <script>
-import { Col, DatePicker } from "iview";
+import { DatePicker, Button } from "iview";
+import axios from "axios";
 import VeLine from "v-charts/lib/line.common";
-import VeRing from "v-charts/lib/ring.common";
+import VeBar from "v-charts/lib/bar.common";
 export default {
   data() {
-    this.chartSettings = {
-      xAxisType: "time"
-    };
-    return {
-      chartData1: {
-        columns: ["日期", "访问用户"],
-        rows: [
-          { 日期: "1/1", 访问用户: 1393 },
-          { 日期: "1/2", 访问用户: 3530 },
-          { 日期: "1/3", 访问用户: 2923 },
-          { 日期: "1/4", 访问用户: 1723 },
-          { 日期: "1/5", 访问用户: 3792 },
-          { 日期: "1/6", 访问用户: 4593 }
-        ]
+    this.chartSetLine = {
+      labelMap: {
+        dayIncome: "收入",
+        dayPay: "支出",
       },
-      chartData2: {
-        columns: ["日期", "访问用户", "下单用户", "下单率"],
-        rows: [
-          { 日期: "2018-01-14", 访问用户: 1393, 下单用户: 1093, 下单率: 0.32 },
-          { 日期: "2018-01-0", 访问用户: 3530, 下单用户: 3230, 下单率: 0.26 },
-          { 日期: "2018-03", 访问用户: 2923, 下单用户: 2623, 下单率: 0.76 },
-          { 日期: "2018-05", 访问用户: 1723, 下单用户: 1423, 下单率: 0.49 },
-          { 日期: "2018-07", 访问用户: 3792, 下单用户: 3492, 下单率: 0.323 },
-          { 日期: "2018-10", 访问用户: 4593, 下单用户: 4293, 下单率: 0.78 }
-        ]
+    };
+    this.chartSetBar = {
+      metrics: ["payTotal"],
+      labelMap: {
+        payTotal: "标签对应总支出",
+      },
+      dataOrder: {
+        label: "payTotal",
+        order: "desc"
       }
     };
+    return {
+      charLine: {
+        columns: ["day", "dayIncome", "dayPay"],
+        rows: []
+      },
+      chartBar: {
+        columns: ["payLabel", "payTotal"],
+        rows: []
+      },
+      dateMain: "2018-08"
+    };
+  },
+  created() {
+    axios
+      .post("http://120.78.86.45/bill/showAnalysis", {
+        yearMonth: this.dateMain
+      })
+      .then(res => {
+        this.charLine.rows = res.data.lineList;
+        this.chartBar.rows = res.data.pieList.labelPayList;
+      })
+      .catch();
   },
   components: {
     VeLine,
-    VeRing,
-    Col,
-    DatePicker
+    VeBar,
+    DatePicker,
+    Button
+  },
+  methods: {
+    closePage() {
+      this.$router.go(-1);
+    }
   }
 };
 </script>
 
 <style>
+.my-bill {
+  background: linear-gradient(to bottom, #f7c2f0, #acc7fa);
+}
+.my-bill .date-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+.my-bill .ivu-btn-ghost {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: azure;
+  background-color: rgba(255, 255, 255, 0.3);
+}
 </style>

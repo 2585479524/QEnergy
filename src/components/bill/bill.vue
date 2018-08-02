@@ -19,7 +19,7 @@
                     <h3>{{itemBill.dateFull}}</h3>
                     <!-- 对组件添加事件要加.native -->
                     <Card v-show="itemBill.dayDetail" class="historyCard" v-for="(item, index) in itemBill.dayDetail" :key="index">
-                        <span class="label"><Icon type="icecream"></Icon></span>
+                        <span class="label"><i class="iconfont" :class="item.iconCode"></i></span>
                         <span class="text">{{item.label}}</span>
                         <span class="money">{{item.type}}￥{{item.money}}</span>
                     </Card>
@@ -33,6 +33,7 @@
 <script>
 import axios from "axios";
 import BScroll from "better-scroll";
+import { mapState, mapMutations } from "vuex";
 import { DatePicker, Card, Button, Icon } from "iview";
 export default {
   data() {
@@ -51,27 +52,37 @@ export default {
     Button,
     Icon
   },
+  computed: {
+    ...mapState["refresh"]
+  },
   created() {
-    axios
-      .post("http://120.78.86.45/bill/showTodoList", {
-        yearMonth: this.dateMain,
-      })
-      .then(res => {
-        console.log(res);
-        
-        this.billList = res.data.billList;
-        this.totalIncome = res.data.totalIncome;
-        this.totalPay = res.data.totalPay;
-      })
-      .catch(err => {
-        console.log(err);
-        
-      });
+    if (this.refresh) {
+      this._initRefresh();
+      this.refreshOk(false);
+    }
     this.$nextTick(function() {
+      this._initRefresh();
       this._initScroll();
     });
   },
   methods: {
+    ...mapMutations["refreshOk"],
+    _initRefresh() {
+      axios
+        .post("http://120.78.86.45/bill/showTodoList", {
+          yearMonth: this.dateMain
+        })
+        .then(res => {
+          console.log(res);
+
+          this.billList = res.data.billList;
+          this.totalIncome = res.data.totalIncome;
+          this.totalPay = res.data.totalPay;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     _initScroll() {
       this.showScroll = new BScroll(this.$refs.showWrapper, {
         probeType: 3,
