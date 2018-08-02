@@ -9,7 +9,6 @@ const state = {
     calShow: false,
     result: "0.00",
     enter: "",
-    iconCode: "",
     icon: {
         iconName: "",
         iconCode: ""
@@ -23,15 +22,16 @@ const mutations = {
         state.pwd = pwd;
     },
     // 显示计算器
-    showCalculator(state, btnType, icon, billType) {
+    showCalculator(state, track) {
         state.result = "0";
         state.enter = "";
-        state.icon = icon;
-        
-        state.billType = billType;
-        if (btnType == 0) {
+        if (track.icon) {
+            state.icon = track.icon;
+            state.billType = track.billType
+        }
+        if (track.btnType == 0) {
             state.calShow = true;
-        } else if (btnType == 1) {
+        } else if (track.btnType == 1) {
             state.calShow = false;
         }
     },
@@ -40,7 +40,6 @@ const mutations = {
         if (value === 'x') {
             state.result = "0";
             state.enter = "";
-
         } else if (value === '+' || value === '-') {
             state.result = eval(state.enter)
             state.enter += value;

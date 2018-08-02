@@ -11,7 +11,7 @@
             <div class="content-out">
                 <div class="content" v-for="(icons, index) in showIcon">
                     <div class="content-in" v-for="(icon, index) in icons">
-                        <div class="iconGroup" @click="showCalculator(0, ...icon, ...showSwitch)">
+                        <div class="iconGroup" @click="showCalculator({btnType: 0,icon: icon,billType: showSwitch})">
                             <div class="iconShowCode">
                                 <i class="iconfont" :class="icon.iconCode"></i>
                             </div>
@@ -185,7 +185,7 @@ export default {
   created() {
     this.$nextTick(function() {
       this._initScroll();
-      this.showCalculator(1);
+      this.showCalculator({btnType: 1});
     });
   },
 store,

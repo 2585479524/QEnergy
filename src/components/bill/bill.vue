@@ -1,18 +1,16 @@
 <template>
     <div class="bill">
         <div class="datePicker">
-            <DatePicker :value="dateMain" type="month" placeholder="Select month" style="width: 200px"></DatePicker>
+            <DatePicker :value="dateMain" type="month" placeholder="Select month" style="width: 100px"></DatePicker>
         </div>
          <div class="incomeAndPay">
              <div class="income">
                  <span class="name">收入</span>
-                 <span class="count" v-if="billList.totalIncome">{{billList.totalIncome}}</span>
-                 <span class="count" v-else>0</span>
+                 <span class="count">{{totalIncome}}</span>
              </div>
              <div class="pay">
                  <span class="name">支出</span>
-                 <span class="count" v-if="billList.totalPay">{{billList.totalPay}}</span>
-                 <span class="count" v-else>0</span>
+                 <span class="count">{{totalPay}}</span>
              </div>
          </div>
          <div class="show-wrapper" ref="showWrapper">
@@ -40,6 +38,8 @@ export default {
   data() {
     return {
       billList: [],
+      totalIncome: 0,
+      totalPay: 0,
       showModalDetail: false,
       showModalEdit: false,
       dateMain: "2018-08"
@@ -60,6 +60,8 @@ export default {
         console.log(res);
         
         this.billList = res.data.billList;
+        this.totalIncome = res.data.totalIncome;
+        this.totalPay = res.data.totalPay;
       })
       .catch(err => {
         console.log(err);

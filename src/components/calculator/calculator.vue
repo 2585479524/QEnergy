@@ -25,7 +25,7 @@
                 <Button type="ghost" @click="calculate('-')">-</Button>
             </div>
             <div class="calRow">
-                <Button type="ghost" @click="calculate('.')">.</Button>   
+                <Button type="ghost" @click="calculate('0.')">.</Button>   
                 <Button type="ghost" @click="calculate(0)">0</Button>   
                 <Button type="ghost" @click="calculate('x')">清空</Button>    
                 <Button type="ghost" @click="back">完成</Button>  
@@ -35,10 +35,12 @@
 </template>
 
 <script>
-import { Button, Icon, Input } from "iview";
+import Vue from "vue";
+import { Button, Icon, Input, Message } from "iview";
 import { mapState, mapMutations } from "vuex";
-import axios from 'axios';
+import axios from "axios";
 import store from "../../store/store";
+Vue.prototype.$Message = Message;
 export default {
   data() {
     return {
@@ -51,23 +53,37 @@ export default {
     Input
   },
   computed: {
-    ...mapState(["result", "enter", "icon", "billType"])
+    ...mapState(["result", "enter", "icon", "billType"]),
+    dateTime() {
+      let dateTime = new Date();
+      let str = dateTime.toJSON().substring(0, 10);
+      return str;
+    }
   },
   methods: {
     ...mapMutations(["showCalculator", "calculate"]),
     back() {
-      axios.post("http://120.78.86.45/bill/createBill", {
-        label: this.icon.iconName,
-        iconCode: this.icon.iconCode,
-        type: this.billType,
-        money: this.result,
-      }).then(res => {
-        console.log(res);
-        
-      }).catch();
-      // 触发ajax提交参数
-      // 返回页面后触发ajax重新获取数据
-      this.$router.go(-1);
+      console.log(this.dateTime);
+
+      if (this.result <= 0) {
+        this.$Message.error("金额不能为0或者负数");
+      } else {
+        axios
+          .post("http://120.78.86.45/bill/createBill", {
+            date: this.dateTime,
+            label: this.icon.iconName,
+            iconCode: this.icon.iconCode,
+            type: this.billType,
+            money: this.result + ""
+          })
+          .then(res => {
+            if (res.data.id) {
+              this.$Message.success("添加成功");
+            }
+          })
+          .catch();
+        this.$router.go(-1);
+      }
     }
   }
 };

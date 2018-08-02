@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       chartData: {
-        columns: ["label", "duration"],
+        columns: ["label", "scale"],
         rows: [],
       },
       total: {
