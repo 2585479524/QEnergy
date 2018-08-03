@@ -26,7 +26,7 @@ export default {
     return {
       mineContent: {
         myTomato: "我的番茄",
-        myDiary: "日记时光轴",
+        myDiary: "日记回收站",
         myBill: "账单汇总",
         myDiscuss: "我的讨论",
         about: "关于",
@@ -58,7 +58,7 @@ export default {
       let url = "";
       if (name == "我的番茄") {
         url = "/myTomato";
-      } else if (name == "日记时光轴") {
+      } else if (name == "日记回收站") {
         url = "/myDiary";
       } else if (name == "账单汇总") {
         url = "/myBill";
@@ -96,9 +96,9 @@ export default {
   border-radius: 35px;
 }
 .mine .down-wrapper {
-  height: 420px;
+  height: 470px;
   overflow: hidden;
-  background: linear-gradient(to bottom, #e2e2e2, #c0c0c0);
+  background: linear-gradient(to bottom, #9af5ae, #75f1e1);
 }
 .mine .down-wrapper .content-out {
   padding: 20px 0 60px;

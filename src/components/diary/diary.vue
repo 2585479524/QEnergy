@@ -118,9 +118,7 @@ export default {
       diaryList: [],
       diaryEdit: {},
       showModalDetail: false,
-      showModalEdit: false,
-      weatherLable: "晴",
-      moodLable: "愉快"
+      showModalEdit: false
     };
   },
   components: {
@@ -176,8 +174,8 @@ export default {
       this.showModalEdit = true;
       this.diaryEdit = {
         date: this.dateTime,
-        weather: "",
-        mood: "",
+        weather: "晴",
+        mood: "愉快",
         content: ""
       };
     },
