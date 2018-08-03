@@ -196,8 +196,8 @@ export default {
           }
         })
         .catch();
-        this._initGet();
-        this.showModalDetail;
+      this._initGet();
+      this.showModalDetail;
     },
     // 提交新的日记
     editNewDiary() {
@@ -215,7 +215,7 @@ export default {
           }
         })
         .catch();
-        this._initGet();
+      this._initGet();
       this.showModalEdit = false;
     },
     // 删除日记
@@ -232,7 +232,7 @@ export default {
           }
         })
         .catch();
-        this._initGet();
+      this._initGet();
     }
   }
 };
@@ -243,12 +243,12 @@ export default {
   position: relative;
 }
 .diary .show-wrapper {
-  height: 570px;
+  height: 613px;
   overflow: hidden;
-  background: linear-gradient(to bottom, #e2e2e2, #c0c0c0);
+  background: linear-gradient(to bottom, #1cbe99, #26b9bb);
 }
 .diary .show-wrapper .content-out {
-  padding: 20px 0 60px;
+  padding: 20px 0;
 }
 .ivu-modal {
   top: 20px;
@@ -256,8 +256,9 @@ export default {
 .diary .addBtn {
   display: block;
   position: absolute;
-  bottom: 30px;
+  bottom: 10px;
   right: 30px;
+  background: #26b9bb;
 }
 .diary .addBtn .ivu-icon {
   font-size: 30px;

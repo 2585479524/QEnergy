@@ -70,7 +70,7 @@ export default {
 
 <style>
 .tomato .down-wrapper {
-  height: 570px;
+  height: 350px;
   overflow: hidden;
   background: linear-gradient(to bottom, #e2e2e2, #c0c0c0);
 }

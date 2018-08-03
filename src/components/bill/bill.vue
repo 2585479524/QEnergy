@@ -1,24 +1,26 @@
 <template>
-    <div class="bill">
+    <div class="bill" v-cloak>
+      <div class="header-wrapper">
         <div class="datePicker">
-            <DatePicker :value="dateMain" type="month" placeholder="Select month" style="width: 100px"></DatePicker>
+          <DatePicker :value="dateMain" type="month" placeholder="Select month" style="width: 100px"></DatePicker>
         </div>
-         <div class="incomeAndPay">
-             <div class="income">
-                 <span class="name">收入</span>
-                 <span class="count">{{totalIncome}}</span>
-             </div>
-             <div class="pay">
-                 <span class="name">支出</span>
-                 <span class="count">{{totalPay}}</span>
-             </div>
-         </div>
+        <div class="incomeAndPay">
+          <div class="income">
+              <span class="name">收入</span>
+              <span class="count">{{totalIncome}}</span>
+          </div>
+          <div class="pay">
+              <span class="name">支出</span>
+              <span class="count">{{totalPay}}</span>
+          </div>
+        </div>
+      </div>
          <div class="show-wrapper" ref="showWrapper">
             <div class="content-out">
                 <div v-show="billList" class="content" v-for="(itemBill, index) in billList">
                     <h3>{{itemBill.dateFull}}</h3>
                     <!-- 对组件添加事件要加.native -->
-                    <Card v-show="itemBill.dayDetail" class="historyCard" v-for="(item, index) in itemBill.dayDetail" :key="index">
+                    <Card v-show="itemBill.dayDetail" v-for="(item, index) in itemBill.dayDetail" :key="index">
                         <span class="label"><i class="iconfont" :class="item.iconCode"></i></span>
                         <span class="text">{{item.label}}</span>
                         <span class="money">{{item.type}}￥{{item.money}}</span>
@@ -53,7 +55,7 @@ export default {
     Icon
   },
   computed: {
-    ...mapState["refresh"]
+    ...mapState["refresh"],
   },
   created() {
     if (this.refresh) {
@@ -103,34 +105,48 @@ export default {
 </script>
 
 <style>
+[v-cloak] {
+  display: none;
+}
 .bill {
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.bill .header-wrapper {
+  background: #1cbe99;
+  border-bottom: 1px solid rgba(28, 190, 153, 0.1);
+}
+.bill .header-wrapper .title {
+  padding-bottom: 5px;
+  height: 25px;
+  font-size: 20px;
+  color: #fff;
 }
 .bill .datePicker {
   display: flex;
-  justify-content: center;
-  padding: 10px;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
 }
+
 .bill .show-wrapper {
-  height: 450px;
+  height: 520px;
   overflow: hidden;
-  background: linear-gradient(to bottom, #e2e2e2, #c0c0c0);
 }
-.bill .show-wrapper .content-out {
-  padding: 20px 0 60px;
-}
-.bill .show-wrapper .content-out .content h3 {
-  padding: 0 0 5px 20px;
-  color: dimgrey;
-}
-.ivu-modal {
-  top: 20px;
+
+.bill .show-wrapper .content h3 {
+  display: block;
+  padding: 5px 20px;
+  font-size: 12px;
+  color: rgba(7, 17, 27, 0.7);
 }
 .bill .addBtn {
   display: block;
   position: absolute;
-  bottom: 20px;
+  bottom: 10px;
   right: 30px;
+  background: #1cbe99;
 }
 .bill .addBtn .ivu-icon {
   font-size: 30px;
@@ -146,17 +162,23 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-size: 12px;
+  color: #ffffff;
 }
 .bill .incomeAndPay .income .count {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 500;
 }
 .bill .incomeAndPay .pay .count {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 500;
 }
 .bill .show-wrapper .ivu-card {
-  margin: 0 20px 20px;
+  padding: 2px 0;
+  border-radius: 0;
+  border-bottom: 1px solid rgba(228, 228, 228, 0.5);
 }
 
 .bill .show-wrapper .ivu-card-body {
@@ -164,9 +186,6 @@ export default {
   display: flex;
   align-items: center;
   height: 50px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 .bill .show-wrapper .ivu-card-body .label {
   position: absolute;
@@ -174,9 +193,12 @@ export default {
   width: 24px;
   line-height: 24px;
   border-radius: 12px;
-  background: rgb(247, 129, 75);
+  background: #26b9bb;
   text-align: center;
   color: #fff;
+}
+.ivu-card-bordered {
+  border: none;
 }
 .bill .show-wrapper .text {
   position: absolute;

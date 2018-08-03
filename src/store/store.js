@@ -26,6 +26,7 @@ const mutations = {
     showCalculator(state, track) {
         state.result = "0";
         state.enter = "";
+        
         if (track.icon) {
             state.icon = track.icon;
             state.billType = track.billType

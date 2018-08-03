@@ -10,7 +10,7 @@
                 <Button type="ghost" @click="calculate(7)">7</Button>
                 <Button type="ghost" @click="calculate(8)">8</Button>
                 <Button type="ghost" @click="calculate(9)">9</Button>
-                <Button type="ghost" icon="chevron-down" @click="showCalculator(1)"></Button>
+                <Button type="ghost" icon="chevron-down" @click="showCalculator({btnType: 1})"></Button>
             </div>
             <div class="calRow">
                 <Button type="ghost" @click="calculate(4)">4</Button>
@@ -82,7 +82,7 @@ export default {
             }
           })
           .catch();
-          this.refreshOk(true);
+        this.refreshOk(true);
         this.$router.go(-1);
       }
     }

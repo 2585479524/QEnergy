@@ -1,7 +1,7 @@
 <template>
     <div class="bill-edit">
          <div class="switch">
-             <Select v-model="showSwitch" style="width:200px">
+             <Select v-model="showSwitch" style="width:60px">
                 <Option v-for="item in cityList" :value="item.value" :key="item.value" small>{{ item.label }}</Option>
             </Select>
             <Button class="closeBtn" type="text" @click="closeEdit">取消</Button>
@@ -26,11 +26,11 @@
 </template>
 
 <script>
-import {mapState, mapMutations} from 'vuex'
-import store from "../../store/store"
-import calculator from "../calculator/calculator"
-import BScroll from "better-scroll"
-import { Button, Icon, Select, Option, Input, } from "iview"
+import { mapState, mapMutations } from "vuex";
+import store from "../../store/store";
+import calculator from "../calculator/calculator";
+import BScroll from "better-scroll";
+import { Button, Icon, Select, Option, Input } from "iview";
 export default {
   data() {
     return {
@@ -171,9 +171,7 @@ export default {
     calculator
   },
   computed: {
-      ...mapState([
-          "calShow"
-      ]),
+    ...mapState(["calShow"]),
     showIcon() {
       if (this.showSwitch == "支出") {
         return this.payIcon;
@@ -185,14 +183,12 @@ export default {
   created() {
     this.$nextTick(function() {
       this._initScroll();
-      this.showCalculator({btnType: 1});
+      this.showCalculator({ btnType: 1 });
     });
   },
-store,
+  store,
   methods: {
-      ...mapMutations([
-          "showCalculator"
-      ]),
+    ...mapMutations(["showCalculator"]),
     _initScroll() {
       this.showScroll = new BScroll(this.$refs.showWrapper, {
         probeType: 3,
@@ -200,7 +196,7 @@ store,
       });
     },
     closeEdit() {
-        this.$router.go(-1);
+      this.$router.go(-1);
     }
   }
 };
@@ -215,6 +211,8 @@ store,
   display: flex;
   justify-content: center;
   padding: 10px;
+  background: #1cbe99;
+  border-bottom: 1px solid rgba(28, 190, 153, 0.1);
 }
 .bill-edit .switch .closeBtn {
   position: absolute;
@@ -223,7 +221,6 @@ store,
 .bill-edit .show-wrapper {
   height: 570px;
   overflow: hidden;
-  background: linear-gradient(to bottom, #e2e2e2, #c0c0c0);
 }
 .bill-edit .show-wrapper .content-out {
   padding: 20px 0 60px;
@@ -233,22 +230,23 @@ store,
   justify-content: space-around;
 }
 .bill-edit .show-wrapper .content-out .content .iconGroup {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: 10px;
-}.bill-edit .show-wrapper .content-out .content .iconGroup .iconShowCode {
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    border-radius: 35px;
-    background: #4574db;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px;
+}
+.bill-edit .show-wrapper .content-out .content .iconGroup .iconShowCode {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  border-radius: 35px;
+  background: #13a8bc;
 }
 .bill-edit .show-wrapper .content-out .content .iconGroup i {
-    font-size: 30px;
+  font-size: 30px;
 }
-.bill-edit .show-wrapper .content-out .content .iconGroup .text{
-    text-align: center;
+.bill-edit .show-wrapper .content-out .content .iconGroup .text {
+  text-align: center;
 }
 .bill-edit .show-wrapper .content-out .content .option {
   width: 50px;

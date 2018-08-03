@@ -77,13 +77,13 @@ body {
 .tab .tab-item .icon {
   display: block;
   margin: 0 auto;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   border: 0;
 }
 .tab .tab-item .text {
   text-decoration: none;
-  font-size: 12px;
+  font-size: 10px;
   color: rgb(77, 85, 93);
 }
 
