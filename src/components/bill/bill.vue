@@ -2,9 +2,9 @@
     <div class="bill" v-cloak>
       <div class="header-wrapper">
         <div class="datePicker">
-          <DatePicker :value="dateMain" type="month" placeholder="Select month" style="width: 100px"></DatePicker>
+          <DatePicker :value="dateMain" type="month" placeholder="选择日期" style="width: 100px"></DatePicker>
         </div>
-        <div class="incomeAndPay">
+        <div class="incomePay">
           <div class="income">
               <span class="name">收入</span>
               <span class="count">{{totalIncome}}</span>
@@ -15,26 +15,26 @@
           </div>
         </div>
       </div>
-         <div class="show-wrapper" ref="showWrapper">
-            <div class="content-out">
-                <div v-show="billList" class="content" v-for="(itemBill, index) in billList">
-                    <h3>{{itemBill.dateFull}}</h3>
-                    <!-- 对组件添加事件要加.native -->
-                    <Card v-show="itemBill.dayDetail" v-for="(item, index) in itemBill.dayDetail" :key="index">
-                        <span class="label"><i class="iconfont" :class="item.iconCode"></i></span>
-                        <span class="text">{{item.label}}</span>
-                        <span class="money">{{item.type}}￥{{item.money}}</span>
-                    </Card>
-                </div>
+      <div class="show-wrapper" ref="showWrapper">
+        <div class="content">
+            <div v-show="billList" v-for="(itemBill, index) in billList">
+                <h3>{{itemBill.dateFull}}</h3>
+                <!-- 对组件添加事件要加.native -->
+                <Card v-show="itemBill.dayDetail" v-for="(item, index) in itemBill.dayDetail" :key="index">
+                    <span class="label"><i class="iconfont" :class="item.iconCode"></i></span>
+                    <span class="text">{{item.label}}</span>
+                    <span class="money">{{item.type}}￥{{item.money}}</span>
+                </Card>
             </div>
         </div>
-        <Button class="addBtn" type="primary" shape="circle" icon="ios-plus-empty"  @click="edit"></Button>
+      </div>
+      <Button class="add-btn" type="primary" shape="circle" icon="ios-plus-empty"  @click="edit"></Button>
     </div>
 </template>
 
 <script>
-import axios from "axios";
 import BScroll from "better-scroll";
+import axios from "axios";
 import { mapState, mapMutations } from "vuex";
 import { DatePicker, Card, Button, Icon } from "iview";
 export default {
@@ -44,7 +44,6 @@ export default {
       totalIncome: 0,
       totalPay: 0,
       showModalDetail: false,
-      showModalEdit: false,
       dateMain: "2018-08"
     };
   },
@@ -91,12 +90,6 @@ export default {
         click: true
       });
     },
-    showDetail(index) {
-      this.axy = this.diaryDetail[index].date;
-      console.log(this.axy);
-
-      this.showModalDetail = true;
-    },
     edit() {
       this.$router.push("/editBill");
     }
@@ -135,29 +128,29 @@ export default {
   overflow: hidden;
 }
 
-.bill .show-wrapper .content h3 {
+.bill .show-wrapper h3 {
   display: block;
   padding: 5px 20px;
   font-size: 12px;
   color: rgba(7, 17, 27, 0.7);
 }
-.bill .addBtn {
+.bill .add-btn {
   display: block;
   position: absolute;
   bottom: 10px;
   right: 30px;
   background: #1cbe99;
 }
-.bill .addBtn .ivu-icon {
+.bill .add-btn .ivu-icon {
   font-size: 30px;
   font-weight: 700;
 }
-.bill .incomeAndPay {
+.bill .incomePay {
   display: flex;
   justify-content: space-around;
   padding-bottom: 10px;
 }
-.bill .incomeAndPay .income,
+.bill .incomePay .income,
 .pay {
   display: flex;
   flex-direction: column;
@@ -165,12 +158,12 @@ export default {
   font-size: 12px;
   color: #ffffff;
 }
-.bill .incomeAndPay .income .count {
+.bill .incomePay .income .count {
   font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 500;
 }
-.bill .incomeAndPay .pay .count {
+.bill .incomePay .pay .count {
   font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 500;
