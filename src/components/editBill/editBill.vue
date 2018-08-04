@@ -1,28 +1,31 @@
 <template>
-    <div class="bill-edit">
-         <div class="switch">
-             <Select v-model="showSwitch" style="width:60px">
-                <Option v-for="item in cityList" :value="item.value" :key="item.value" small>{{ item.label }}</Option>
-            </Select>
-            <Button class="closeBtn" type="text" @click="closeEdit">取消</Button>
-         </div>
+  <div class="bill-edit">
+      <div class="header-wrapper">
+          <Select v-model="showSwitch" style="width:60px">
+              <Option v-for="item in cityList" :value="item" :key="item" small>
+                {{item}}
+              </Option>
+          </Select>
+          <Button class="close-btn" type="text" @click="closeEdit">取消</Button>
+      </div>
 
-         <div class="show-wrapper" ref="showWrapper">
-            <div class="content-out">
-                <div class="content" v-for="(icons, index) in showIcon">
-                    <div class="content-in" v-for="(icon, index) in icons">
-                        <div class="iconGroup" @click="showCalculator({btnType: 0,icon: icon,billType: showSwitch})">
-                            <div class="iconShowCode">
-                                <i class="iconfont" :class="icon.iconCode"></i>
-                            </div>
-                            <span class="text">{{icon.iconName}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <calculator class="calShow" v-show="calShow"></calculator>
-    </div>
+      <div class="show-wrapper" ref="showWrapper">
+          <div class="content-out">
+              <div class="content" v-for="(icons, index) in showIcon">
+                  <div class="content-in" v-for="(icon, index) in icons">
+                      <div class="iconGroup" @click="showCalculator({btnType: 0,icon: icon,billType: showSwitch})">
+                          <div class="iconShowCode">
+                              <i class="iconfont" :class="icon.iconCode"></i>
+                          </div>
+                          <span class="text">{{icon.iconName}}</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <calculator class="cal-show" v-show="calShow"></calculator>
+  </div>
 </template>
 
 <script>
@@ -34,16 +37,7 @@ import { Button, Icon, Select, Option, Input } from "iview";
 export default {
   data() {
     return {
-      cityList: [
-        {
-          value: "支出",
-          label: "支出"
-        },
-        {
-          value: "收入",
-          label: "收入"
-        }
-      ],
+      cityList: ["支出", "收入"],
       showSwitch: "支出",
       money: 0,
       payIcon: [
@@ -204,26 +198,51 @@ export default {
 
 <style>
 @import url("../../assets/iconfont.css");
+
 .bill-edit {
   position: relative;
 }
-.bill-edit .switch {
+.bill-edit .header-wrapper {
   display: flex;
   justify-content: center;
   padding: 10px;
   background: #1cbe99;
   border-bottom: 1px solid rgba(28, 190, 153, 0.1);
 }
-.bill-edit .switch .closeBtn {
+/* select按钮 */
+.bill-edit .header-wrapper .ivu-select {
+  color: #fff;
+}
+.bill-edit .header-wrapper .ivu-select-selection {
+  border: 1px solid #fff;
+}
+.bill-edit .header-wrapper div {
+  border-radius: 4px;
+  background: #1cbe99;
+}
+.bill-edit .header-wrapper .ivu-select-item-selected,
+.ivu-select-item-selected:hover {
+  background: #1cbe99;
+}
+.bill-edit .header-wrapper .ivu-select-dropdown {
+  border-radius: 0;
+  background: #fff;
+}
+.bill-edit .header-wrapper .ivu-select-arrow {
+  color: #fff;
+}
+.bill-edit .header-wrapper .close-btn {
   position: absolute;
   right: 10px;
 }
+
+/* show-wrapper */
 .bill-edit .show-wrapper {
-  height: 570px;
+  height: 580px;
   overflow: hidden;
 }
 .bill-edit .show-wrapper .content-out {
-  padding: 20px 0 60px;
+  padding: 20px 0;
 }
 .bill-edit .show-wrapper .content-out .content {
   display: flex;
@@ -240,21 +259,16 @@ export default {
   height: 50px;
   text-align: center;
   border-radius: 35px;
-  background: #13a8bc;
+  background: #cfcfcf;
 }
 .bill-edit .show-wrapper .content-out .content .iconGroup i {
   font-size: 30px;
+  color: #fff;
 }
 .bill-edit .show-wrapper .content-out .content .iconGroup .text {
   text-align: center;
 }
-.bill-edit .show-wrapper .content-out .content .option {
-  width: 50px;
-  height: 50px;
-  margin: 20px 0;
-  font-size: 30px;
-}
-.calShow {
+.cal-show {
   position: absolute;
   bottom: 0;
 }

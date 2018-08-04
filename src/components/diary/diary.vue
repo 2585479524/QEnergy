@@ -254,7 +254,7 @@ export default {
 .diary .addBtn {
   display: block;
   position: absolute;
-  bottom: 10px;
+  top: 520px;
   right: 30px;
   background: #26b9bb;
 }

@@ -2,7 +2,7 @@
     <div class="bill" v-cloak>
       <div class="header-wrapper">
         <div class="datePicker">
-          <DatePicker :value="dateMain" type="month" placeholder="选择日期" style="width: 100px"></DatePicker>
+          <DatePicker :value="dateMain" type="month" style="width: 100px"></DatePicker>
         </div>
         <div class="incomePay">
           <div class="income">
@@ -40,11 +40,7 @@ import { DatePicker, Card, Button, Icon } from "iview";
 export default {
   data() {
     return {
-      billList: [],
-      totalIncome: 0,
-      totalPay: 0,
       showModalDetail: false,
-      dateMain: "2018-08"
     };
   },
   components: {
@@ -54,36 +50,35 @@ export default {
     Icon
   },
   computed: {
-    ...mapState["refresh"],
+    ...mapState(["billList", "totalIncome", "totalPay"]),
+    dateMain() {
+      let dateTime = new Date();
+      let str = dateTime.toJSON().substring(0, 7);
+      return str;
+    }
   },
   created() {
-    if (this.refresh) {
-      this._initRefresh();
-      this.refreshOk(false);
-    }
+    axios
+      .post("http://120.78.86.45/bill/showTodoList", {
+        yearMonth: this.dateMain
+      })
+      .then(res => {
+        this.updateBill({
+          billList: res.data.billList,
+          totalIncome: res.data.totalIncome,
+          totalPay: res.data.totalPay
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
     this.$nextTick(function() {
-      this._initRefresh();
       this._initScroll();
     });
   },
   methods: {
-    ...mapMutations["refreshOk"],
-    _initRefresh() {
-      axios
-        .post("http://120.78.86.45/bill/showTodoList", {
-          yearMonth: this.dateMain
-        })
-        .then(res => {
-          console.log(res);
-
-          this.billList = res.data.billList;
-          this.totalIncome = res.data.totalIncome;
-          this.totalPay = res.data.totalPay;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
+    ...mapMutations(["updateBill"]),
     _initScroll() {
       this.showScroll = new BScroll(this.$refs.showWrapper, {
         probeType: 3,
@@ -106,51 +101,40 @@ export default {
   display: flex;
   flex-direction: column;
 }
+/* header-wrapper */
 .bill .header-wrapper {
   background: #1cbe99;
-  border-bottom: 1px solid rgba(28, 190, 153, 0.1);
+  border-bottom: 1px solid rgba(82, 82, 82, 0.1);
 }
-.bill .header-wrapper .title {
-  padding-bottom: 5px;
-  height: 25px;
-  font-size: 20px;
-  color: #fff;
-}
-.bill .datePicker {
+.bill .header-wrapper .datePicker {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 10px;
 }
-
-.bill .show-wrapper {
-  height: 520px;
-  overflow: hidden;
+.bill .header-wrapper .datePicker .ivu-input {
+  background-color: #1cbe99;
+  color: #fff;
+  border: 1px solid #fff;
 }
-
-.bill .show-wrapper h3 {
-  display: block;
-  padding: 5px 20px;
-  font-size: 12px;
-  color: rgba(7, 17, 27, 0.7);
+.bill .header-wrapper .datePicker .ivu-input:focus {
+  border-color: aliceblue;
 }
-.bill .add-btn {
-  display: block;
-  position: absolute;
-  bottom: 10px;
-  right: 30px;
-  background: #1cbe99;
+.bill .header-wrapper .datePicker .ivu-input-icon {
+  color: #fff;
 }
-.bill .add-btn .ivu-icon {
-  font-size: 30px;
-  font-weight: 700;
+.bill .header-wrapper .datePicker .ivu-icon-ios-calendar-outline:before {
+  content: "\F104";
 }
-.bill .incomePay {
+.bill .header-wrapper .datePicker .ivu-icon-ios-close:before {
+  content: "\F10D";
+}
+.bill .header-wrapper .incomePay {
   display: flex;
   justify-content: space-around;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
-.bill .incomePay .income,
+.bill .header-wrapper .incomePay .income,
 .pay {
   display: flex;
   flex-direction: column;
@@ -158,22 +142,32 @@ export default {
   font-size: 12px;
   color: #ffffff;
 }
-.bill .incomePay .income .count {
+.bill .header-wrapper .incomePay .income .count {
   font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 500;
 }
-.bill .incomePay .pay .count {
+.bill .header-wrapper .incomePay .pay .count {
   font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 500;
+}
+
+/* show-wrapper */
+.bill .show-wrapper {
+  height: 500px;
+  overflow: hidden;
+}
+.bill .show-wrapper h3 {
+  padding: 5px 20px;
+  font-size: 13px;
+  color: rgba(7, 17, 27, 0.7);
 }
 .bill .show-wrapper .ivu-card {
   padding: 2px 0;
   border-radius: 0;
   border-bottom: 1px solid rgba(228, 228, 228, 0.5);
 }
-
 .bill .show-wrapper .ivu-card-body {
   position: relative;
   display: flex;
@@ -186,20 +180,32 @@ export default {
   width: 24px;
   line-height: 24px;
   border-radius: 12px;
-  background: #26b9bb;
+  background: #1cbe99;
   text-align: center;
   color: #fff;
 }
-.ivu-card-bordered {
+.bill .ivu-card-bordered {
   border: none;
 }
 .bill .show-wrapper .text {
   position: absolute;
   left: 50px;
 }
-
 .bill .show-wrapper .money {
   position: absolute;
   right: 20px;
+}
+.bill .add-btn {
+  position: absolute;
+  top: 520px;
+  right: 30px;
+  background: #1cbe99;
+}
+.bill .ivu-btn-primary {
+  border-color: #5acfb4;
+}
+.bill .add-btn .ivu-icon {
+  font-size: 30px;
+  font-weight: 700;
 }
 </style>

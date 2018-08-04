@@ -15,12 +15,21 @@ const state = {
     },
     billType: "",
     refresh: false,
+
+    billList: {},
+    totalIncome: 0,
+    totalPay: 0,
 }
 const mutations = {
     // 更新账号密码
     update(state, userId, pwd) {
         state.userId = userId;
         state.pwd = pwd;
+    },
+    updateBill(state, bill) {
+        state.billList = bill.billList;
+        state.totalIncome = bill.totalIncome;
+        state.totalPay = bill.totalPay;
     },
     // 显示计算器
     showCalculator(state, track) {
