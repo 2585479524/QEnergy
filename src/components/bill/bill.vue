@@ -1,35 +1,35 @@
 <template>
-    <div class="bill" v-cloak>
-      <div class="header-wrapper">
-        <div class="datePicker">
-          <DatePicker :value="dateMain" type="month" style="width: 100px"></DatePicker>
+  <div class="bill" v-cloak>
+    <div class="header-wrapper">
+      <div class="datePicker">
+        <DatePicker :value="dateMain" type="month" style="width: 100px"></DatePicker>
+      </div>
+      <div class="incomePay">
+        <div class="income">
+            <span class="name">收入</span>
+            <span class="count">{{totalIncome}}</span>
         </div>
-        <div class="incomePay">
-          <div class="income">
-              <span class="name">收入</span>
-              <span class="count">{{totalIncome}}</span>
-          </div>
-          <div class="pay">
-              <span class="name">支出</span>
-              <span class="count">{{totalPay}}</span>
-          </div>
+        <div class="pay">
+            <span class="name">支出</span>
+            <span class="count">{{totalPay}}</span>
         </div>
       </div>
-      <div class="show-wrapper" ref="showWrapper">
-        <div class="content">
-            <div v-show="billList" v-for="(itemBill, index) in billList">
-                <h3>{{itemBill.dateFull}}</h3>
-                <!-- 对组件添加事件要加.native -->
-                <Card v-show="itemBill.dayDetail" v-for="(item, index) in itemBill.dayDetail" :key="index">
-                    <span class="label"><i class="iconfont" :class="item.iconCode"></i></span>
-                    <span class="text">{{item.label}}</span>
-                    <span class="money">{{item.type}}￥{{item.money}}</span>
-                </Card>
-            </div>
-        </div>
-      </div>
-      <Button class="add-btn" type="primary" shape="circle" icon="ios-plus-empty"  @click="edit"></Button>
     </div>
+    <div class="show-wrapper" ref="showWrapper">
+      <div class="content">
+          <div v-show="billList" v-for="(itemBill, index) in billList">
+              <h3>{{itemBill.dateFull}}</h3>
+              <!-- 对组件添加事件要加.native -->
+              <Card v-show="itemBill.dayDetail" v-for="(item, index) in itemBill.dayDetail" :key="index">
+                  <span class="label"><i class="iconfont" :class="item.iconCode"></i></span>
+                  <span class="text">{{item.label}}</span>
+                  <span class="money">{{item.type}}￥{{item.money}}</span>
+              </Card>
+          </div>
+      </div>
+    </div>
+    <Button class="add-btn" type="primary" shape="circle" icon="ios-plus-empty"  @click="edit"></Button>
+  </div>
 </template>
 
 <script>
@@ -69,9 +69,7 @@ export default {
           totalPay: res.data.totalPay
         });
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch();
 
     this.$nextTick(function() {
       this._initScroll();

@@ -26,6 +26,7 @@ const mutations = {
         state.userId = userId;
         state.pwd = pwd;
     },
+    // 存入bill列表
     updateBill(state, bill) {
         state.billList = bill.billList;
         state.totalIncome = bill.totalIncome;
@@ -35,7 +36,7 @@ const mutations = {
     showCalculator(state, track) {
         state.result = "0";
         state.enter = "";
-        
+
         if (track.icon) {
             state.icon = track.icon;
             state.billType = track.billType

@@ -48,7 +48,7 @@ export default {
           },
           {
             iconName: "购物",
-            iconCode: "icon-gouwu1"
+            iconCode: "icon-gouwu"
           },
           {
             iconName: "通信",
@@ -66,7 +66,7 @@ export default {
           },
           {
             iconName: "旅行",
-            iconCode: "icon-lvhangxiang-"
+            iconCode: "icon-lvxing"
           },
           {
             iconName: "学习",
@@ -130,6 +130,42 @@ export default {
           {
             iconName: "修理",
             iconCode: "icon-weixiu"
+          }
+        ],
+        [
+          {
+            iconName: "家人",
+            iconCode: "icon-shouye"
+          },
+          {
+            iconName: "美容",
+            iconCode: "icon-meirong-heicopy"
+          },
+          {
+            iconName: "长辈",
+            iconCode: "icon-changbei"
+          },
+          {
+            iconName: "快递",
+            iconCode: "icon-kuaidi"
+          }
+        ],
+        [
+          {
+            iconName: "孩子",
+            iconCode: "icon-haizi"
+          },
+          {
+            iconName: "礼物",
+            iconCode: "icon-liwu"
+          },
+          {
+            iconName: "服饰",
+            iconCode: "icon-yifu"
+          },
+          {
+            iconName: "科技",
+            iconCode: "icon-shouji"
           }
         ]
       ],
@@ -197,6 +233,7 @@ export default {
 </script>
 
 <style>
+/* @import url("//at.alicdn.com/t/font_765377_wa7cj0ab72l.css"); */
 @import url("../../assets/iconfont.css");
 
 .bill-edit {
@@ -238,7 +275,7 @@ export default {
 
 /* show-wrapper */
 .bill-edit .show-wrapper {
-  height: 580px;
+  height: 585px;
   overflow: hidden;
 }
 .bill-edit .show-wrapper .content-out {
@@ -259,7 +296,7 @@ export default {
   height: 50px;
   text-align: center;
   border-radius: 35px;
-  background: #cfcfcf;
+  background: #78cfa6;
 }
 .bill-edit .show-wrapper .content-out .content .iconGroup i {
   font-size: 30px;
@@ -270,6 +307,6 @@ export default {
 }
 .cal-show {
   position: absolute;
-  bottom: 0;
+  bottom: 0px;
 }
 </style>

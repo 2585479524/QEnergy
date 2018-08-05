@@ -1,103 +1,58 @@
 <template>
     <div class="diary">
-        <div class="show-wrapper" ref="showWrapper">
-            <div class="content-out">
-                <div class="content">
-                    <!-- 对组件添加事件要加.native -->
-                    <Card v-show="diaryList" v-for="(item, index) in diaryList" :key="index" @click.native="showDetail(index)">
-                        <span class="label">{{item.weather}}</span>
-                        <!-- 防止点击事件继续传播 -->
-                        <Button class="delButton" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
-                        <div class="text">
-                            <span>{{item.date}}</span>
-                        </div>
-                        <br>
-                        <br>
-                        <span class="remarks">{{item.content}}</span>
-                    </Card>
-                </div>
-            </div>
+      <div class="header-wrapper">
+        <div class="datePicker">
+          <DatePicker :value="dateMain" type="month" style="width: 100px"></DatePicker>
+          <Button class="close-btn" type="text" @click="showModal(index)">编辑</Button>
         </div>
-        <Modal v-model="showModalDetail" width="360" :styles="{top: '20px'}">
-            <p slot="header" style="color:#57a3f3; text-align:center">
-                <Icon type="edit"></Icon>
-                <span>心情日记</span>
-            </p>
-            <div style="text-align:center">
-                <span class="text">日记时间：{{diaryEdit.date}}</span>
-                <br>
-                <br>
-                <span class="text">天气：</span>
-                <RadioGroup v-model="diaryEdit.weather" type="button">
-                    <Radio label="晴"></Radio>
-                    <Radio label="阴"></Radio>
-                    <Radio label="雨"></Radio>
-                    <Radio label="雪"></Radio>
-                </RadioGroup>
-                <br>
-                <br>
-                <span class="text">心情：</span>
-                <RadioGroup v-model="diaryEdit.mood" type="button">
-                    <Radio label="愉快"></Radio>
-                    <Radio label="失落"></Radio>
-                    <Radio label="悲伤"></Radio>
-                    <Radio label="高兴"></Radio>
-                </RadioGroup>
-                <br>
-                <br>
-                <span class="text">日记内容</span>
-                <Input :value="diaryEdit.content" type="textarea" :autosize="{minRows: 10,maxRows: 15}" placeholder="Enter something..."></Input>
-                <br>
-                <br>
-            </div>
-            <div slot="footer">
-                <Button type="primary" size="large" long @click="reEditDiary(index)">完成编辑</Button>
-            </div>
-        </Modal>
-        <Button class="addBtn" type="primary" shape="circle" icon="ios-plus-empty" @click="showEditNew"></Button>
-
-        <Modal v-model="showModalEdit" width="360" :styles="{top: '20px'}">
-            <p slot="header" style="color:#57a3f3; text-align:center">
-                <Icon type="edit"></Icon>
-                <span>心情日记</span>
-            </p>
-            <div style="text-align:center">
-                <span class="text">日记时间：{{diaryEdit.date}}</span>
-                <br>
-                <br>
-                <span class="text">天气：</span>
-                <RadioGroup v-model="diaryEdit.weather" type="button">
-                    <Radio label="晴"></Radio>
-                    <Radio label="阴"></Radio>
-                    <Radio label="雨"></Radio>
-                    <Radio label="雪"></Radio>
-                </RadioGroup>
-                <br>
-                <br>
-                <span class="text">心情：</span>
-                <RadioGroup v-model="diaryEdit.mood" type="button">
-                    <Radio label="愉快"></Radio>
-                    <Radio label="失落"></Radio>
-                    <Radio label="悲伤"></Radio>
-                    <Radio label="高兴"></Radio>
-                </RadioGroup>
-                <br>
-                <br>
-                <span class="text">日记内容</span>
-                <Input v-model="diaryEdit.content" type="textarea" :autosize="{minRows: 10,maxRows: 15}" placeholder="Enter something..."></Input>
-                <br>
-                <br>
-            </div>
-            <div slot="footer">
-                <Button type="primary" size="large" long @click="editNewDiary">完成编辑</Button>
-            </div>
-        </Modal>
+      </div>
+      <div class="show-wrapper" ref="showWrapper">
+          <div class="content-out">
+            <Card v-show="diaryList" v-for="(item, index) in diaryList" :key="index" @click.native="showModal(index)">
+                <span class="label"><i class="iconfont" :class="item.weather"></i></span>
+                <Button class="delButton" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
+                <span class="text">{{item.date}}</span><br><br>
+                <span class="remarks">{{item.content}}</span>
+            </Card>
+          </div>
+      </div>
+      <Modal v-model="showModalDetail" width="360" :styles="{top: '20px'}">
+          <p slot="header" style="color:#57a3f3; text-align:center">
+              <Icon type="edit"></Icon>
+              <span>心情日记</span>
+          </p>
+          <div style="text-align:center">
+            <span class="text">日记时间：{{diaryEdit.date}}</span>
+            <br><br>
+            <span class="text">天气：</span>
+            <RadioGroup v-model="diaryEdit.weather" type="button">
+              <Radio v-for="(item, index) in weatherRadio" :label="item" :key="index">
+                <i class="iconfont" :class="item"></i>
+              </Radio>
+            </RadioGroup>
+            <br><br>
+            <span class="text">心情：</span>
+            <RadioGroup v-model="diaryEdit.mood" type="button">
+              <Radio v-for="(item, index) in moodRadio" :label="item" :key="index">
+                <i class="iconfont" :class="item"></i>
+              </Radio>
+            </RadioGroup>
+            <br><br>
+            <span class="text">日记内容</span>
+            <Input v-model="diaryEdit.content" type="textarea" :autosize="{minRows: 10,maxRows: 15}" placeholder="记录你的点点滴滴..."></Input>
+            <br><br>
+          </div>
+          <div slot="footer">
+              <Button type="primary" size="large" long @click="changeDiary(index)">完成编辑</Button>
+          </div>
+      </Modal>
     </div>
 </template>
 
 <script>
 import Vue from "vue";
 import axios from "axios";
+import store from "../../store/store";
 import BScroll from "better-scroll";
 import {
   Card,
@@ -118,9 +73,25 @@ export default {
       diaryList: [],
       diaryEdit: {},
       showModalDetail: false,
-      showModalEdit: false
+      showModalEdit: false,
+      index: -1,
+      weatherRadio: [
+        "icon-weibiaoti--4",
+        "icon-weibiaoti--2",
+        "icon-weibiaoti--3",
+        "icon-weibiaoti--1",
+        "icon-weibiaoti--"
+      ],
+      moodRadio: [
+        "icon-cool",
+        "icon-wink",
+        "icon-crazy",
+        "icon-sleeping",
+        "icon-cry"
+      ]
     };
   },
+  store,
   components: {
     Card,
     Button,
@@ -132,8 +103,15 @@ export default {
     Input
   },
   created() {
+    axios
+      .post("http://120.78.86.45/diary/showTodoList", {
+        yearMonth: this.dateMain
+      })
+      .then(res => {
+        this.diaryList = res.data.diaryList;
+      })
+      .catch();
     this.$nextTick(function() {
-      this._initGet();
       this._initScroll();
     });
   },
@@ -144,82 +122,76 @@ export default {
       let arr = str.split("T");
       let strr = arr.join(" ");
       return strr;
+    },
+    dateMain() {
+      let dateTime = new Date();
+      let str = dateTime.toJSON().substring(0, 7);
+      return str;
     }
   },
   methods: {
-    _initGet() {
-      axios
-        .post("http://120.78.86.45/diary/showTodoList")
-        .then(res => {
-          console.log(res);
-
-          this.diaryList = res.data.diaryList;
-        })
-        .catch();
-    },
     _initScroll() {
       this.showScroll = new BScroll(this.$refs.showWrapper, {
         probeType: 3,
         click: true
       });
     },
-    showDetail(index) {
-      console.log(index);
-
+    showModal(index) {
       this.showModalDetail = true;
-      this.diaryEdit = this.diaryList[index];
-      console.log(this.diaryEdit);
+      if (index == -1) {
+        this.diaryEdit = {
+          date: this.dateTime,
+          weather: "icon-weibiaoti--4",
+          mood: "icon-cool",
+          content: ""
+        };
+      } else {
+        this.index = index;
+        this.diaryEdit = this.diaryList[index];
+      }
+      this.index = -1;
     },
-    showEditNew() {
-      this.showModalEdit = true;
-      this.diaryEdit = {
-        date: this.dateTime,
-        weather: "晴",
-        mood: "愉快",
-        content: ""
-      };
-    },
-    // 重新编辑
-    reEditDiary(index) {
-      axios
-        .post("http://120.78.86.45/diary/editDiary", {
-          id: this.diaryList[index].id,
-          weather: this.diaryList[index].weather,
-          mood: this.diaryList[index].mood,
-          content: this.diaryList[index].content
-        })
-        .then(res => {
-          if (res.data.isChange) {
-            this.$Message.success(res.data.message);
-          }
-        })
-        .catch();
-      this._initGet();
-      this.showModalDetail;
-    },
-    // 提交新的日记
-    editNewDiary() {
-      console.log(this.diaryEdit);
-
-      axios
-        .post("http://120.78.86.45/diary/createDiary", {
-          weather: this.diaryEdit.weather,
-          mood: this.diaryEdit.mood,
-          content: this.diaryEdit.content
-        })
-        .then(res => {
-          if (res.data.isCreated) {
-            this.$Message.success(res.data.message);
-          }
-        })
-        .catch();
-      this._initGet();
-      this.showModalEdit = false;
+    changeDiary(index) {
+      if (index == -1) {
+        if (this.diaryEdit.content != "") {
+          axios
+            .post("http://120.78.86.45/diary/createDiary", {
+              weather: this.diaryEdit.weather,
+              mood: this.diaryEdit.mood,
+              content: this.diaryEdit.content
+            })
+            .then(res => {
+              if (res.data.isCreated) {
+                this.$Message.success(res.data.message);
+                this.$router.go(0);
+              }
+            })
+            .catch();
+          this.showModalDetail = false;
+        } else {
+          this.$Message.error("日记内容不能为空");
+        }
+      } else {
+        axios
+          .post("http://120.78.86.45/diary/editDiary", {
+            id: this.diaryList[index].id,
+            weather: this.diaryList[index].weather,
+            mood: this.diaryList[index].mood,
+            content: this.diaryList[index].content
+          })
+          .then(res => {
+            if (res.data.isChange) {
+              this.$Message.success(res.data.message);
+              this.$router.go(0);
+            }
+          })
+          .catch();
+        this.showModalDetail = false;
+      }
+      this.index = -1;
     },
     // 删除日记
     deleteDiary(index) {
-      console.log(index);
-
       axios
         .post("http://120.78.86.45/diary/deleteDiary", {
           id: this.diaryList[index].id
@@ -227,10 +199,10 @@ export default {
         .then(res => {
           if (res.data.isDelete) {
             this.$Message.warning(res.data.message);
+            this.$router.go(0);
           }
         })
         .catch();
-      this._initGet();
     }
   }
 };
@@ -240,10 +212,45 @@ export default {
 .diary {
   position: relative;
 }
+/* header-wrapper */
+.diary .header-wrapper {
+  background: #1cbe99;
+  border-bottom: 1px solid rgba(82, 82, 82, 0.1);
+}
+.diary .header-wrapper .datePicker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+}
+.diary .header-wrapper .datePicker .ivu-input {
+  background-color: #1cbe99;
+  color: #fff;
+  border: 1px solid #fff;
+}
+.diary .header-wrapper .datePicker .ivu-input:focus {
+  border-color: aliceblue;
+}
+.diary .header-wrapper .datePicker .ivu-input-icon {
+  color: #fff;
+}
+.diary .header-wrapper .datePicker .ivu-icon-ios-calendar-outline:before {
+  content: "\F104";
+}
+.diary .header-wrapper .datePicker .ivu-icon-ios-close:before {
+  content: "\F10D";
+}
+.diary .header-wrapper .close-btn {
+  position: absolute;
+  color: #fff;
+  right: 10px;
+}
+
+/* show-wrapper */
 .diary .show-wrapper {
-  height: 613px;
+  height: 550px;
+  background: #fff;
   overflow: hidden;
-  background: linear-gradient(to bottom, #1cbe99, #26b9bb);
 }
 .diary .show-wrapper .content-out {
   padding: 20px 0;
@@ -251,19 +258,9 @@ export default {
 .ivu-modal {
   top: 20px;
 }
-.diary .addBtn {
-  display: block;
-  position: absolute;
-  top: 520px;
-  right: 30px;
-  background: #26b9bb;
-}
-.diary .addBtn .ivu-icon {
-  font-size: 30px;
-  font-weight: 700;
-}
 .diary .show-wrapper .ivu-card {
   margin: 0 20px 20px;
+  border-radius: 0;
 }
 .diary .show-wrapper .ivu-card-body {
   position: relative;
@@ -279,7 +276,7 @@ export default {
   height: 24px;
   line-height: 24px;
   border-radius: 5px;
-  background: rgb(231, 58, 130);
+  background: rgb(97, 161, 245);
   text-align: center;
   color: #fff;
 }
@@ -293,6 +290,7 @@ export default {
   padding: 6px 5px;
 }
 .diary .show-wrapper .text {
+  display: block;
   position: absolute;
   top: 15px;
   left: 70px;

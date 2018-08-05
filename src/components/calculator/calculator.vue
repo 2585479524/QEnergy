@@ -2,8 +2,7 @@
     <div class="calculator">
         <div class="calMain">
             <div class="calRow">
-                <Input :value="enter" placeholder="请输入金额" style="width: 300px"></Input>
-                
+                <Input :value="enter" placeholder="请输入金额" style="width: 75%"></Input>
                 <Button type="ghost">{{result}}</Button>
             </div>
             <div class="calRow">
@@ -42,18 +41,13 @@ import axios from "axios";
 import store from "../../store/store";
 Vue.prototype.$Message = Message;
 export default {
-  data() {
-    return {
-      remark: "aaa"
-    };
-  },
   components: {
     Button,
     Icon,
     Input
   },
   computed: {
-    ...mapState(["result", "enter", "icon", "billType", "refresh"]),
+    ...mapState(["result", "enter", "icon", "billType"]),
     dateTime() {
       let dateTime = new Date();
       let str = dateTime.toJSON().substring(0, 10);
@@ -61,10 +55,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["showCalculator", "calculate", "refreshOk"]),
+    ...mapMutations(["showCalculator", "calculate"]),
     back() {
-      console.log(this.dateTime);
-
       if (this.result <= 0) {
         this.$Message.error("金额不能为0或者负数");
       } else {
@@ -82,7 +74,6 @@ export default {
             }
           })
           .catch();
-        this.refreshOk(true);
         this.$router.go(-1);
       }
     }
@@ -93,19 +84,24 @@ export default {
 <style>
 .calculator {
   width: 100%;
-  background: #e2e2e2;
+  background: #1aebba;
 }
 .calculator .calRow {
   display: flex;
   height: 45px;
   justify-content: space-around;
 }
+.calculator .calMain :first-child {
+  border: none;
+}
 .calculator .calRow .ivu-input {
   height: 100%;
+  border-radius: 0;
+  border-top: 1px solid #e9e9e9;
 }
 .calculator .calRow .ivu-btn {
   width: 25%;
-  font-size: 20px;
+  font-size: 16px;
   border-radius: 0;
   border: 1px solid #fff;
 }
