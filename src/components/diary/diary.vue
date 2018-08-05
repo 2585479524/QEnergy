@@ -1,28 +1,28 @@
 <template>
     <div class="diary">
       <div class="header-wrapper">
-        <div class="datePicker">
+        <div class="date-picker">
           <DatePicker :value="dateMain" type="month" style="width: 100px"></DatePicker>
           <Button class="close-btn" type="text" @click="showModal(index)">编辑</Button>
         </div>
       </div>
       <div class="show-wrapper" ref="showWrapper">
-          <div class="content-out">
+          <div class="content">
             <Card v-show="diaryList" v-for="(item, index) in diaryList" :key="index" @click.native="showModal(index)">
-                <span class="label"><i class="iconfont" :class="item.weather"></i></span>
-                <Button class="delButton" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
+                <span class="label" :class="`color-${item.weather}`"><i class="iconfont" :class="item.weather"></i></span>
+                <Button class="del-btn" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
                 <span class="text">{{item.date}}</span><br><br>
                 <span class="remarks">{{item.content}}</span>
             </Card>
           </div>
       </div>
-      <Modal v-model="showModalDetail" width="360" :styles="{top: '20px'}">
-          <p slot="header" style="color:#57a3f3; text-align:center">
+      <Modal class="detailModal" v-model="showDetailModal" width="360" :styles="{top: '30px'}">
+          <p slot="header" style="color:#1cbe99; text-align:center">
               <Icon type="edit"></Icon>
               <span>心情日记</span>
           </p>
           <div style="text-align:center">
-            <span class="text">日记时间：{{diaryEdit.date}}</span>
+            <span class="textDate">{{diaryEdit.date}}</span>
             <br><br>
             <span class="text">天气：</span>
             <RadioGroup v-model="diaryEdit.weather" type="button">
@@ -72,7 +72,7 @@ export default {
     return {
       diaryList: [],
       diaryEdit: {},
-      showModalDetail: false,
+      showDetailModal: false,
       showModalEdit: false,
       index: -1,
       weatherRadio: [
@@ -137,7 +137,7 @@ export default {
       });
     },
     showModal(index) {
-      this.showModalDetail = true;
+      this.showDetailModal = true;
       if (index == -1) {
         this.diaryEdit = {
           date: this.dateTime,
@@ -156,6 +156,7 @@ export default {
         if (this.diaryEdit.content != "") {
           axios
             .post("http://120.78.86.45/diary/createDiary", {
+        yearMonth: this.dateMain,
               weather: this.diaryEdit.weather,
               mood: this.diaryEdit.mood,
               content: this.diaryEdit.content
@@ -163,11 +164,11 @@ export default {
             .then(res => {
               if (res.data.isCreated) {
                 this.$Message.success(res.data.message);
-                this.$router.go(0);
+                this.diaryList = res.data.diaryList;
               }
             })
             .catch();
-          this.showModalDetail = false;
+          this.showDetailModal = false;
         } else {
           this.$Message.error("日记内容不能为空");
         }
@@ -175,6 +176,7 @@ export default {
         axios
           .post("http://120.78.86.45/diary/editDiary", {
             id: this.diaryList[index].id,
+            yearMonth: this.dateMain,
             weather: this.diaryList[index].weather,
             mood: this.diaryList[index].mood,
             content: this.diaryList[index].content
@@ -182,11 +184,11 @@ export default {
           .then(res => {
             if (res.data.isChange) {
               this.$Message.success(res.data.message);
-              this.$router.go(0);
+              this.diaryList = res.data.diaryList;
             }
           })
           .catch();
-        this.showModalDetail = false;
+        this.showDetailModal = false;
       }
       this.index = -1;
     },
@@ -194,12 +196,13 @@ export default {
     deleteDiary(index) {
       axios
         .post("http://120.78.86.45/diary/deleteDiary", {
-          id: this.diaryList[index].id
+          id: this.diaryList[index].id,
+          yearMonth: this.dateMain,
         })
         .then(res => {
           if (res.data.isDelete) {
             this.$Message.warning(res.data.message);
-            this.$router.go(0);
+              this.diaryList = res.data.diaryList;
           }
         })
         .catch();
@@ -217,27 +220,27 @@ export default {
   background: #1cbe99;
   border-bottom: 1px solid rgba(82, 82, 82, 0.1);
 }
-.diary .header-wrapper .datePicker {
+.diary .header-wrapper .date-picker {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10px 0;
 }
-.diary .header-wrapper .datePicker .ivu-input {
+.diary .header-wrapper .date-picker .ivu-input {
   background-color: #1cbe99;
   color: #fff;
   border: 1px solid #fff;
 }
-.diary .header-wrapper .datePicker .ivu-input:focus {
+.diary .header-wrapper .date-picker .ivu-input:focus {
   border-color: aliceblue;
 }
-.diary .header-wrapper .datePicker .ivu-input-icon {
+.diary .header-wrapper .date-picker .ivu-input-icon {
   color: #fff;
 }
-.diary .header-wrapper .datePicker .ivu-icon-ios-calendar-outline:before {
+.diary .header-wrapper .date-picker .ivu-icon-ios-calendar-outline:before {
   content: "\F104";
 }
-.diary .header-wrapper .datePicker .ivu-icon-ios-close:before {
+.diary .header-wrapper .date-picker .ivu-icon-ios-close:before {
   content: "\F10D";
 }
 .diary .header-wrapper .close-btn {
@@ -252,7 +255,7 @@ export default {
   background: #fff;
   overflow: hidden;
 }
-.diary .show-wrapper .content-out {
+.diary .show-wrapper .content {
   padding: 20px 0;
 }
 .ivu-modal {
@@ -276,16 +279,30 @@ export default {
   height: 24px;
   line-height: 24px;
   border-radius: 5px;
-  background: rgb(97, 161, 245);
   text-align: center;
   color: #fff;
 }
-.diary .show-wrapper .ivu-card-body .delButton {
+.diary .show-wrapper .ivu-card-body .color-icon-weibiaoti--4 {
+  background: rgb(97, 161, 245);
+}
+.diary .show-wrapper .ivu-card-body .color-icon-weibiaoti--2 {
+  background: rgb(144, 245, 97);
+}
+.diary .show-wrapper .ivu-card-body .color-icon-weibiaoti--3 {
+  background: rgb(245, 156, 97);
+}
+.diary .show-wrapper .ivu-card-body .color-icon-weibiaoti--1 {
+  background: rgb(245, 107, 97);
+}
+.diary .show-wrapper .ivu-card-body .color-icon-weibiaoti-- {
+  background: rgb(245, 97, 225);
+}
+.diary .show-wrapper .ivu-card-body .del-btn {
   position: absolute;
   top: 10px;
   right: 15px;
 }
-.diary .show-wrapper .ivu-card-body .delButton .ivu-icon {
+.diary .show-wrapper .ivu-card-body .del-btn .ivu-icon {
   display: block;
   padding: 6px 5px;
 }
@@ -297,5 +314,33 @@ export default {
 }
 .diary .show-wrapper .remarks {
   padding-left: 0px;
+}
+/* detailModal  修改原生组件css */
+.detailModal .ivu-radio-group-button .ivu-radio-wrapper:first-child {
+  border-radius: 0;
+}
+.detailModal .ivu-radio-group-button .ivu-radio-wrapper:last-child {
+  border-radius: 0;
+}
+.detailModal .ivu-radio-group-button .ivu-radio-wrapper-checked {
+  border-color: #1cbe99;
+  color: #1cbe99;
+}
+.detailModal .ivu-radio-group-button .ivu-radio-focus {
+  box-shadow: -1px 0 0 0 #1cbe99, 0 0 0 2px rgba(28, 190, 153, 0.2) !important;
+}
+.detailModal .ivu-radio-group-button .ivu-radio-wrapper-checked:hover {
+  border-color: #1cbe99;
+  color: #1cbe99;
+}
+.detailModal .ivu-radio-group-button .ivu-radio-wrapper:after {
+  background: rgba(28, 190, 153, 0.2);
+}
+.detailModal .ivu-input-wrapper .ivu-input:hover {
+  border-color: #1cbe99;
+}
+.detailModal .ivu-btn-primary {
+  background-color: #1cbe99;
+  border-color: #1cbe99;
 }
 </style>

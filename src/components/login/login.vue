@@ -1,41 +1,42 @@
 <template>
     <div class="login">
-        <div class="mainLogin">
-            <Input v-model="userLogin.telNumber" placeholder="请输入账号" clearable style="width: 200px"></Input>
-            <Input v-model="userLogin.pwd" type="password" placeholder="请输入密码" clearable style="width: 200px"></Input>
+      <div class="mainLogin">
+        <img src="../../assets/img/title2.png" alt="青能量">
+          <Input v-model="userLogin.telNumber" placeholder="请输入账号" clearable style="width: 200px"></Input>
+          <Input v-model="userLogin.pwd" type="password" placeholder="请输入密码" clearable style="width: 200px"></Input>
 
-            <Button type="success" style="width: 200px" @click="login">登录</Button>
-            <Button type="warning" style="width: 200px" @click="clickRegister">注册</Button>
+          <Button type="success" style="width: 200px" @click="login">登录</Button>
+          <Button type="warning" style="width: 200px" @click="clickRegister">注册</Button>
+      </div>
+      <Modal v-model="showModal" width="360":styles="{top: '40px'}">
+        <p slot="header" style="color:#57a3f3; text-align:center">
+          <Icon type="edit"></Icon>
+          <span>注册账号</span>
+        </p>
+        <div class="registerModal" style="text-align:center">
+          <span class="text">手机号：</span>
+          <Input v-model="userInfo.telNumber" placeholder="请输入手机号" clearable style="width: 200px" @on-blur="checkTel"></Input>
+          <br><br>
+          <span class="text">昵称：</span>
+          <Input v-model="userInfo.userName" placeholder="请输入昵称" clearable style="width: 200px" @on-blur="checkName"></Input>
+          <br><br>
+          <span class="text">密码：</span>
+          <Input v-model="userInfo.pwd" type="password" placeholder="请输入密码" clearable style="width: 200px" @on-blur="checkPwd"></Input>
+          <br><br>
+          <span class="text">确认密码：</span>
+          <Input v-model="confirmPwd" type="password" placeholder="请再次输入密码" clearable style="width: 200px" @on-blur="checkConfirmPwd"></Input>
+          <br><br>
+          <span class="text">真实姓名：</span>
+          <Input v-model="userInfo.realName" placeholder="请输入真实姓名" clearable style="width: 200px"></Input>
+          <br><br>
+          <span class="text">身份证号：</span>
+          <Input v-model="userInfo.idCard" placeholder="请输入身份证号" clearable style="width: 200px" @on-blur="checkCard"></Input>
+          <br>
         </div>
-        <Modal v-model="showModal" width="360":styles="{top: '40px'}">
-            <p slot="header" style="color:#57a3f3; text-align:center">
-                <Icon type="edit"></Icon>
-                <span>注册账号</span>
-            </p>
-            <div class="registerModal" style="text-align:center">
-                <span class="text">手机号：</span>
-                <Input v-model="userInfo.telNumber" placeholder="请输入手机号" clearable style="width: 200px" @on-blur="checkTel"></Input>
-                <br><br>
-                <span class="text">昵称：</span>
-                <Input v-model="userInfo.userName" placeholder="请输入昵称" clearable style="width: 200px" @on-blur="checkName"></Input>
-                <br><br>
-                <span class="text">密码：</span>
-                <Input v-model="userInfo.pwd" type="password" placeholder="请输入密码" clearable style="width: 200px" @on-blur="checkPwd"></Input>
-                <br><br>
-                <span class="text">确认密码：</span>
-                <Input v-model="confirmPwd" type="password" placeholder="请再次输入密码" clearable style="width: 200px" @on-blur="checkConfirmPwd"></Input>
-                <br><br>
-                <span class="text">真实姓名：</span>
-                <Input v-model="userInfo.realName" placeholder="请输入真实姓名" clearable style="width: 200px"></Input>
-                <br><br>
-                <span class="text">身份证号：</span>
-                <Input v-model="userInfo.idCard" placeholder="请输入身份证号" clearable style="width: 200px" @on-blur="checkCard"></Input>
-                <br>
-            </div>
-            <div slot="footer">
-                <Button type="primary" size="large" long @click.prevent="submitRegister">注册</Button>
-            </div>
-        </Modal>
+        <div slot="footer">
+          <Button type="primary" size="large" long @click.prevent="submitRegister">注册</Button>
+        </div>
+      </Modal>
     </div>
 </template>
 
@@ -77,7 +78,6 @@ export default {
       showModal: false
     };
   },
-  computed: {},
   store,
   components: {
     Input,
@@ -86,18 +86,20 @@ export default {
     Icon
   },
   created() {
-    let storage = window.localStorage;
-    if (storage.getItem("telNumber") && storage.getItem("pwd")) {
-      let userLogin = {
-        telNumber: storage.getItem("telNumber"),
-        pwd: storage.getItem("pwd")
-      };
+    let userLogin = {
+      telNumber: window.localStorage.getItem("telNumber"),
+      pwd: window.localStorage.getItem("pwd")
+    };
+    if (userLogin.telNumber && userLogin.pwd) {
       this._loginPost(userLogin);
     }
   },
   methods: {
-    ...mapMutations(["update"]),
     _loginPost(userLogin) {
+      if (window.storage.getItem("telNumber")) {
+        storage.setItem("telNumber", this.userLogin.telNumber);
+        storage.setItem("pwd", this.userLogin.pwd);
+      }
       axios
         .post("http://120.78.86.45/auth/login", {
           userLogin: userLogin
@@ -111,9 +113,6 @@ export default {
           }
         })
         .catch();
-      let storage = window.localStorage;
-      storage.setItem("telNumber", this.userLogin.telNumber);
-      storage.setItem("pwd", this.userLogin.pwd);
     },
     login() {
       if (this.userLogin.telNumber == "" || this.userLogin.pwd == "") {
@@ -122,6 +121,7 @@ export default {
         this._loginPost(this.userLogin);
       }
     },
+    // 正则检测手机号
     checkTel() {
       if (
         this.userInfo.telNumber != "" &&
@@ -132,6 +132,7 @@ export default {
         return true;
       }
     },
+    // 正则检测用户名
     checkName() {
       if (
         this.userInfo.userName != "" &&
@@ -142,6 +143,7 @@ export default {
         return true;
       }
     },
+    // 正则检测密码
     checkPwd() {
       if (
         this.userInfo.pwd != "" &&
@@ -152,6 +154,7 @@ export default {
         return true;
       }
     },
+    // 检测confirmPwd
     checkConfirmPwd() {
       if (this.confirmPwd != "" && this.confirmPwd != this.userInfo.pwd) {
         this.$Message.warning("两次输入密码不一致");
@@ -159,6 +162,7 @@ export default {
         return true;
       }
     },
+    // 正则检测身份证号
     checkCard() {
       if (
         this.userInfo.idCard != "" &&
@@ -169,9 +173,11 @@ export default {
         return true;
       }
     },
+    // 显示注册Modal
     clickRegister() {
       this.showModal = true;
     },
+    // 提交注册
     submitRegister() {
       if (
         this.checkTel() &&
@@ -192,7 +198,7 @@ export default {
               this.$Message.error(res.data.message);
             }
           })
-          .catch(err => {});
+          .catch();
       }
     }
   }
@@ -202,9 +208,14 @@ export default {
 <style>
 .mainLogin {
   padding-top: 150px;
+  padding-bottom: 150px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #1cbe99;
+}
+mainLogin .mainLogin img {
+  height: 50px;
 }
 .mainLogin * {
   margin: 10px 0;

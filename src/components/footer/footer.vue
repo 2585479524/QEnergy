@@ -44,6 +44,8 @@
 <script>
 export default {
 };
+var oHeight = window.screen.height;
+
 </script>
 
 <style>
@@ -51,6 +53,7 @@ export default {
 
 .tab {
   padding: 0;
+  height: 50px;
 }
 .tab .tab-item .iconfont {
   display: block;
