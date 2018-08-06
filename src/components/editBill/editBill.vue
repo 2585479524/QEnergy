@@ -9,7 +9,7 @@
           <Button class="close-btn" type="text" @click="closeEdit">取消</Button>
       </div>
 
-      <div class="show-wrapper" ref="showWrapper">
+      <div class="show-wrapper" ref="showWrapper" :style="oHeight">
           <div class="content-out">
               <div class="content" v-for="(icons, index) in showIcon">
                   <div class="content-in" v-for="(icon, index) in icons">
@@ -188,7 +188,10 @@ export default {
             iconCode: "icon-licaishouyi"
           }
         ]
-      ]
+      ],
+      oHeight: {
+        height: window.screen.height - 55 + "px"
+      }
     };
   },
   store,
@@ -243,6 +246,7 @@ export default {
   display: flex;
   justify-content: center;
   padding: 10px;
+  height: 55px;
   background: #1cbe99;
   border-bottom: 1px solid rgba(28, 190, 153, 0.1);
 }
@@ -275,7 +279,6 @@ export default {
 
 /* show-wrapper */
 .bill-edit .show-wrapper {
-  height: 585px;
   overflow: hidden;
 }
 .bill-edit .show-wrapper .content-out {

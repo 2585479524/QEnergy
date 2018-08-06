@@ -6,7 +6,7 @@
           <Button class="close-btn" type="text" @click="showModal(index)">编辑</Button>
         </div>
       </div>
-      <div class="show-wrapper" ref="showWrapper">
+      <div class="show-wrapper" ref="showWrapper" :style="oHeight">
           <div class="content">
             <Card v-show="diaryList" v-for="(item, index) in diaryList" :key="index" @click.native="showModal(index)">
                 <span class="label" :class="`color-${item.weather}`"><i class="iconfont" :class="item.weather"></i></span>
@@ -88,7 +88,10 @@ export default {
         "icon-crazy",
         "icon-sleeping",
         "icon-cry"
-      ]
+      ],
+      oHeight: {
+        height: window.screen.height - 105 + "px"
+      }
     };
   },
   store,
@@ -224,6 +227,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 55px;
   padding: 10px 0;
 }
 .diary .header-wrapper .date-picker .ivu-input {
@@ -251,7 +255,6 @@ export default {
 
 /* show-wrapper */
 .diary .show-wrapper {
-  height: 550px;
   background: #fff;
   overflow: hidden;
 }

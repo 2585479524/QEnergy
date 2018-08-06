@@ -3,56 +3,42 @@
     <div class="circle-wrapper">
         <!-- circle组件 -->
         <xCircle :percent="percent" :stroke-color="strokeColor" :trail-color="trailColor" :size="140">
-            <Icon v-if="percent == 100" type="ios-checkmark-empty" size="40" style="color: #5cb85c"></Icon>
-            <span v-else style="font-size:35px; color:#fff">{{ percentCeil }}%</span>
+            <Icon v-if="percent == 100" type="ios-checkmark-empty" size="50" style="color: #fff"></Icon>
+            <span v-else style="font-size:15px; color:#fff">
+              剩余时间<br><br>
+              {{ `${min} 分 ${sec} 秒` }}
+              </span>
         </xCircle>
 
-        <span class="time">剩余时间: {{ `${min}分钟 ${sec}秒` }}</span>
-        <Button class="set-btn" @click="setTomato">{{setTomatoName}}</Button>
+        <!-- <span class="time"></span> -->
+        <Button class="set-btn" @click="setTomato">{{btnName}}</Button>
     </div>
 
     <Modal
-        v-model="showModal"
+        v-model="showConfigModal"
         title="设置新的番茄时钟"
         class="modal-wrapper">
-        <span class="text">时长：</span>
-        <RadioGroup v-model="newDuration" type="button">
-            <Radio :label="item" v-for="(item, index) in durationList" :key="index" @click.native.self="customizeDuration(index)"></Radio>
-        </RadioGroup>
-        <br><br>
 
-        <span class="text">标签：</span>
-        <RadioGroup v-model="newLabel" type="button">
-            <Radio :label="item" v-for="(item, index) in labelList" :key="index" @click.native.self="customizeLabel(index)"></Radio>
-        </RadioGroup>
-        <br><br>
+      <span class="text">时长：</span>
+      <Select v-model="newDuration" style="width:70px">
+        <Option v-for="(item, index) in durationList" :value="item" :key="index">{{ item }}</Option>
+      </Select>
+      <span>分钟</span>
+      <br><br>
+      <span class="text">标签：</span>
+      <Select v-model="newLabel" style="width:70px">
+        <Option v-for="(item, index) in labelList" :value="item" :key="index">{{ item }}</Option>
+      </Select>
+      <br><br>
+      <span class="text">备注：</span>
+      <Input v-model="newInfo" placeholder="写点东西吧..." style="width: 233px"></Input>
 
-        <span class="text">备注：</span>
-        <Input v-model="newInfo" placeholder="写点东西吧..." style="width: 233px"></Input>
-        <div slot="footer">
-            <Button type="primary" long @click="configerTomato" @onCancel="cancelModal">确定</Button>
-        </div>
-    </Modal>
-    <Modal
-      v-model="showCustomizeDuration"
-      title="自定义时长"
-      class-name="vertical-center-modal">
-      <Input v-model="customizeDurationProps" style="width: 50px" @on-change="customizeDurationWarn"></Input>分钟
-      <span style="color: red;" v-if="cusDurationWarn">*自定义时长已存在或不合法</span>
       <div slot="footer">
-          <Button type="primary" long @click="cusDurationOk">确定</Button>
+        <Button type="primary" long @click="configerTomato">确定</Button>
       </div>
     </Modal>
-    <Modal
-      v-model="showCustomizeLabel"
-      title="自定义标签"
-      class-name="vertical-center-modal">
-      <Input v-model="customizeLabelProps" style="width: 240px" @on-change="customizeLabelWarn"></Input>
-      <span style="color: red;" v-if="cusLabelWarn">*自定义标签已存在或不合法</span>
-      <div slot="footer">
-          <Button type="primary" long @click="cusLabelOk">确定</Button>
-      </div>
-    </Modal>
+
+    <!-- 执行中断番茄操作 -->
     <Modal v-model="showInterrupt" width="360">
         <p slot="header" style="color:#f60;text-align:center">
             <Icon type="information-circled"></Icon>
@@ -65,6 +51,8 @@
             <Button type="error" size="large" long @click="interruptOk">确定中断</Button>
         </div>
     </Modal>
+
+    <!-- 番茄计时完成 -->
     <Modal v-model="showFinish" width="360">
         <p slot="header" style="color:#19be6b;text-align:center">
             <Icon type="information-circled"></Icon>
@@ -88,58 +76,47 @@ import { mapState, mapMutations } from "vuex";
 import {
   Button,
   Circle,
-  ButtonGroup,
   Icon,
   Modal,
   Input,
-  RadioGroup,
-  Radio,
   TimePicker,
-  Card,
-  Badge
+  Select,
+  Option
 } from "iview";
 
 axios.defaults.withCredentials = true;
 Vue.prototype.$Modal = Modal;
+
 export default {
   data() {
     return {
-      durationList: ["25分钟", "35分钟", "自定义"],
-      labelList: ["学习", "运动", "工作", "自定义"],
+      durationList: ["0.1", "25", "35", "45", "60"],
+      labelList: ["学习", "运动", "工作"],
       percent: 0,
 
       now: Date.parse(new Date()),
+
       // 设置番茄的三个参数
-      newDuration: "25分钟",
+      newDuration: "25",
       newLabel: "学习",
       newInfo: "",
+
       // 自定义时长参数
       customizeDurationProps: "",
       // 自定义标签参数
       customizeLabelProps: "",
 
       // 点击设置番茄后弹出模态框
-      showModal: false,
+      showConfigModal: false,
       // 点击中断番茄后弹出模态框
       showInterrupt: false,
       // 番茄时钟完成后弹出模态框
       showFinish: false,
 
-      // 点击自定义时长后弹出模态框
-      showCustomizeDuration: false,
-      // 非法自定义时长
-      cusDurationWarn: false,
-      // 点击自定义标签后弹出模态框
-      showCustomizeLabel: false,
-      // 非法自定义标签
-      cusLabelWarn: false,
-      // 刷新控制参数
-      refreshProps: false,
-
       min: 0,
       sec: 0,
       msec: 0,
-      setTomatoName: "设置时钟",
+      btnName: "设置时钟",
       clockX: 0,
       trailColor: "#fff"
     };
@@ -147,30 +124,26 @@ export default {
   components: {
     Button,
     xCircle: Circle,
-    ButtonGroup,
     Icon,
     Modal,
     Input,
-    RadioGroup,
-    Radio,
     TimePicker,
-    Card,
-    Badge
+    Select,
+    Option
   },
   computed: {
-    ...mapState(["clockId"]),
+    ...mapState(["clockList"]),
     strokeColor() {
-      // 蓝
-      let color = "#2db7f5";
+      // 番茄红
+      let color = "#fa565e";
       if (this.percent == 100) {
-        // 绿
-        color = "#5cb85c";
+        color = "#fff";
       }
       return color;
     },
     durationNum() {
       let str = this.newDuration;
-      this.msec = Number(str.slice(0, str.length - 2)) * 60 * 1000;
+      this.msec = Number(str.slice(0, str.length)) * 60 * 1000;
       return this.msec;
     },
     percentCeil() {
@@ -179,68 +152,7 @@ export default {
     }
   },
   methods: {
-    cancelModal() {
-      console.log(1);
-    },
-    // 添加自定义按钮功能
-    customizeDuration(index) {
-      if (index == this.durationList.length - 1) {
-        this.showCustomizeDuration = true;
-      }
-    },
-    // 自定义时长不符合规则，警告
-    customizeDurationWarn() {
-      if (
-        this.customizeDurationProps < 1 ||
-        this.customizeDurationProps == 25 ||
-        this.customizeDurationProps == 35 ||
-        this.customizeDurationProps > 99999
-      ) {
-        this.cusDurationWarn = true;
-      } else {
-        this.cusDurationWarn = false;
-      }
-    },
-    // 用户自定义时长点击确定，检测是否有警告
-    cusDurationOk() {
-      console.log(1);
-      console.log(this.customizeDurationProps);
-      
-      if (this.customizeDurationProps == "") {
-        this.cusDurationWarn == true;
-      }
-      if (this.cusDurationWarn == false) {
-        this.showCustomizeDuration = false;
-        this.durationList[this.durationList.length - 1] =
-          this.customizeDurationProps + "分钟";
-      }
-    },
-
-    // 用户自定义标签OK
-    customizeLabel(index) {
-      if (index == this.labelList.length - 1) {
-        this.showCustomizeLabel = true;
-      }
-    },
-    // 自定义标签不符合规则，警告
-    customizeLabelWarn() {
-      if (
-        this.customizeLabelProps == "运动" ||
-        this.customizeLabelProps == "学习" ||
-        this.customizeLabelProps == "工作"
-      ) {
-        this.cusLabelWarn = true;
-      } else {
-        this.cusLabelWarn = false;
-      }
-    },
-    // 用户自定义时长OK
-    cusLabelOk() {
-      if (this.cusLabelWarn == false) {
-        this.showCustomizeLabel = false;
-        this.labelList[this.labelList.length - 1] = this.customizeLabelProps;
-      }
-    },
+    ...mapMutations(["updateTomato"]),
     // 时钟开启，当用户点击“中断番茄”，确认中断后执行此函数
     interruptOk() {
       this.showInterrupt = false;
@@ -253,7 +165,7 @@ export default {
         })
         .then(res => {
           if (res.data.isInterrupt == true) {
-            this.setTomatoName = "设置时钟";
+            this.btnName = "设置时钟";
             this.percent = 100;
             this.sec = 0;
             this.min = 0;
@@ -263,9 +175,9 @@ export default {
     },
     // 用户单击“设置时钟”，各项参数置零，弹出配置面板
     setTomato() {
-      if (this.setTomatoName == "设置时钟") {
-        this.showModal = true;
-      } else if (this.setTomatoName == "中断番茄") {
+      if (this.btnName == "设置时钟") {
+        this.showConfigModal = true;
+      } else if (this.btnName == "中断番茄") {
         this.showInterrupt = true;
       }
     },
@@ -275,19 +187,20 @@ export default {
         .post(
           "http://120.78.86.45/tomato/createClock",
           JSON.stringify({
-            userId: 1,
+            clockDuration: this.durationNum,
             clockLabel: this.newLabel,
-            clockInfo: this.newInfo,
-            clockDuration: this.durationNum
+            clockInfo: this.newInfo
           })
         )
         .then(res => {
           this.clockX = res.data.clockId;
         })
         .catch(err => {});
+
       this.percent = 0;
-      this.showModal = false;
-      this.setTomatoName = "中断番茄";
+      this.showConfigModal = false;
+      this.btnName = "中断番茄";
+
       let rat = 100 / this.msec * 1000;
 
       let time = setInterval(() => {
@@ -304,17 +217,22 @@ export default {
           clearInterval(time);
           this.min = 0;
           this.sec = 0;
-          this.setTomatoName = "设置时钟";
           this.showFinish = true;
+          this.btnName = "设置时钟";
         }
       }, 1000);
     },
     refreshOk() {
-      (this.refreshProps = true), (this.showFinish = false);
+      this.showFinish = false;
       this.newDuration = this.durationList[0];
       this.newLabel = this.labelList[0];
       this.percent = 0;
-      this.$emit("refreshProps", this.refreshProps);
+      axios
+        .post("http://120.78.86.45/tomato/showTodoList")
+        .then(res => {
+          this.updateTomato(res.data.clockList);
+        })
+        .catch();
     }
   }
 };
@@ -329,6 +247,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 200px;
 }
 .circle-time .circle-wrapper .ivu-chart-circle {
   margin: 10px 0;
@@ -336,7 +255,6 @@ export default {
 
 /* 按钮 */
 .circle-time .circle-wrapper .set-btn {
-  margin: 10px 0;
   background-color: #fa565e;
   border-radius: 0;
   border-color: #fa565ea4;
@@ -349,37 +267,13 @@ export default {
 }
 
 /* modal  修改原生组件css */
-.ivu-modal-content {
+.modal-wrapper .ivu-modal-content {
   border-radius: 0;
 }
-.ivu-radio-group-button .ivu-radio-wrapper-checked:first-child {
-  border-color: #1cbe99;
-  color: #1cbe99;
-}
-.ivu-radio-group-button .ivu-radio-wrapper:first-child {
+.modal-wrapper .ivu-input-wrapper .ivu-input {
   border-radius: 0;
 }
-.ivu-radio-group-button .ivu-radio-wrapper:last-child {
-  border-radius: 0;
-}
-.ivu-radio-group-button .ivu-radio-wrapper-checked {
-  border-color: #1cbe99;
-  color: #1cbe99;
-}
-.ivu-radio-group-button .ivu-radio-focus {
-  box-shadow: -1px 0 0 0 #1cbe99, 0 0 0 2px rgba(28, 190, 153, 0.2) !important;
-}
-.ivu-radio-group-button .ivu-radio-wrapper-checked:hover {
-  border-color: #1cbe99;
-  color: #1cbe99;
-}
-.ivu-radio-group-button .ivu-radio-wrapper:after {
-  background: rgba(28, 190, 153, 0.2) !important;
-}
-.ivu-input-wrapper .ivu-input {
-  border-radius: 0;
-}
-.ivu-input-wrapper .ivu-input:hover {
+.modal-wrapper .ivu-input-wrapper .ivu-input:hover {
   border-color: #1cbe99;
 }
 </style>

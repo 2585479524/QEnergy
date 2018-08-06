@@ -1,11 +1,9 @@
 <template>
   <div class="tomato">
-    <div class="circle-wrapper">
-      <circleTime @refreshProps="refreshOk"></circleTime>
-    </div>
-    <div class="down-wrapper" ref="downWrapper">
+    <circleTime></circleTime>
+    <div class="down-wrapper" ref="downWrapper" :style="oHeight">
         <div class="content">
-          <Card class="historyCard" v-for="(item, index) in clockList" :key="index">
+          <Card v-for="(item, index) in clockList" :key="index">
               <span class="label">{{item.clockLabel}}</span>
               <div class="text">
                   <span>开始时间：{{item.clockStart}}</span><br>
@@ -23,12 +21,15 @@
 import circleTime from "../circleTime/circleTime";
 import axios from "axios";
 import BScroll from "better-scroll";
+import { mapState, mapMutations } from "vuex";
 import { Card } from "iview";
 
 export default {
   data() {
     return {
-      clockList: []
+      oHeight: {
+        height: window.screen.height - 250 + "px"
+      }
     };
   },
   components: {
@@ -37,55 +38,48 @@ export default {
     circleTime
   },
   created() {
+    axios
+      .post("http://120.78.86.45/tomato/showTodoList")
+      .then(res => {
+        this.updateTomato(res.data.clockList);
+      })
+      .catch(err => {
+        console.log(err);
+      });
     this.$nextTick(function() {
-      this._initRefresh();
       this._initScroll();
     });
   },
+  computed: {
+    ...mapState(["clockList"])
+  },
   methods: {
+    ...mapMutations(["updateTomato"]),
     _initScroll() {
       this.downScroll = new BScroll(this.$refs.downWrapper, {
         probeType: 3,
         click: true
       });
-    },
-    _initRefresh() {
-      axios
-        .post("http://120.78.86.45/tomato/showTodoList")
-        .then(res => {
-          this.clockList = res.data.clockList;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    refreshOk(msg) {
-      if (msg == true) {
-        this._initRefresh();
-      }
     }
   }
 };
 </script>
 
 <style>
-.tomato .circle-wrapper {
-
-}
 .tomato .down-wrapper {
-  height: 350px;
   overflow: hidden;
-  background: linear-gradient(to bottom, #e2e2e2, #c0c0c0);
 }
 .tomato .down-wrapper .content {
-  padding: 20px 0 60px;
+  padding: 20px 0;
 }
-.tomato .down-wrapper .ivu-card {
+.tomato .down-wrapper .content .ivu-card {
   margin: 0 20px 20px;
 }
-.tomato .down-wrapper .ivu-card-body {
+.tomato .down-wrapper .content .ivu-card-body {
   position: relative;
   height: 100px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px rgb(180, 197, 183);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

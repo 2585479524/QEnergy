@@ -14,8 +14,7 @@ const state = {
         iconCode: ""
     },
     billType: "",
-    refresh: false,
-
+    clockoList: {},
     billList: {},
     totalIncome: 0,
     totalPay: 0,
@@ -31,6 +30,10 @@ const mutations = {
         state.billList = bill.billList;
         state.totalIncome = bill.totalIncome;
         state.totalPay = bill.totalPay;
+    },
+    updateTomato(state, clockList) {
+        state.clockList = clockList;
+        console.log(state.clockList);
     },
     // 显示计算器
     showCalculator(state, track) {
@@ -60,9 +63,6 @@ const mutations = {
             state.result = eval(state.enter)
         }
     },
-    refreshOk(state, boo) {
-        state.refresh = boo;
-    }
 }
 export default new Vuex.Store({
     state, mutations

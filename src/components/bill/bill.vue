@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    <div class="show-wrapper" ref="showWrapper">
+    <div class="show-wrapper" ref="showWrapper" :style="oHeight">
       <div class="content">
           <div v-show="billList" v-for="(itemBill, index) in billList">
               <h3>{{itemBill.dateFull}}</h3>
@@ -41,6 +41,9 @@ export default {
   data() {
     return {
       showModalDetail: false,
+      oHeight: {
+        height: window.screen.height - 140 + "px"
+      }
     };
   },
   components: {
@@ -102,6 +105,7 @@ export default {
 /* header-wrapper */
 .bill .header-wrapper {
   background: #1cbe99;
+  height: 90px;
   border-bottom: 1px solid rgba(82, 82, 82, 0.1);
 }
 .bill .header-wrapper .datePicker {
@@ -153,7 +157,6 @@ export default {
 
 /* show-wrapper */
 .bill .show-wrapper {
-  height: 500px;
   overflow: hidden;
 }
 .bill .show-wrapper h3 {
