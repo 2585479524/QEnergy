@@ -1,15 +1,20 @@
 <template>
-    <div class="login">
-      <div class="mainLogin">
+    <div class="login" >
+      <div class="mainLogin" :style="oHeight">
         <img src="../../assets/img/title2.png" alt="青能量">
-          <Input v-model="userLogin.telNumber" placeholder="请输入账号" clearable style="width: 200px"></Input>
-          <Input v-model="userLogin.pwd" type="password" placeholder="请输入密码" clearable style="width: 200px"></Input>
-
-          <Button type="success" style="width: 200px" @click="login">登录</Button>
-          <Button type="warning" style="width: 200px" @click="clickRegister">注册</Button>
+        <Input v-model="userLogin.telNumber" icon="person" placeholder="请输入账号" style="width: 200px"></Input>
+        <Input v-model="userLogin.pwd" icon="locked" type="password" placeholder="请输入密码" style="width: 200px"></Input>
+        <div class="check">
+          <Checkbox v-model="remember" class="checkout">记住账号</Checkbox>
+          <span>忘记密码？</span>
+        </div>
+        
+        <Button class="login-btn" style="width: 200px" @click="loginUser">登录</Button>
+        
+        <span class="new-user" @click="clickRegister">注册新账号</span>
       </div>
-      <Modal v-model="showModal" width="360":styles="{top: '40px'}">
-        <p slot="header" style="color:#57a3f3; text-align:center">
+      <Modal class="registerModal" v-model="showModal" width="360">
+        <p slot="header" style="color:#1cbe99; text-align:center">
           <Icon type="edit"></Icon>
           <span>注册账号</span>
         </p>
@@ -34,7 +39,7 @@
           <br>
         </div>
         <div slot="footer">
-          <Button type="primary" size="large" long @click.prevent="submitRegister">注册</Button>
+          <Button class="register-btn" size="large" long @click.prevent="submitRegister">注册</Button>
         </div>
       </Modal>
     </div>
@@ -43,12 +48,13 @@
 <script>
 import Vue from "vue";
 import axios from "axios";
-import { Input, Button, Message, Modal, Icon } from "iview";
+import { Input, Button, Message, Modal, Icon, Checkbox } from "iview";
 import router from "../../router";
 import store from "../../store/store";
 import { mapState, mapMutations } from "vuex";
 
 axios.defaults.withCredentials = true;
+
 Vue.prototype.$Message = Message;
 export default {
   data() {
@@ -75,7 +81,11 @@ export default {
         idCard: /(?:1[1-5]|2[1-3]|3[1-7]|4[1-6]|5[0-4]|6[1-5])\d{4}(?:1[89]|20)\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])\d{3}(?:\d|[xX])/
       },
       confirmPwd: "",
-      showModal: false
+      showModal: false,
+      remember: false,
+      oHeight: {
+        height: window.screen.height + "px"
+      }
     };
   },
   store,
@@ -83,22 +93,26 @@ export default {
     Input,
     Button,
     Modal,
-    Icon
+    Icon,
+    Checkbox
   },
   created() {
+    // 将localStroge中的两个参数存入userLogin
     let userLogin = {
       telNumber: window.localStorage.getItem("telNumber"),
       pwd: window.localStorage.getItem("pwd")
     };
+    // 如果存在这两个参数，自动调用登录函数
     if (userLogin.telNumber && userLogin.pwd) {
       this._loginPost(userLogin);
     }
   },
   methods: {
     _loginPost(userLogin) {
-      if (window.storage.getItem("telNumber")) {
-        storage.setItem("telNumber", this.userLogin.telNumber);
-        storage.setItem("pwd", this.userLogin.pwd);
+      // 如果localStroge中没有登录缓存,记录缓存
+      if (!window.localStorage.getItem("telNumber")) {
+        window.localStorage.setItem("telNumber", this.userLogin.telNumber);
+        window.localStorage.setItem("pwd", this.userLogin.pwd);
       }
       axios
         .post("http://120.78.86.45/auth/login", {
@@ -114,7 +128,7 @@ export default {
         })
         .catch();
     },
-    login() {
+    loginUser() {
       if (this.userLogin.telNumber == "" || this.userLogin.pwd == "") {
         this.$Message.warning("请输入账号或密码");
       } else {
@@ -207,33 +221,78 @@ export default {
 
 <style>
 .mainLogin {
-  padding-top: 150px;
-  padding-bottom: 150px;
   display: flex;
   flex-direction: column;
   align-items: center;
   background: #1cbe99;
 }
-mainLogin .mainLogin img {
-  height: 50px;
+/* img */
+.mainLogin img {
+  padding: 100px 0 30px;
 }
-.mainLogin * {
-  margin: 10px 0;
+/* input左侧icon */
+.mainLogin .ivu-input {
+  padding: 4px 32px;
+}
+.mainLogin .ivu-input-icon {
+  left: 0;
+}
+.mainLogin .ivu-input-wrapper {
+  background: hsla(0, 0%, 100%, 0.3);
+  margin: 20px 0 0;
+}
+/* 记住密码和忘记密码 */
+.mainLogin .check {
+  display: flex;
+  margin: 5px 0;
+  padding-left: 2px;
+  width: 200px;
+  color: #fff;
+  justify-content: space-between;
+}
+.mainLogin .check .ivu-checkbox-checked .ivu-checkbox-inner {
+  border-color: #ffffff6c;
+  background-color: #1cbe99;
+}
+.mainLogin .check .ivu-checkbox-focus {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.486);
+}
+.mainLogin .check span {
+  margin: 0;
+}
+/* 登录按钮 */
+.mainLogin .login-btn {
+  color: #fff;
+  border-color: rgba(24, 111, 98, 0.219);
+  background-color: #ff9900;
+}
+/* 注册新账号 */
+.mainLogin .new-user {
+  display: flex;
+  margin-top: 5px;
+  width: 200px;
+  color: #fff;
+  justify-content: flex-end;
+}
+/* 注册Modal */
+.registerModal .ivu-modal-content {
+  border-radius: 0;
+  background-color: #ffffffe3;
+}
+.registerModal .ivu-input-focus :hover {
+  box-shadow: 0 0 0 2px rgba(28, 190, 153, 0.2);
+}
+.registerModal .ivu-input:hover {
+  border-color: #1cbe99;
 }
 .registerModal .text {
   display: inline-block;
   width: 70px;
   text-align: right;
 }
-.vertical-center-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.vertical-center-modal .ivu-modal {
-  top: 0;
-}
-.ivu-modal-footer {
-  border: none;
+.registerModal .register-btn {
+  color: #fff;
+  border-color: rgba(24, 111, 98, 0.219);
+  background-color: #1cbe99;
 }
 </style>
