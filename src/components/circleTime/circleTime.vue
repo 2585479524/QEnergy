@@ -2,20 +2,19 @@
 <div class="circle-time">
     <div class="circle-wrapper">
         <!-- circle组件 -->
-        <xCircle :percent="percent" :stroke-color="color" :size="170">
-            <Icon v-if="percent == 100" type="ios-checkmark-empty" size="60" style="color: #5cb85c"></Icon>
-            <span v-else style="font-size:40px">{{ percentCeil }}%</span>
+        <xCircle :percent="percent" :stroke-color="strokeColor" :trail-color="trailColor" :size="140">
+            <Icon v-if="percent == 100" type="ios-checkmark-empty" size="40" style="color: #5cb85c"></Icon>
+            <span v-else style="font-size:35px; color:#fff">{{ percentCeil }}%</span>
         </xCircle>
 
-        <span class="time">剩余时间:{{ `${min}分钟 ${sec}秒` }}</span>
-        <Button class="setTomato" type="primary" @click="setTomato">{{setTomatoName}}</Button>
+        <span class="time">剩余时间: {{ `${min}分钟 ${sec}秒` }}</span>
+        <Button class="set-btn" @click="setTomato">{{setTomatoName}}</Button>
     </div>
-    
+
     <Modal
         v-model="showModal"
         title="设置新的番茄时钟"
-        class="modal-wrapper"
-        class-name="vertical-center-modal">
+        class="modal-wrapper">
         <span class="text">时长：</span>
         <RadioGroup v-model="newDuration" type="button">
             <Radio :label="item" v-for="(item, index) in durationList" :key="index" @click.native.self="customizeDuration(index)"></Radio>
@@ -29,12 +28,11 @@
         <br><br>
 
         <span class="text">备注：</span>
-        <Input v-model="newInfo" placeholder="请输入备注" style="width: 240px"></Input>
+        <Input v-model="newInfo" placeholder="写点东西吧..." style="width: 233px"></Input>
         <div slot="footer">
-            <Button type="primary" long @click="configerTomato">确定</Button>
+            <Button type="primary" long @click="configerTomato" @onCancel="cancelModal">确定</Button>
         </div>
     </Modal>
-
     <Modal
       v-model="showCustomizeDuration"
       title="自定义时长"
@@ -106,7 +104,7 @@ Vue.prototype.$Modal = Modal;
 export default {
   data() {
     return {
-      durationList: ["0.1分钟", "35分钟", "自定义"],
+      durationList: ["25分钟", "35分钟", "自定义"],
       labelList: ["学习", "运动", "工作", "自定义"],
       percent: 0,
 
@@ -142,7 +140,8 @@ export default {
       sec: 0,
       msec: 0,
       setTomatoName: "设置时钟",
-      clockX: 0
+      clockX: 0,
+      trailColor: "#fff"
     };
   },
   components: {
@@ -160,7 +159,7 @@ export default {
   },
   computed: {
     ...mapState(["clockId"]),
-    color() {
+    strokeColor() {
       // 蓝
       let color = "#2db7f5";
       if (this.percent == 100) {
@@ -180,6 +179,9 @@ export default {
     }
   },
   methods: {
+    cancelModal() {
+      console.log(1);
+    },
     // 添加自定义按钮功能
     customizeDuration(index) {
       if (index == this.durationList.length - 1) {
@@ -201,6 +203,12 @@ export default {
     },
     // 用户自定义时长点击确定，检测是否有警告
     cusDurationOk() {
+      console.log(1);
+      console.log(this.customizeDurationProps);
+      
+      if (this.customizeDurationProps == "") {
+        this.cusDurationWarn == true;
+      }
       if (this.cusDurationWarn == false) {
         this.showCustomizeDuration = false;
         this.durationList[this.durationList.length - 1] =
@@ -307,41 +315,71 @@ export default {
       this.newLabel = this.labelList[0];
       this.percent = 0;
       this.$emit("refreshProps", this.refreshProps);
-    },
+    }
   }
 };
 </script>
 
 <style>
 .circle-time {
-  background: #fff;
+  background: #1cbe99;
 }
+/* 圆环 */
 .circle-time .circle-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 30px;
 }
-.vertical-center-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.vertical-center-modal .ivu-modal {
-  top: -50px;
-}
-.circle-time .circle-wrapper .setTomato {
+.circle-time .circle-wrapper .ivu-chart-circle {
   margin: 10px 0;
 }
+
+/* 按钮 */
+.circle-time .circle-wrapper .set-btn {
+  margin: 10px 0;
+  background-color: #fa565e;
+  border-radius: 0;
+  border-color: #fa565ea4;
+  color: #fff;
+}
 .circle-time .circle-wrapper .time {
-  font-size: 20px;
+  display: block;
+  font-size: 14px;
+  color: #fff;
 }
-.circle-time .modal-wrapper .ivu-modal-footer {
-  border: none;
+
+/* modal  修改原生组件css */
+.ivu-modal-content {
+  border-radius: 0;
 }
-.circle-time .modal-wrapper .text {
-  display: inline-block;
-  width: 100px;
-  text-align: right;
+.ivu-radio-group-button .ivu-radio-wrapper-checked:first-child {
+  border-color: #1cbe99;
+  color: #1cbe99;
+}
+.ivu-radio-group-button .ivu-radio-wrapper:first-child {
+  border-radius: 0;
+}
+.ivu-radio-group-button .ivu-radio-wrapper:last-child {
+  border-radius: 0;
+}
+.ivu-radio-group-button .ivu-radio-wrapper-checked {
+  border-color: #1cbe99;
+  color: #1cbe99;
+}
+.ivu-radio-group-button .ivu-radio-focus {
+  box-shadow: -1px 0 0 0 #1cbe99, 0 0 0 2px rgba(28, 190, 153, 0.2) !important;
+}
+.ivu-radio-group-button .ivu-radio-wrapper-checked:hover {
+  border-color: #1cbe99;
+  color: #1cbe99;
+}
+.ivu-radio-group-button .ivu-radio-wrapper:after {
+  background: rgba(28, 190, 153, 0.2) !important;
+}
+.ivu-input-wrapper .ivu-input {
+  border-radius: 0;
+}
+.ivu-input-wrapper .ivu-input:hover {
+  border-color: #1cbe99;
 }
 </style>

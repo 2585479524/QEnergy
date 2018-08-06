@@ -1,22 +1,22 @@
 <template>
-    <div class="tomato">
-        <circleTime @refreshProps="refreshOk"></circleTime>
-        <div class="down-wrapper" ref="downWrapper">
-            <div class="content">
-              <Card class="historyCard" v-for="(item, index) in clockList" :key="index">
-                  <span class="label">{{item.clockLabel}}</span>
-                  <div class="text">
-                      <span>开始时间：{{item.clockStart}}</span><br>
-                      <span>番茄时长：{{item.clockDuration}}</span>
-                  </div>
-                  <br><br>
-                  <span class="remarks" v-if="item.clockInfo">备注：{{item.clockInfo}}</span>
-              </Card>
-            </div>
+  <div class="tomato">
+    <div class="circle-wrapper">
+      <circleTime @refreshProps="refreshOk"></circleTime>
+    </div>
+    <div class="down-wrapper" ref="downWrapper">
+        <div class="content">
+          <Card class="historyCard" v-for="(item, index) in clockList" :key="index">
+              <span class="label">{{item.clockLabel}}</span>
+              <div class="text">
+                  <span>开始时间：{{item.clockStart}}</span><br>
+                  <span>番茄时长：{{item.clockDuration}}</span>
+              </div>
+              <br><br>
+              <span class="remarks" v-if="item.clockInfo">备注：{{item.clockInfo}}</span>
+          </Card>
         </div>
     </div>
-    
-    
+  </div>
 </template>
 
 <script>
@@ -69,6 +69,9 @@ export default {
 </script>
 
 <style>
+.tomato .circle-wrapper {
+
+}
 .tomato .down-wrapper {
   height: 350px;
   overflow: hidden;
