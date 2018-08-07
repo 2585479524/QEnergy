@@ -32,8 +32,6 @@ const mutations = {
         state.totalPay = bill.totalPay;
     },
     updateTomato(state, clockList) {
-        console.log(clockList);
-        
         state.clockList = clockList;
     },
     // 显示计算器

@@ -19,18 +19,21 @@
                       {{item.text}}
                   </div>
                   <div class="footer">
-                      <div class="footerIcon">
+                    <div class="footerIcon">
                         <Icon type="share"></Icon>
-                        转发(0)
-                      </div>
-                      <div class="footerIcon">
+                        <span v-if="item.zhuan">{{item.zhuan}}</span>
+                        <span v-else>转发</span>
+                    </div>
+                    <div class="footerIcon">
                         <Icon type="compose"></Icon>
-                        评论(0)
-                      </div>
-                      <div class="footerIcon" @click="thumbDiscuss(index)">
+                        <span v-if="item.ping">{{item.ping}}</span>
+                        <span v-else>评论</span>
+                    </div>
+                    <div class="footerIcon" @click="thumbDiscuss(index)">
                         <Icon type="thumbsup"></Icon>
-                        点赞({{item.fabCount}})
-                      </div>
+                        <span v-if="item.fabCount">{{item.fabCount}}</span>
+                        <span v-else>赞</span>
+                    </div>
                   </div>
               </Card>
             </div>
@@ -88,10 +91,11 @@ export default {
     deleteDiary(index) {
       axios
         .post("http://120.78.86.45/discuss/deleteDiscuss", {
-          id: this.discussList[index].id
+          postId: this.discussList[index].id
         })
         .then(res => {
           if (res.data.isDelete) {
+            this.discussList = res.data.discussList;
             this.$Message.success(res.data.message);
           }
         });

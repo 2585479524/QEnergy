@@ -163,8 +163,6 @@ export default {
           id: this.diaryList[index].id
         })
         .then(res => {
-            console.log(res);
-            
           if (res.data.isDelete) {
             this.$Message.warning(res.data.message);
           }

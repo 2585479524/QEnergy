@@ -63,19 +63,19 @@ export default {
       axios
         .post("http://120.78.86.45/tomato/showAnalysis")
         .then(res => {
-          // if (res.status === 200) {
-          //   this.loading = false;
-          //   if (res.data.isGet == true) {
-          //     this.dataEmpty = false;
+          if (res.status === 200) {
+            this.loading = false;
+            if (res.data.isGet == true) {
+              this.dataEmpty = false;
               this.total.totalCount = res.data.totalCount;
               this.total.totalDuration = res.data.totalDuration;
               this.total.todayCount = res.data.todayCount;
               this.total.todayDuration = res.data.todayDuration;
               this.chartData.rows = res.data.clockAnalysis;
-            // } else {
-            //   this.dataEmpty = true;
-            // }
-          // }
+            } else {
+              this.dataEmpty = true;
+            }
+          }
         })
         .catch();
     });

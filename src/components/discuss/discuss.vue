@@ -108,6 +108,7 @@ export default {
           })
           .then(res => {
             if (res.status === 200) {
+              this.discussList = res.data.discussList;
               this.$Message.success("发布成功");
             }
           })

@@ -148,18 +148,18 @@ export default {
           mood: "icon-cool",
           content: ""
         };
+        this.index = -1;
       } else {
         this.index = index;
         this.diaryEdit = this.diaryList[index];
       }
-      this.index = -1;
     },
     changeDiary(index) {
       if (index == -1) {
         if (this.diaryEdit.content != "") {
           axios
             .post("http://120.78.86.45/diary/createDiary", {
-        yearMonth: this.dateMain,
+              yearMonth: this.dateMain,
               weather: this.diaryEdit.weather,
               mood: this.diaryEdit.mood,
               content: this.diaryEdit.content
@@ -200,12 +200,12 @@ export default {
       axios
         .post("http://120.78.86.45/diary/deleteDiary", {
           id: this.diaryList[index].id,
-          yearMonth: this.dateMain,
+          yearMonth: this.dateMain
         })
         .then(res => {
           if (res.data.isDelete) {
             this.$Message.warning(res.data.message);
-              this.diaryList = res.data.diaryList;
+            this.diaryList = res.data.diaryList;
           }
         })
         .catch();

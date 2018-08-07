@@ -6,13 +6,15 @@
       <Button class="close-btn" type="text" @click="closePage">😂</Button>
     </div>
   </div>
-
-  <div class="line-wrapper">
+  <div class="show-wrapper" :style="oHeight">
+    <div class="line-wrapper">
     <VeLine :data="charLine" height="300px" :settings="chartSetLine"></VeLine>
   </div>
-    <div class="bar-wrapper">
-      <VeBar :data="chartBar" height="300px" :settings="chartSetBar"></VeBar>
-    </div>
+  <div class="bar-wrapper">
+    <VeBar :data="chartBar" height="300px" :settings="chartSetBar"></VeBar>
+  </div>
+  </div>
+  
 </div>
 </template>
 
@@ -49,6 +51,9 @@ export default {
         columns: ["payLabel", "payTotal"],
         rows: []
       },
+      oHeight: {
+        height: (window.screen.height - 56) + "px",
+      }
     };
   },
   created() {
@@ -117,5 +122,9 @@ export default {
   position: absolute;
   color: #fff;
   right: 10px;
+}
+.my-bill .bar-wrapper {
+  position: relative;
+  top: -20px
 }
 </style>
