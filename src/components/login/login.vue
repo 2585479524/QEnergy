@@ -244,7 +244,7 @@ export default {
 /* 记住密码和忘记密码 */
 .mainLogin .check {
   display: flex;
-  margin: 5px 0;
+  margin: 10px 0;
   padding-left: 2px;
   width: 200px;
   color: #fff;

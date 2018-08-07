@@ -1,63 +1,53 @@
 <template>
-    <div class="diary">
-        <div class="header">
-            <Button class="closeBtn" type="text" @click="back">返回</Button>
+    <div class="my-diary">
+      <div class="header-wrapper">
+            <Button class="close-btn" type="text" @click="back">返回</Button>
+            
         </div>
+        
         <div class="show-wrapper" ref="showWrapper">
             <div class="content-out">
                 <div class="content">
-                    <!-- 对组件添加事件要加.native -->
-                    <Card v-show="diaryList" v-for="(item, index) in diaryList" :key="index" @click.native="showDetail(index)">
-                        <span class="label">{{item.weather}}</span>
-                        <!-- 防止点击事件继续传播 -->
-                        <Button class="reDelButton" type="ghost" shape="circle" icon="arrow-return-left" @click.stop="reDeleteDiary(index)"></Button>
-                        <Button class="delButton" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
-                        <div class="text">
-                            <span>{{item.date}}</span>
-                        </div>
-                        <br>
-                        <br>
-                        <span class="remarks">{{item.content}}</span>
+                    <Card v-show="diaryList" v-for="(item, index) in diaryList" :key="index" @click.native="showModal(index)">
+                      <span class="label" :class="`color-${item.weather}`"><i class="iconfont" :class="item.weather"></i></span>
+                      <Button class="re-del-btn" type="ghost" shape="circle" icon="arrow-return-left" @click.stop="reDeleteDiary(index)"></Button>
+                      <Button class="del-btn" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
+                      <span class="text">{{item.date}}</span><br><br>
+                      <span class="remarks">{{item.content}}</span>
                     </Card>
                 </div>
             </div>
         </div>
-        <Modal v-model="showModalDetail" width="360" :styles="{top: '20px'}">
-            <p slot="header" style="color:#57a3f3; text-align:center">
-                <Icon type="edit"></Icon>
-                <span>心情日记</span>
-            </p>
-            <div style="text-align:center">
-                <span class="text">日记时间：{{diaryEdit.date}}</span>
-                <br>
-                <br>
-                <span class="text">天气：</span>
-                <RadioGroup v-model="diaryEdit.weather" type="button">
-                    <Radio label="晴"></Radio>
-                    <Radio label="阴"></Radio>
-                    <Radio label="雨"></Radio>
-                    <Radio label="雪"></Radio>
-                </RadioGroup>
-                <br>
-                <br>
-                <span class="text">心情：</span>
-                <RadioGroup v-model="diaryEdit.mood" type="button">
-                    <Radio label="愉快"></Radio>
-                    <Radio label="失落"></Radio>
-                    <Radio label="悲伤"></Radio>
-                    <Radio label="高兴"></Radio>
-                </RadioGroup>
-                <br>
-                <br>
-                <span class="text">日记内容</span>
-                <Input :value="diaryEdit.content" type="textarea" :autosize="{minRows: 10,maxRows: 15}" placeholder="Enter something..."></Input>
-                <br>
-                <br>
-            </div>
-            <div slot="footer">
-                <Button type="primary" size="large" long @click="closeDetail">关闭</Button>
-            </div>
-        </Modal>
+        <Modal class="detailModal" v-model="showDetailModal" width="360" :styles="{top: '30px'}">
+          <p slot="header" style="color:#1cbe99; text-align:center">
+              <Icon type="edit"></Icon>
+              <span>心情日记</span>
+          </p>
+          <div style="text-align:center">
+            <span class="textDate">{{diaryEdit.date}}</span>
+            <br><br>
+            <span class="text">天气：</span>
+            <RadioGroup v-model="diaryEdit.weather" type="button">
+              <Radio v-for="(item, index) in weatherRadio" :label="item" :key="index">
+                <i class="iconfont" :class="item"></i>
+              </Radio>
+            </RadioGroup>
+            <br><br>
+            <span class="text">心情：</span>
+            <RadioGroup v-model="diaryEdit.mood" type="button">
+              <Radio v-for="(item, index) in moodRadio" :label="item" :key="index">
+                <i class="iconfont" :class="item"></i>
+              </Radio>
+            </RadioGroup>
+            <br><br>
+            <span class="text">日记内容</span>
+            <Input v-model="diaryEdit.content" type="textarea" :autosize="{minRows: 10,maxRows: 15}" placeholder="记录你的点点滴滴..."></Input>
+            <br><br>
+          </div>
+          <div slot="footer">
+              <Button type="primary" size="large" long @click="changeDiary(index)">完成编辑</Button>
+          </div>
+      </Modal>
     </div>
 </template>
 
@@ -83,8 +73,22 @@ export default {
     return {
       diaryList: [],
       diaryEdit: {},
-      showModalDetail: false,
-      showModalEdit: false
+      showDetailModal: false,
+      showModalEdit: false,
+      weatherRadio: [
+        "icon-weibiaoti--4",
+        "icon-weibiaoti--2",
+        "icon-weibiaoti--3",
+        "icon-weibiaoti--1",
+        "icon-weibiaoti--"
+      ],
+      moodRadio: [
+        "icon-cool",
+        "icon-wink",
+        "icon-crazy",
+        "icon-sleeping",
+        "icon-cry"
+      ],
     };
   },
   components: {
@@ -176,46 +180,53 @@ export default {
 </script>
 
 <style>
-.diary {
+.my-diary {
   position: relative;
 }
-.diary .header {
-  display: flex;
-  justify-content: flex-end;
+.my-diary .header-wrapper {
+  background: #1cbe99;
+  border-bottom: 1px solid rgba(82, 82, 82, 0.1);
+  height: 50px;
+  padding: 10px 0;
 }
-.diary .show-wrapper {
+.my-diary .header-wrapper .close-btn {
+  position: absolute;
+  color: #fff;
+  right: 10px;
+}
+
+.my-diary .show-wrapper {
   height: 635px;
   overflow: hidden;
-  background: linear-gradient(to bottom, #1cbe99, #26b9bb);
 }
-.diary .show-wrapper .content-out {
+.my-diary .show-wrapper .content-out {
   padding: 20px 0;
 }
 .ivu-modal {
   top: 20px;
 }
-.diary .addBtn {
+.my-diary .addBtn {
   display: block;
   position: absolute;
   bottom: 10px;
   right: 30px;
   background: #26b9bb;
 }
-.diary .addBtn .ivu-icon {
+.my-diary .addBtn .ivu-icon {
   font-size: 30px;
   font-weight: 700;
 }
-.diary .show-wrapper .ivu-card {
+.my-diary .show-wrapper .ivu-card {
   margin: 0 20px 20px;
 }
-.diary .show-wrapper .ivu-card-body {
+.my-diary .show-wrapper .ivu-card-body {
   position: relative;
   height: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.diary .show-wrapper .ivu-card-body .label {
+.my-diary .show-wrapper .ivu-card-body .label {
   position: absolute;
   top: 15px;
   padding: 0 10px;
@@ -226,26 +237,41 @@ export default {
   text-align: center;
   color: #fff;
 }
-.diary .show-wrapper .ivu-card-body .reDelButton {
+.my-diary .show-wrapper .ivu-card-body .color-icon-weibiaoti--4 {
+  background: rgb(97, 161, 245);
+}
+.my-diary .show-wrapper .ivu-card-body .color-icon-weibiaoti--2 {
+  background: rgb(144, 245, 97);
+}
+.my-diary .show-wrapper .ivu-card-body .color-icon-weibiaoti--3 {
+  background: rgb(245, 156, 97);
+}
+.my-diary .show-wrapper .ivu-card-body .color-icon-weibiaoti--1 {
+  background: rgb(245, 107, 97);
+}
+.my-diary .show-wrapper .ivu-card-body .color-icon-weibiaoti-- {
+  background: rgb(245, 97, 225);
+}
+.my-diary .show-wrapper .ivu-card-body .re-del-btn {
   position: absolute;
   top: 10px;
   right: 55px;
 }
-.diary .show-wrapper .ivu-card-body .delButton {
+.my-diary .show-wrapper .ivu-card-body .del-btn {
   position: absolute;
   top: 10px;
   right: 15px;
 }
-.diary .show-wrapper .ivu-card-body .delButton .ivu-icon {
+.my-diary .show-wrapper .ivu-card-body .del-btn .ivu-icon {
   display: block;
   padding: 6px 5px;
 }
-.diary .show-wrapper .text {
+.my-diary .show-wrapper .text {
   position: absolute;
   top: 15px;
   left: 70px;
 }
-.diary .show-wrapper .remarks {
+.my-diary .show-wrapper .remarks {
   padding-left: 0px;
 }
 </style>

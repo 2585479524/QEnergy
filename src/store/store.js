@@ -14,7 +14,7 @@ const state = {
         iconCode: ""
     },
     billType: "",
-    clockoList: {},
+    clockList: [],
     billList: {},
     totalIncome: 0,
     totalPay: 0,
@@ -32,8 +32,9 @@ const mutations = {
         state.totalPay = bill.totalPay;
     },
     updateTomato(state, clockList) {
+        console.log(clockList);
+        
         state.clockList = clockList;
-        console.log(state.clockList);
     },
     // 显示计算器
     showCalculator(state, track) {

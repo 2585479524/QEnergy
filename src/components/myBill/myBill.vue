@@ -1,13 +1,15 @@
 <template>
 <div class="my-bill">
-  <Button  @click="closePage" type="ghost">取消</Button>
-  <div class="date-wrapper">
-    <DatePicker :value="dateMain" type="month" placeholder="Select month" style="width: 200px"></DatePicker>
+  <div class="header-wrapper">
+    <div class="date-picker">
+      <DatePicker :value="dateMain" type="month" style="width: 100px"></DatePicker>
+      <Button class="close-btn" type="text" @click="closePage">😂</Button>
+    </div>
   </div>
+
   <div class="line-wrapper">
     <VeLine :data="charLine" height="300px" :settings="chartSetLine"></VeLine>
   </div>
-    <hr>
     <div class="bar-wrapper">
       <VeBar :data="chartBar" height="300px" :settings="chartSetBar"></VeBar>
     </div>
@@ -28,6 +30,7 @@ export default {
       },
     };
     this.chartSetBar = {
+      xAxisType: ['KMB'],
       metrics: ["payTotal"],
       labelMap: {
         payTotal: "标签对应总支出",
@@ -46,7 +49,6 @@ export default {
         columns: ["payLabel", "payTotal"],
         rows: []
       },
-      dateMain: "2018-08"
     };
   },
   created() {
@@ -59,6 +61,13 @@ export default {
         this.chartBar.rows = res.data.pieList.labelPayList;
       })
       .catch();
+  },
+  computed: {
+    dateMain() {
+      let dateTime = new Date();
+      let str = dateTime.toJSON().substring(0, 7);
+      return str;
+    }
   },
   components: {
     VeLine,
@@ -75,19 +84,38 @@ export default {
 </script>
 
 <style>
-.my-bill {
-  background: linear-gradient(to bottom, #f7c2f0, #acc7fa);
+/* header-wrapper */
+.my-bill .header-wrapper {
+  background: #1cbe99;
+  border-bottom: 1px solid rgba(82, 82, 82, 0.1);
 }
-.my-bill .date-wrapper {
+.my-bill .header-wrapper .date-picker {
   display: flex;
-  justify-content: center;
-  padding: 10px;
+  flex-direction: column;
+  align-items: center;
+  height: 55px;
+  padding: 10px 0;
 }
-.my-bill .ivu-btn-ghost {
+.my-bill .header-wrapper .date-picker .ivu-input {
+  background-color: #1cbe99;
+  color: #fff;
+  border: 1px solid #fff;
+}
+.my-bill .header-wrapper .date-picker .ivu-input:focus {
+  border-color: aliceblue;
+}
+.my-bill .header-wrapper .date-picker .ivu-input-icon {
+  color: #fff;
+}
+.my-bill .header-wrapper .date-picker .ivu-icon-ios-calendar-outline:before {
+  content: "\F104";
+}
+.my-bill .header-wrapper .date-picker .ivu-icon-ios-close:before {
+  content: "\F10D";
+}
+.my-bill .header-wrapper .close-btn {
   position: absolute;
-  top: 10px;
+  color: #fff;
   right: 10px;
-  color: azure;
-  background-color: rgba(255, 255, 255, 0.3);
 }
 </style>
