@@ -39,13 +39,13 @@ export default {
     return {
       chartData: {
         columns: ["label", "scale"],
-        rows: [],
+        rows: []
       },
       total: {
         totalCount: 0,
         totalDuration: 0,
         todayCount: 0,
-        todayDuration: 0,
+        todayDuration: 0
       }
     };
   },
@@ -55,16 +55,16 @@ export default {
     Button
   },
   created() {
-    axios
-      .post(
-        "http://120.78.86.45/tomato/showAnalysis",
-      )
-      .then(res => {
-        console.log(res);
-        this.total = res.data;
-        this.chartData.rows = res.data.clockAnalysis;
-      })
-      .catch(err => {});
+    this.$nextTick(() => {
+      axios
+        .post("http://120.78.86.45/tomato/showAnalysis")
+        .then(res => {
+          console.log(res);
+          this.total = res.data;
+          this.chartData.rows = res.data.clockAnalysis;
+        })
+        .catch(err => {});
+    });
   },
   methods: {
     closePage() {
@@ -84,7 +84,7 @@ export default {
   top: 10px;
   right: 10px;
   color: azure;
-  background-color: rgba(255, 255, 255, 0.3)
+  background-color: rgba(255, 255, 255, 0.3);
 }
 .my-tomato .content {
   padding: 35px 20px 10px;

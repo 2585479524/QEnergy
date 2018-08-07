@@ -26,18 +26,13 @@ export default {
             window.localStorage.getItem("telNumber") &&
             window.localStorage.getItem("pwd")
           ) {
-            console.log(to);
-
             next();
           } else {
-            console.log("未登录");
             next({
               path: "/"
             });
           }
         } else {
-          console.log("不需要鉴权");
-
           next();
         }
       });
