@@ -28,7 +28,7 @@
           </div>
       </div>
     </div>
-    <Button class="add-btn" type="primary" shape="circle" icon="ios-plus-empty"  @click="edit"></Button>
+    <Button class="add-btn" :style="addTop" type="primary" shape="circle" icon="ios-plus-empty"  @click="edit"></Button>
   </div>
 </template>
 
@@ -43,6 +43,9 @@ export default {
       showModalDetail: false,
       oHeight: {
         height: window.screen.height - 140 + "px"
+      },
+      addTop: {
+        top: window.screen.height - 100 + "px"
       }
     };
   },
@@ -198,7 +201,6 @@ export default {
 }
 .bill .add-btn {
   position: absolute;
-  top: 520px;
   right: 30px;
   background: #1cbe99;
 }

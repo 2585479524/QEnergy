@@ -25,7 +25,7 @@
             </div>
         </div>
       </div>
-      <VePie :data="chartData"></VePie>
+      <VePie :data="chartData" :loading="loading" :data-empty="dataEmpty"></VePie>
     </div>
     
 </template>
@@ -46,7 +46,9 @@ export default {
         totalDuration: 0,
         todayCount: 0,
         todayDuration: 0
-      }
+      },
+      loading: false,
+      dataEmpty: false
     };
   },
   components: {
@@ -56,14 +58,26 @@ export default {
   },
   created() {
     this.$nextTick(() => {
+      this.loading = false;
+      this.dataEmpty = false;
       axios
         .post("http://120.78.86.45/tomato/showAnalysis")
         .then(res => {
-          console.log(res);
-          this.total = res.data;
-          this.chartData.rows = res.data.clockAnalysis;
+          // if (res.status === 200) {
+          //   this.loading = false;
+          //   if (res.data.isGet == true) {
+          //     this.dataEmpty = false;
+              this.total.totalCount = res.data.totalCount;
+              this.total.totalDuration = res.data.totalDuration;
+              this.total.todayCount = res.data.todayCount;
+              this.total.todayDuration = res.data.todayDuration;
+              this.chartData.rows = res.data.clockAnalysis;
+            // } else {
+            //   this.dataEmpty = true;
+            // }
+          // }
         })
-        .catch(err => {});
+        .catch();
     });
   },
   methods: {
@@ -75,6 +89,8 @@ export default {
 </script>
 
 <style>
+@import "v-charts/lib/style.css";
+
 .my-tomato {
   background: linear-gradient(to bottom, #b6c7e7, #71ffb8);
 }

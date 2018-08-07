@@ -1,12 +1,10 @@
 <template>
     <div class="mine">
-        <div class="avatar">
-            <div class="avatar-in">
-                <Avatar icon="person"></Avatar>
-                <span class="userName">用户名</span>
-            </div>
+        <div class="header-wrapper">
+            <Avatar icon="person"></Avatar>
+            <span class="userName">用户名</span>
         </div>
-        <div class="down-wrapper" ref="downWrapper">
+        <div class="down-wrapper" ref="downWrapper" :style="oHeight">
             <div class="content-out">
                 <div class="content">
                     <Card class="historyCard" v-for="(item, index) in mineContent" :key="index" @click.native.self="showAna(item)">
@@ -31,6 +29,9 @@ export default {
         myDiscuss: "我的讨论",
         about: "关于",
         exitApp: "退出"
+      },
+      oHeight: {
+        height: window.screen.height - 200 + "px"
       }
     };
   },
@@ -54,7 +55,6 @@ export default {
       });
     },
     showAna(name) {
-      console.log(this.$router);
       let url = "";
       if (name == "我的番茄") {
         url = "/myTomato";
@@ -68,8 +68,6 @@ export default {
         window.localStorage.clear();
         url = "/";
       }
-      console.log(this.$router);
-
       this.$router.push(url);
     }
   }
@@ -77,38 +75,40 @@ export default {
 </script>
 
 <style>
-.mine .avatar {
-  display: flex;
-  height: 150px;
-  justify-content: center;
-}
-.mine .avatar .avatar-in {
+/* header-wrapper */
+.mine .header-wrapper {
   display: flex;
   flex-direction: column;
-  text-align: center;
-  justify-content: center;
+  align-items: center;
+  height: 150px;
+  background: #1cbe99;
 }
-.mine .avatar .ivu-avatar {
+.mine .header-wrapper .ivu-avatar {
   font-size: 40px;
   line-height: 70px;
+  margin: 30px 10px 10px;
   width: 70px;
   height: 70px;
   border-radius: 35px;
 }
+
+/* 统计列表 */
 .mine .down-wrapper {
-  height: 470px;
   overflow: hidden;
-  background: linear-gradient(to bottom, #9af5ae, #75f1e1);
 }
 .mine .down-wrapper .content-out {
-  padding: 20px 0 60px;
+  padding: 20px 0;
 }
 .mine .down-wrapper .ivu-card {
-  margin: 0 20px 20px;
   display: flex;
-  font-size: 15px;
-  padding: 10px;
   justify-content: center;
+  padding: 10px;
+  margin: 0 20px 20px;
+  border-radius: 0;
+  background: #1cbe99;
+  border-color: #1cbe99;
+  font-size: 15px;
+  color: #fff;
 }
 .mine .down-wrapper .historyCard .ivu-card-body {
   padding: 0;

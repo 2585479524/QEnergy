@@ -38,15 +38,17 @@ export default {
     circleTime
   },
   created() {
-    this.$nextTick(function() {
-      axios
-        .post("http://120.78.86.45/tomato/showTodoList")
-        .then(res => {
-          this.updateTomato(res.data.clockList);
-        })
-        .catch(err => {
-          console.log(err);
+    axios
+      .post("http://120.78.86.45/tomato/showTodoList")
+      .then(res => {
+        this.updateTomato({
+          clockList: res.data.clockList
         });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    this.$nextTick(function() {
       this._initScroll();
     });
   },
