@@ -51,15 +51,21 @@ const mutations = {
     },
     // 计算
     calculate(state, value) {
+        
+        if (value === '.' && state.enter == '') {
+            value = "0."
+        }
         if (value === 'x') {
             state.result = "0";
             state.enter = "";
         } else if (value === '+' || value === '-') {
-            state.result = eval(state.enter)
+            state.result = Math.ceil(eval(state.enter))
             state.enter += value;
-        } else {
+        }  else {
             state.enter += value;
-            state.result = eval(state.enter)
+            state.result = Math.ceil(eval(state.enter));
+            console.log(state.result);
+            
         }
     },
 }

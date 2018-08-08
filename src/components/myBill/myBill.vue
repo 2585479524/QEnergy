@@ -2,8 +2,8 @@
 <div class="my-bill">
   <div class="header-wrapper">
     <div class="date-picker">
-      <DatePicker :value="dateMain" type="month" style="width: 100px"></DatePicker>
-      <Button class="close-btn" type="text" @click="closePage">😂</Button>
+      <DatePicker :value="dateMain" :editable="false"  placeholder="选择日期" type="month" style="width: 100px"></DatePicker>
+      <Button class="close-btn" type="text" @click="closePage">返回</Button>
     </div>
   </div>
   <div class="show-wrapper" :style="oHeight">

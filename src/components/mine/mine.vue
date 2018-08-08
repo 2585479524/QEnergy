@@ -7,7 +7,7 @@
         <div class="down-wrapper" ref="downWrapper" :style="oHeight">
             <div class="content-out">
                 <div class="content">
-                    <Card class="historyCard" v-for="(item, index) in mineContent" :key="index" @click.native.self="showAna(item)">
+                    <Card class="historyCard" v-for="(item, index) in mineContent" :key="index" @click.native="showAna(item)">
                         <span>{{item}}</span>
                     </Card>
                 </div>

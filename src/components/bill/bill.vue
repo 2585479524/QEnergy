@@ -2,7 +2,7 @@
   <div class="bill" v-cloak>
     <div class="header-wrapper">
       <div class="datePicker">
-        <DatePicker :value="dateMain" type="month" style="width: 100px"></DatePicker>
+        <DatePicker :value="dateMain" :editable="false" placeholder="选择日期" type="month" style="width: 100px" @on-change="selsectData"></DatePicker>
       </div>
       <div class="incomePay">
         <div class="income">
@@ -45,7 +45,7 @@ export default {
         height: window.screen.height - 140 + "px"
       },
       addTop: {
-        top: window.screen.height - 100 + "px"
+        top: window.screen.height - 120 + "px"
       }
     };
   },
@@ -91,6 +91,20 @@ export default {
     },
     edit() {
       this.$router.push("/editBill");
+    },
+    selsectData() {
+      axios
+      .post("http://120.78.86.45/bill/showTodoList", {
+        yearMonth: this.dateMain
+      })
+      .then(res => {
+        this.updateBill({
+          billList: res.data.billList,
+          totalIncome: res.data.totalIncome,
+          totalPay: res.data.totalPay
+        });
+      })
+      .catch();
     }
   }
 };
@@ -197,7 +211,7 @@ export default {
 }
 .bill .show-wrapper .money {
   position: absolute;
-  right: 20px;
+  right: 5%;
 }
 .bill .add-btn {
   position: absolute;

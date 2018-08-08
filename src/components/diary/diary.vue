@@ -2,7 +2,7 @@
     <div class="diary">
       <div class="header-wrapper">
         <div class="date-picker">
-          <DatePicker :value="dateMain" type="month" style="width: 100px"></DatePicker>
+          <DatePicker :value="dateMain" :editable="false" type="month" style="width: 100px" @on-change="selsectData"></DatePicker>
           <Button class="close-btn" type="text" @click="showModal(index)">编辑</Button>
         </div>
       </div>
@@ -139,6 +139,16 @@ export default {
         click: true
       });
     },
+    selsectData() {
+      axios
+        .post("http://120.78.86.45/diary/showTodoList", {
+          yearMonth: this.dateMain
+        })
+        .then(res => {
+          this.diaryList = res.data.diaryList;
+        })
+        .catch();
+    },
     showModal(index) {
       this.showDetailModal = true;
       if (index == -1) {
@@ -182,7 +192,7 @@ export default {
             yearMonth: this.dateMain,
             weather: this.diaryList[index].weather,
             mood: this.diaryList[index].mood,
-            content: this.diaryList[index].content
+            content: "<pre>" + this.diaryList[index].content + "</pre>"
           })
           .then(res => {
             if (res.data.isChange) {
@@ -225,8 +235,7 @@ export default {
 }
 .diary .header-wrapper .date-picker {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
   height: 55px;
   padding: 10px 0;
 }
@@ -249,8 +258,8 @@ export default {
 }
 .diary .header-wrapper .close-btn {
   position: absolute;
+  left: 82%;
   color: #fff;
-  right: 10px;
 }
 
 /* show-wrapper */

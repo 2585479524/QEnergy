@@ -2,7 +2,11 @@
     <div class="calculator">
         <div class="calMain">
             <div class="calRow">
-                <Input :value="enter" placeholder="请输入金额" style="width: 75%"></Input>
+                <!-- <Input :value="enter" placeholder="请输入金额"></Input> -->
+                <div class="enter">
+                  <span>{{enter}}</span>
+                  </div>
+                <!-- <Button type="ghost" style="width: 75%"></Button> -->
                 <Button type="ghost">{{result}}</Button>
             </div>
             <div class="calRow">
@@ -24,7 +28,7 @@
                 <Button type="ghost" @click="calculate('-')">-</Button>
             </div>
             <div class="calRow">
-                <Button type="ghost" @click="calculate('0.')">.</Button>   
+                <Button type="ghost" @click="calculate('.')">.</Button>   
                 <Button type="ghost" @click="calculate(0)">0</Button>   
                 <Button type="ghost" @click="calculate('x')">清空</Button>    
                 <Button type="ghost" @click="back">完成</Button>  
@@ -93,6 +97,15 @@ export default {
 }
 .calculator .calMain :first-child {
   border: none;
+}
+.calculator .calMain .enter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px;
+  font-size: 12px;
+  background: #fff;
+  width: 75%;
 }
 .calculator .calRow .ivu-input {
   height: 100%;

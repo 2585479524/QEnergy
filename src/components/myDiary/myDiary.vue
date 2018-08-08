@@ -2,7 +2,6 @@
     <div class="my-diary">
       <div class="header-wrapper">
             <Button class="close-btn" type="text" @click="back">返回</Button>
-            
         </div>
         
         <div class="show-wrapper" ref="showWrapper">

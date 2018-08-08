@@ -25,8 +25,7 @@
                             <span class="info">{{item.date}}</span>
                         </div>
                     </div>
-                    <div class="text">
-                        {{item.text}}
+                    <div class="text" v-html="item.text">
                     </div>
                     <div class="footer">
                         <div class="footerIcon">
@@ -98,13 +97,15 @@ export default {
       });
     },
     editDiscuss() {
+      this.content = "";
       this.showModalEdit = true;
     },
     editOk() {
+      console.log(this.content);
       if (this.content != "") {
         axios
           .post("http://120.78.86.45/discuss/create", {
-            content: this.content
+            content: "<pre>" + this.content + "</pre>"
           })
           .then(res => {
             if (res.status === 200) {
@@ -144,7 +145,7 @@ export default {
 .discuss .header-wrapper .close-btn {
   position: absolute;
   color: #fff;
-  right: 10px;
+  left: 82%;
 }
 
 .ivu-modal-content .ivu-btn {
@@ -184,8 +185,14 @@ export default {
   font-size: 12px;
 }
 .discuss .down-wrapper .content .text {
-  height: 80px;
-  padding: 0 10px;
+  height: 70px;
+  padding: 2px 10px;
+  /* white-space: nowrap; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+pre {
+  margin: 0;
 }
 .discuss .down-wrapper .content .footer {
   display: flex;
