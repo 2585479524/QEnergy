@@ -112,7 +112,7 @@ export default {
       })
       .then(res => {
         console.log(res);
-        
+
         this.diaryList = res.data.diaryList;
       })
       .catch();
@@ -141,15 +141,19 @@ export default {
         click: true
       });
     },
-    selsectData() {
-      axios
-        .post("http://120.78.86.45/diary/showTodoList", {
-          yearMonth: this.dateMain
-        })
-        .then(res => {
-          this.diaryList = res.data.diaryList;
-        })
-        .catch();
+    selsectData(time) {
+      console.log(time)
+      if (time != "") {
+        axios
+          .post("http://120.78.86.45/diary/showTodoList", {
+            yearMonth: time
+          })
+          .then(res => {
+            console.log(res);
+            this.diaryList = res.data.diaryList;
+          })
+          .catch();
+      }
     },
     showModal(index) {
       this.showDetailModal = true;
@@ -165,7 +169,7 @@ export default {
         this.index = index;
         this.diaryEdit = this.diaryList[index];
       }
-        this.index = -1;
+      this.index = -1;
     },
     changeDiary(index) {
       if (index == -1) {
@@ -175,7 +179,7 @@ export default {
               yearMonth: this.dateMain,
               weather: this.diaryEdit.weather,
               mood: this.diaryEdit.mood,
-              content:"<pre>" + this.diaryEdit.content+ "</pre>"
+              content: "<pre>" + this.diaryEdit.content + "</pre>"
             })
             .then(res => {
               if (res.data.isCreated) {
@@ -189,7 +193,6 @@ export default {
           this.$Message.error("日记内容不能为空");
         }
       } else {
-        
         axios
           .post("http://120.78.86.45/diary/editDiary", {
             id: this.diaryList[index].id,

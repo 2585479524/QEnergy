@@ -1,5 +1,5 @@
 <template>
-<div class="my-bill">
+<div class="my-bill" @touchmove.prevent>
   <div class="header-wrapper">
     <div class="date-picker">
       <DatePicker :value="dateMain" :editable="false" placeholder="选择日期" type="month" style="width: 100px" @on-change="selsectData"></DatePicker>
@@ -8,10 +8,10 @@
   </div>
   <div class="show-wrapper" :style="oHeight">
     <div class="line-wrapper">
-    <VeLine :data="charLine" height="300px" :settings="chartSetLine"></VeLine>
+    <VeLine :data="charLine" height="300px" :settings="chartSetLine":loading="loading" :data-empty="dataEmpty"></VeLine>
   </div>
   <div class="bar-wrapper">
-    <VeBar :data="chartBar" height="300px" :settings="chartSetBar"></VeBar>
+    <VeBar :data="chartBar" height="300px" :settings="chartSetBar":loading="loading" :data-empty="dataEmpty"></VeBar>
   </div>
   </div>
   
@@ -53,17 +53,29 @@ export default {
       },
       oHeight: {
         height: window.screen.height - 56 + "px"
-      }
+      },
+      loading: false,
+      dataEmpty: false
     };
   },
   created() {
+    this.loading = true;
+    this.dataEmpty = true;
     axios
       .post("http://120.78.86.45/bill/showAnalysis", {
         yearMonth: this.dateMain
       })
       .then(res => {
-        this.charLine.rows = res.data.lineList;
-        this.chartBar.rows = res.data.pieList.labelPayList;
+        if (res.status === 200) {
+          this.loading = false;
+          if (res.data.isGet == true) {
+            this.dataEmpty = false;
+            this.charLine.rows = res.data.lineList;
+            this.chartBar.rows = res.data.pieList.labelPayList;
+          } else {
+            this.dataEmpty = true;
+          }
+        }
       })
       .catch();
   },
@@ -73,16 +85,18 @@ export default {
       let str = dateTime.toJSON().substring(0, 7);
       return str;
     },
-    selsectData() {
-      axios
-        .post("http://120.78.86.45/bill/showAnalysis", {
-          yearMonth: this.dateMain
-        })
-        .then(res => {
-          this.charLine.rows = res.data.lineList;
-          this.chartBar.rows = res.data.pieList.labelPayList;
-        })
-        .catch();
+    selsectData(time) {
+      if (time != "") {
+        axios
+          .post("http://120.78.86.45/bill/showAnalysis", {
+            yearMonth: time
+          })
+          .then(res => {
+            this.charLine.rows = res.data.lineList;
+            this.chartBar.rows = res.data.pieList.labelPayList;
+          })
+          .catch();
+      }
     }
   },
   components: {
@@ -100,6 +114,7 @@ export default {
 </script>
 
 <style>
+@import "v-charts/lib/style.css";
 /* header-wrapper */
 .my-bill .header-wrapper {
   background: #1cbe99;
@@ -134,8 +149,14 @@ export default {
   color: #fff;
   right: 10px;
 }
+
+.my-bill .line-wrapper {
+  position: relative;
+  left: -5px;
+}
 .my-bill .bar-wrapper {
   position: relative;
   top: -20px;
+  left: -5px;
 }
 </style>

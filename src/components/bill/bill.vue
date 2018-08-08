@@ -92,19 +92,21 @@ export default {
     edit() {
       this.$router.push("/editBill");
     },
-    selsectData() {
-      axios
-      .post("http://120.78.86.45/bill/showTodoList", {
-        yearMonth: this.dateMain
-      })
-      .then(res => {
-        this.updateBill({
-          billList: res.data.billList,
-          totalIncome: res.data.totalIncome,
-          totalPay: res.data.totalPay
-        });
-      })
-      .catch();
+    selsectData(time) {
+      if (time != "") {
+        axios
+          .post("http://120.78.86.45/bill/showTodoList", {
+            yearMonth: time
+          })
+          .then(res => {
+            this.updateBill({
+              billList: res.data.billList,
+              totalIncome: res.data.totalIncome,
+              totalPay: res.data.totalPay
+            });
+          })
+          .catch();
+      }
     }
   }
 };
