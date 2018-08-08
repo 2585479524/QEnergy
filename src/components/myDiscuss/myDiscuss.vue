@@ -15,8 +15,7 @@
                           <span class="info">{{item.date}}</span>
                       </div>
                   </div>
-                  <div class="text">
-                      {{item.text}}
+                  <div class="text" v-html="item.text">
                   </div>
                   <div class="footer">
                     <div class="footerIcon">

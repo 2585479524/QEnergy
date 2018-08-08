@@ -36,6 +36,11 @@ export default {
           next();
         }
       });
+    },
+    addEventTest() {
+      plus.key.addEventListener("backbutton", () => {
+        alert("按下了返回键");
+      });
     }
   }
 };

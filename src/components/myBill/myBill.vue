@@ -2,7 +2,7 @@
 <div class="my-bill">
   <div class="header-wrapper">
     <div class="date-picker">
-      <DatePicker :value="dateMain" :editable="false"  placeholder="选择日期" type="month" style="width: 100px"></DatePicker>
+      <DatePicker :value="dateMain" :editable="false" placeholder="选择日期" type="month" style="width: 100px" @on-change="selsectData"></DatePicker>
       <Button class="close-btn" type="text" @click="closePage">返回</Button>
     </div>
   </div>
@@ -28,14 +28,14 @@ export default {
     this.chartSetLine = {
       labelMap: {
         dayIncome: "收入",
-        dayPay: "支出",
-      },
+        dayPay: "支出"
+      }
     };
     this.chartSetBar = {
-      xAxisType: ['KMB'],
+      xAxisType: ["KMB"],
       metrics: ["payTotal"],
       labelMap: {
-        payTotal: "标签对应总支出",
+        payTotal: "标签对应总支出"
       },
       dataOrder: {
         label: "payTotal",
@@ -52,7 +52,7 @@ export default {
         rows: []
       },
       oHeight: {
-        height: (window.screen.height - 56) + "px",
+        height: window.screen.height - 56 + "px"
       }
     };
   },
@@ -72,6 +72,17 @@ export default {
       let dateTime = new Date();
       let str = dateTime.toJSON().substring(0, 7);
       return str;
+    },
+    selsectData() {
+      axios
+        .post("http://120.78.86.45/bill/showAnalysis", {
+          yearMonth: this.dateMain
+        })
+        .then(res => {
+          this.charLine.rows = res.data.lineList;
+          this.chartBar.rows = res.data.pieList.labelPayList;
+        })
+        .catch();
     }
   },
   components: {
@@ -125,6 +136,6 @@ export default {
 }
 .my-bill .bar-wrapper {
   position: relative;
-  top: -20px
+  top: -20px;
 }
 </style>

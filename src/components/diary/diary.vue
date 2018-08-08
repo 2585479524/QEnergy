@@ -2,7 +2,7 @@
     <div class="diary">
       <div class="header-wrapper">
         <div class="date-picker">
-          <DatePicker :value="dateMain" :editable="false" type="month" style="width: 100px" @on-change="selsectData"></DatePicker>
+          <DatePicker :value="dateMain" :editable="false" placeholder="选择日期" type="month" style="width: 100px" @on-change="selsectData"></DatePicker>
           <Button class="close-btn" type="text" @click="showModal(index)">编辑</Button>
         </div>
       </div>
@@ -12,7 +12,7 @@
                 <span class="label" :class="`color-${item.weather}`"><i class="iconfont" :class="item.weather"></i></span>
                 <Button class="del-btn" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
                 <span class="text">{{item.date}}</span><br><br>
-                <span class="remarks">{{item.content}}</span>
+                <span class="remarks" v-html="item.content"></span>
             </Card>
           </div>
       </div>
@@ -111,6 +111,8 @@ export default {
         yearMonth: this.dateMain
       })
       .then(res => {
+        console.log(res);
+        
         this.diaryList = res.data.diaryList;
       })
       .catch();
@@ -163,6 +165,7 @@ export default {
         this.index = index;
         this.diaryEdit = this.diaryList[index];
       }
+        this.index = -1;
     },
     changeDiary(index) {
       if (index == -1) {
@@ -172,7 +175,7 @@ export default {
               yearMonth: this.dateMain,
               weather: this.diaryEdit.weather,
               mood: this.diaryEdit.mood,
-              content: this.diaryEdit.content
+              content:"<pre>" + this.diaryEdit.content+ "</pre>"
             })
             .then(res => {
               if (res.data.isCreated) {
@@ -186,6 +189,7 @@ export default {
           this.$Message.error("日记内容不能为空");
         }
       } else {
+        
         axios
           .post("http://120.78.86.45/diary/editDiary", {
             id: this.diaryList[index].id,
@@ -243,6 +247,9 @@ export default {
   background-color: #1cbe99;
   color: #fff;
   border: 1px solid #fff;
+}
+pre {
+  margin: 0;
 }
 .diary .header-wrapper .date-picker .ivu-input:focus {
   border-color: aliceblue;
