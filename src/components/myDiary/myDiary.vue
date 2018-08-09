@@ -12,7 +12,9 @@
                       <Button class="re-del-btn" type="ghost" shape="circle" icon="arrow-return-left" @click.stop="reDeleteDiary(index)"></Button>
                       <Button class="del-btn" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
                       <span class="text">{{item.date}}</span><br><br>
-                      <span class="remarks">{{item.content}}</span>
+                      <span class="remarks">
+                        <pre v-html="item.content"></pre>
+                      </span>
                     </Card>
                 </div>
             </div>

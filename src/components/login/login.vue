@@ -107,7 +107,11 @@ export default {
       this._loginPost(userLogin);
     }
   },
+  computed: {
+    ...mapState(["userId", "pwd","userName"]),
+  },
   methods: {
+    ...mapMutations(["update"]),
     _loginPost(userLogin) {
       // 如果localStroge中没有登录缓存,记录缓存
       if (!window.localStorage.getItem("telNumber")) {
@@ -121,6 +125,11 @@ export default {
         .then(res => {
           if (res.data.isLogin == true) {
             this.$Message.success(res.data.message);
+            this.update({
+              userId: res.data.userId,
+              pwd: res.data.pwd,
+              userName: res.data.userName,
+            })
             this.$router.push("footer/tomato");
           } else {
             this.$Message.error(res.data.message);

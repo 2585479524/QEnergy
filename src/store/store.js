@@ -3,8 +3,9 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 const state = {
-    userId: 'xxx',
+    userId: '',
     pwd: '',
+    userName: '',
     // 计算器相关参数
     calShow: false,
     result: "0.00",
@@ -21,9 +22,10 @@ const state = {
 }
 const mutations = {
     // 更新账号密码
-    update(state, userId, pwd) {
-        state.userId = userId;
-        state.pwd = pwd;
+    update(state, userInfo) {
+        state.userId = userInfo.userId;
+        state.pwd = userInfo.pwd;
+        state.userName = userInfo.userName;
     },
     // 存入bill列表
     updateBill(state, bill) {

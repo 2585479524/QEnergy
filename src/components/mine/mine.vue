@@ -2,7 +2,7 @@
     <div class="mine">
         <div class="header-wrapper">
             <Avatar icon="person"></Avatar>
-            <span class="userName">用户名</span>
+            <span class="userName">{{userName}}</span>
         </div>
         <div class="down-wrapper" ref="downWrapper" :style="oHeight">
             <div class="content-out">
@@ -19,6 +19,7 @@
 <script>
 import BScroll from "better-scroll";
 import { Card, Icon, Avatar } from "iview";
+import {mapState, mapMutations} from 'vuex';
 export default {
   data() {
     return {
@@ -41,7 +42,9 @@ export default {
     Icon,
     Avatar
   },
-  computed: {},
+  computed: {
+    ...mapState(['userName'])
+  },
   created() {
     this.$nextTick(function() {
       this._initScroll();
@@ -91,7 +94,10 @@ export default {
   height: 70px;
   border-radius: 35px;
 }
-
+.mine .header-wrapper .userName {
+  font-size: 20px;
+  color: #fff;
+}
 /* 统计列表 */
 .mine .down-wrapper {
   overflow: hidden;

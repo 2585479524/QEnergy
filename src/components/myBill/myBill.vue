@@ -162,16 +162,16 @@ export default {
 .my-bill .header-wrapper .close-btn {
   position: absolute;
   color: #fff;
-  right: 10px;
+  left: 82%;
 }
 
 .my-bill .line-wrapper {
   position: relative;
-  left: -5px;
+  left: -2%;
 }
 .my-bill .bar-wrapper {
   position: relative;
   top: -20px;
-  left: -5px;
+  left: -2%;
 }
 </style>

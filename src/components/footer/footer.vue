@@ -1,13 +1,19 @@
 <template>
-  <div class="footer">
-    <router-view/>
+  <div class="footer">  
+    <transition
+    name="custom-classes-transition"
+    enter-active-class="animated flipInY"
+    enter-leave-class="animated flipOutY"
+    :duration="{ enter: 500}">
+      <router-view/>
+    </transition>
     
     <div class="tab">
       <div class="tab-item" >
-        <router-link to="/footer/tomato">
-          <i class="iconfont icon-fanqie"></i>
-          <span class="text">番茄时钟</span>
-        </router-link>
+          <router-link to="/footer/tomato">
+            <i class="iconfont icon-fanqie"></i>
+            <span class="text">番茄时钟</span>
+          </router-link>
       </div>
       
       <div class="tab-item">
@@ -42,15 +48,12 @@
 </template>
 
 <script>
-export default {
-};
-var oHeight = window.screen.height;
-
+import animate from "animate.css";
+export default {};
 </script>
 
 <style>
 @import url("../../assets/iconfont.css");
-
 .tab {
   padding: 0;
   height: 50px;
@@ -59,17 +62,17 @@ var oHeight = window.screen.height;
   display: block;
   padding: 0;
   height: 30px;
+  color: #1cbe99;
   text-align: center;
   font-size: 25px;
 }
 .tab .tab-item .text {
   text-decoration: none;
   font-size: 10px;
-  color: rgb(77, 85, 93);
+  color: #1cbe99;
+}
+#app .tab .tab-item .active {
+  font-weight: 900;
 }
 
-#app .tab .tab-item .active {
-  /* color: aquamarine; */
-  font-weight: 700;
-}
 </style>
