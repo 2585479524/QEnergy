@@ -58,9 +58,12 @@ export default {
   computed: {
     ...mapState(["billList", "totalIncome", "totalPay"]),
     dateMain() {
+    Date.prototype.toJSON = function () { return this.toLocaleString(); }
       let dateTime = new Date();
-      let str = dateTime.toJSON().substring(0, 7);
-      return str;
+      let str = dateTime.toJSON().substring(0, 6);
+      let arr = str.split("/")
+      let strr = arr.join("-")
+      return strr;
     }
   },
   created() {

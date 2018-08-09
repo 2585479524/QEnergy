@@ -81,22 +81,14 @@ export default {
   },
   computed: {
     dateMain() {
+      Date.prototype.toJSON = function() {
+        return this.toLocaleString();
+      };
       let dateTime = new Date();
-      let str = dateTime.toJSON().substring(0, 7);
-      return str;
-    },
-    selsectData(time) {
-      if (time != "") {
-        axios
-          .post("http://120.78.86.45/bill/showAnalysis", {
-            yearMonth: time
-          })
-          .then(res => {
-            this.charLine.rows = res.data.lineList;
-            this.chartBar.rows = res.data.pieList.labelPayList;
-          })
-          .catch();
-      }
+      let str = dateTime.toJSON().substring(0, 6);
+      let arr = str.split("/");
+      let strr = arr.join("-");
+      return strr;
     }
   },
   components: {
@@ -108,6 +100,29 @@ export default {
   methods: {
     closePage() {
       this.$router.go(-1);
+    },
+    selsectData(time) {
+      if (time != "") {
+        axios
+          .post("http://120.78.86.45/bill/showAnalysis", {
+            yearMonth: time
+          })
+          .then(res => {
+            if (res.status === 200) {
+              this.loading = false;
+              if (res.data.isGet == true) {
+                this.dataEmpty = false;
+                this.charLine.rows = res.data.lineList;
+                this.chartBar.rows = res.data.pieList.labelPayList;
+              } else {
+                this.dataEmpty = true;
+                this.charLine.rows = [];
+                this.chartBar.rows = [];
+              }
+            }
+          })
+          .catch();
+      }
     }
   }
 };

@@ -25,7 +25,9 @@
                             <span class="info">{{item.date}}</span>
                         </div>
                     </div>
-                    <div class="text" v-html="item.text">
+                    <div class="text">
+                      <pre v-html="item.text">
+                      </pre>
                     </div>
                     <div class="footer">
                         <div class="footerIcon">
@@ -67,6 +69,20 @@ export default {
       }
     };
   },
+  computed: {
+    replaceContent() {
+      let str = this.content;
+      // 清除标签
+      str = str.replace(/<[^<>]+?>/g,'');
+      // 限制最多2次换行
+      str = str.replace(/((\s|&nbsp;)*\r?\n){3,}/g, "\r\n\r\n"); 
+      // 清除开头换行
+      str = str.replace(/^((\s|&nbsp;)*\r?\n)+/g, ""); 
+      // 清除结尾换行
+      str = str.replace(/((\s|&nbsp;)*\r?\n)+$/g, "");
+      return str;
+    }
+  },
   components: {
     BScroll,
     Card,
@@ -101,11 +117,10 @@ export default {
       this.showModalEdit = true;
     },
     editOk() {
-      console.log(this.content);
-      if (this.content != "") {
+      if (this.replaceContent != "") {
         axios
           .post("http://120.78.86.45/discuss/create", {
-            content: "<pre>" + this.content + "</pre>"
+            content: this.replaceContent
           })
           .then(res => {
             if (res.status === 200) {
