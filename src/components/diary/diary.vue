@@ -7,15 +7,18 @@
         </div>
       </div>
       <div class="show-wrapper" ref="showWrapper" :style="oHeight">
-          <div class="content">
+          <div class="content" v-if="diaryShow">
             <Card v-show="diaryList" v-for="(item, index) in diaryList" :key="index" @click.native="showModal(index)">
                 <span class="label" :class="`color-${item.weather}`"><i class="iconfont" :class="item.weather"></i></span>
                 <Button class="del-btn" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
-                <span class="text">{{item.date}}</span><br><br>
+                <span class="text">{{item.date}}</span><br>
                 <span class="remarks">
                   <pre v-html="item.content"></pre>
                 </span>
             </Card>
+          </div>
+          <div class="noData" v-else>
+            <span>暂无数据</span>
           </div>
       </div>
       <Modal class="detailModal" v-model="showDetailModal" width="360" :styles="{top: '30px'}">
@@ -25,24 +28,24 @@
           </p>
           <div style="text-align:center">
             <span class="textDate">{{diaryEdit.date}}</span>
-            <br><br>
+            <br>
             <span class="text">天气：</span>
             <RadioGroup v-model="diaryEdit.weather" type="button">
               <Radio v-for="(item, index) in weatherRadio" :label="item" :key="index">
                 <i class="iconfont" :class="item"></i>
               </Radio>
             </RadioGroup>
-            <br><br>
+            <br>
             <span class="text">心情：</span>
             <RadioGroup v-model="diaryEdit.mood" type="button">
               <Radio v-for="(item, index) in moodRadio" :label="item" :key="index">
                 <i class="iconfont" :class="item"></i>
               </Radio>
             </RadioGroup>
-            <br><br>
+            <br>
             <span class="text">日记内容</span>
             <Input v-model="diaryEdit.content" type="textarea" :autosize="{minRows: 10,maxRows: 15}" placeholder="记录你的点点滴滴..."></Input>
-            <br><br>
+            <br>
           </div>
           <div slot="footer">
               <Button type="primary" size="large" long @click="changeDiary(index)">完成编辑</Button>
@@ -139,6 +142,13 @@ export default {
       let arr = str.split("/");
       let strr = arr.join("-");
       return strr;
+    },
+    diaryShow() {
+      if (this.diaryList == "") {
+        return false;
+      } else {
+        return true;
+      }
     }
   },
   methods: {
@@ -301,6 +311,17 @@ pre {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.diary .show-wrapper .noData {
+  display: flex;
+  justify-content: center;
+}
+.diary .show-wrapper .noData span {
+  display: block;
+  position: absolute;
+  font-size: 15px;
+  width: 15px;
+  top: 200px;
+}
 .diary .show-wrapper .ivu-card-body .label {
   position: absolute;
   top: 15px;
@@ -340,6 +361,9 @@ pre {
   position: absolute;
   top: 15px;
   left: 70px;
+  /* white-space: nowrap; */
+  overflow: hidden;
+  /* text-overflow: ellipsis; */
 }
 .diary .show-wrapper .remarks {
   padding-left: 0px;

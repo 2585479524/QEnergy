@@ -16,7 +16,7 @@
             </Modal>
         </div>
         <div class="down-wrapper" ref="downWrapper" :style="oHeight">
-            <div class="content">
+            <div class="content" v-if="discussShow">
                 <Card v-for="(item, index) in discussList" :key="index">
                     <div class="user">
                         <Icon type="ionic"></Icon>
@@ -48,6 +48,9 @@
                     </div>
                 </Card>
             </div>
+            <div class="noData" v-else>
+              <span>暂无数据</span>
+            </div>
         </div>
     </div>
 </template>
@@ -73,14 +76,21 @@ export default {
     replaceContent() {
       let str = this.content;
       // 清除标签
-      str = str.replace(/<[^<>]+?>/g,'');
+      str = str.replace(/<[^<>]+?>/g, "");
       // 限制最多2次换行
-      str = str.replace(/((\s|&nbsp;)*\r?\n){3,}/g, "\r\n\r\n"); 
+      str = str.replace(/((\s|&nbsp;)*\r?\n){3,}/g, "\r\n\r\n");
       // 清除开头换行
-      str = str.replace(/^((\s|&nbsp;)*\r?\n)+/g, ""); 
+      str = str.replace(/^((\s|&nbsp;)*\r?\n)+/g, "");
       // 清除结尾换行
       str = str.replace(/((\s|&nbsp;)*\r?\n)+$/g, "");
       return str;
+    },
+    discussShow() {
+      if (this.discussList == "") {
+        return false;
+      } else {
+        return true;
+      }
     }
   },
   components: {
@@ -176,6 +186,17 @@ export default {
 }
 .discuss .down-wrapper .content {
   padding: 20px 0;
+}
+.discuss .down-wrapper .noData {
+  display: flex;
+  justify-content: center;
+}
+.discuss .down-wrapper .noData span {
+  display: block;
+  position: absolute;
+  font-size: 15px;
+  width: 15px;
+  top: 200px;
 }
 .discuss .down-wrapper .ivu-card {
   background-color: #f7f3f3;

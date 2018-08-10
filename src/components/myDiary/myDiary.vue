@@ -5,7 +5,7 @@
         </div>
         
         <div class="show-wrapper" ref="showWrapper">
-            <div class="content-out">
+            <div class="content-out" v-if="myDiaryShow">
                 <div class="content">
                     <Card v-show="diaryList" v-for="(item, index) in diaryList" :key="index" @click.native="showModal(index)">
                       <span class="label" :class="`color-${item.weather}`"><i class="iconfont" :class="item.weather"></i></span>
@@ -17,6 +17,9 @@
                       </span>
                     </Card>
                 </div>
+            </div>
+            <div class="noData" v-else>
+              <span>暂无数据</span>
             </div>
         </div>
         <Modal class="detailModal" v-model="showDetailModal" width="360" :styles="{top: '30px'}">
@@ -89,7 +92,7 @@ export default {
         "icon-crazy",
         "icon-sleeping",
         "icon-cry"
-      ],
+      ]
     };
   },
   components: {
@@ -115,6 +118,13 @@ export default {
       let arr = str.split("T");
       let strr = arr.join(" ");
       return strr;
+    },
+    myDiaryShow() {
+      if (this.diaryList != "") {
+        return false;
+      } else {
+        return true;
+      }
     }
   },
   methods: {
@@ -224,6 +234,17 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.my-diary .show-wrapper .noData {
+  display: flex;
+  justify-content: center;
+}
+.my-diary .show-wrapper .noData span {
+  display: block;
+  position: absolute;
+  font-size: 15px;
+  width: 15px;
+  top: 200px;
 }
 .my-diary .show-wrapper .ivu-card-body .label {
   position: absolute;

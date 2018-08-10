@@ -70,8 +70,10 @@ export default {
           this.loading = false;
           if (res.data.isGet == true) {
             this.dataEmpty = false;
+            
             this.charLine.rows = res.data.lineList;
             this.chartBar.rows = res.data.pieList.labelPayList;
+            console.log(this.chartBar.rows);
           } else {
             this.dataEmpty = true;
           }

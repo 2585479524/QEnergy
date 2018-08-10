@@ -2,7 +2,7 @@
   <div class="tomato">
     <circleTime></circleTime>
     <div class="down-wrapper" ref="downWrapper" :style="oHeight">
-        <div class="content">
+        <div class="content" v-if="tomatoShow">
           <Card v-for="(item, index) in clockList" :key="index">
               <span class="label">{{item.clockLabel}}</span>
               <div class="text">
@@ -12,6 +12,9 @@
               <br><br>
               <span class="remarks" v-if="item.clockInfo">备注：{{item.clockInfo}}</span>
           </Card>
+        </div>
+        <div class="noData" v-else>
+          <span>暂无数据</span>
         </div>
     </div>
   </div>
@@ -49,7 +52,14 @@ export default {
     });
   },
   computed: {
-    ...mapState(["clockList"])
+    ...mapState(["clockList"]),
+    tomatoShow() {
+      if (this.clockList == "") {
+        return false;
+      } else {
+        return true;
+      }
+    }
   },
   methods: {
     ...mapMutations(["updateTomato"]),
@@ -69,6 +79,17 @@ export default {
 }
 .tomato .down-wrapper .content {
   padding: 20px 0;
+}
+.tomato .down-wrapper .noData {
+  display: flex;
+  justify-content: center;
+}
+.tomato .down-wrapper .noData span {
+  display: block;
+  position: absolute;
+  font-size: 15px;
+  width: 15px;
+  top: 120px;
 }
 .tomato .down-wrapper .content .ivu-card {
   margin: 0 20px 20px;

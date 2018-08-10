@@ -1,11 +1,11 @@
 <template>
-    <div class="discuss">
+    <div class="my-discuss">
         <div class="header-wrapper">
             <Button class="close-btn" type="text" @click="back">返回</Button>
         </div>
 
         <div class="down-wrapper" ref="downWrapper" :style="oHeight">
-            <div class="content">
+            <div class="content" v-if="myDiscussShow">
               <Card v-for="(item, index) in discussList" :key="index">
                   <Button class="delButton" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
                   <div class="user">
@@ -37,6 +37,9 @@
                   </div>
               </Card>
             </div>
+            <div class="noData" v-else>
+              <span>暂无数据</span>
+            </div>
         </div>
     </div>
 </template>
@@ -66,6 +69,15 @@ export default {
     Modal,
     Input,
     Message
+  },
+  computed: {
+    myDiscussShow() {
+      if (this.discussList == "") {
+        return false;
+      } else {
+        return true;
+      }
+    }
   },
   created() {
     axios
@@ -134,13 +146,13 @@ export default {
 
 <style>
 /* header-wrapper */
-.discuss .header-wrapper {
+.my-discuss .header-wrapper {
   background: #1cbe99;
   border-bottom: 1px solid rgba(82, 82, 82, 0.1);
   height: 50px;
   padding: 10px 0;
 }
-.discuss .header-wrapper .close-btn {
+.my-discuss .header-wrapper .close-btn {
   position: absolute;
   color: #fff;
   right: 10px;
@@ -154,49 +166,60 @@ export default {
 .ivu-input-wrapper .ivu-input:hover {
   border-color: #1cbe99;
 }
-.discuss .down-wrapper {
+.my-discuss .down-wrapper {
   overflow: hidden;
 }
-.discuss .down-wrapper .content {
+.my-discuss .down-wrapper .content {
   padding: 20px 0;
 }
-.discuss .down-wrapper .delButton {
+.my-discuss .down-wrapper .delButton {
   position: absolute;
   top: 10px;
   right: 15px;
 }
-.discuss .down-wrapper .ivu-card {
+.my-discuss .down-wrapper .noData {
+  display: flex;
+  justify-content: center;
+}
+.my-discuss .down-wrapper .noData span {
+  display: block;
+  position: absolute;
+  font-size: 15px;
+  width: 15px;
+  top: 200px;
+}
+.my-discuss .down-wrapper .ivu-card {
   background-color: #f7f3f3;
   margin: 0 20px 20px;
 }
-.discuss .down-wrapper .ivu-card-body {
+.my-discuss .down-wrapper .ivu-card-body {
   padding: 0;
 }
-.discuss .down-wrapper .content .user {
+.my-discuss .down-wrapper .content .user {
   display: flex;
   padding: 10px 10px 0;
 }
-.discuss .down-wrapper .content .user i {
+.my-discuss .down-wrapper .content .user i {
   font-size: 40px;
   margin-right: 10px;
 }
-.discuss .down-wrapper .content .userInfo {
+.my-discuss .down-wrapper .content .userInfo {
   display: flex;
   flex-direction: column;
 }
-.discuss .down-wrapper .content .userInfo .info {
+.my-discuss .down-wrapper .content .userInfo .info {
   font-size: 12px;
 }
-.discuss .down-wrapper .content .text {
+.my-discuss .down-wrapper .content .text {
   height: 80px;
   padding: 0 10px;
 }
-.discuss .down-wrapper .content .footer {
+.my-discuss .down-wrapper .content .footer {
   display: flex;
   bottom: 10px;
   justify-content: space-around;
 }
-.discuss .down-wrapper .content .footer .footerIcon {
+.my-discuss .down-wrapper .content .footer .footerIcon {
   display: inline-block;
   width: 33.3%;
   height: 25px;
@@ -206,7 +229,7 @@ export default {
   text-align: center;
   color: #fff;
 }
-.discuss .down-wrapper .content .footer :last-child {
+.my-discuss .down-wrapper .content .footer :last-child {
   border: none;
 }
 </style>

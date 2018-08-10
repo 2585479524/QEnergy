@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="show-wrapper" ref="showWrapper" :style="oHeight">
-      <div class="content">
+      <div class="content" v-if="billShow">
           <div v-show="billList" v-for="(itemBill, index) in billList">
               <h3>{{itemBill.dateFull}}</h3>
               <!-- 对组件添加事件要加.native -->
@@ -26,6 +26,9 @@
                   <span class="money">{{item.type}}￥{{item.money}}</span>
               </Card>
           </div>
+      </div>
+      <div class="noData" v-else>
+        <span>暂无数据</span>
       </div>
     </div>
     <Button class="add-btn" :style="addTop" type="primary" shape="circle" icon="ios-plus-empty"  @click="edit"></Button>
@@ -64,6 +67,13 @@ export default {
       let arr = str.split("/")
       let strr = arr.join("-")
       return strr;
+    },
+    billShow() {
+      if (this.billList == "") {
+        return false;
+      } else {
+        return true;
+      }
     }
   },
   created() {
@@ -124,6 +134,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
 /* header-wrapper */
 .bill .header-wrapper {
   background: #1cbe99;
@@ -185,6 +196,17 @@ export default {
   padding: 5px 20px;
   font-size: 13px;
   color: rgba(7, 17, 27, 0.7);
+}
+.bill .show-wrapper .noData {
+  display: flex;
+  justify-content: center;
+}
+.bill .show-wrapper .noData span {
+  display: block;
+  position: absolute;
+  font-size: 15px;
+  width: 15px;
+  top: 165px;
 }
 .bill .show-wrapper .ivu-card {
   padding: 2px 0;
