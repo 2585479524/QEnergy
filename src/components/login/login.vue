@@ -8,7 +8,6 @@
           <Checkbox v-model="remember" class="checkout">记住账号</Checkbox>
           <span>忘记密码？</span>
         </div>
-        
         <Button class="login-btn" style="width: 200px" @click="loginUser">登录</Button>
         
         <span class="new-user" @click="clickRegister">注册新账号</span>
@@ -38,6 +37,7 @@
           <Input v-model="userInfo.idCard" placeholder="请输入身份证号" clearable style="width: 200px" @on-blur="checkCard"></Input>
           <br>
         </div>
+
         <div slot="footer">
           <Button class="register-btn" size="large" long @click.prevent="submitRegister">注册</Button>
         </div>
@@ -108,7 +108,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["userId", "pwd","userName"]),
+    ...mapState(["userId", "pwd", "userName"])
   },
   methods: {
     ...mapMutations(["update"]),
@@ -128,8 +128,8 @@ export default {
             this.update({
               userId: res.data.userId,
               pwd: res.data.pwd,
-              userName: res.data.userName,
-            })
+              userName: res.data.userName
+            });
             this.$router.push("footer/tomato");
           } else {
             this.$Message.error(res.data.message);
@@ -144,6 +144,7 @@ export default {
         this._loginPost(this.userLogin);
       }
     },
+
     // 正则检测手机号
     checkTel() {
       if (

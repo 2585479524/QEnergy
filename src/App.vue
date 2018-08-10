@@ -41,6 +41,9 @@ export default {
 };
 document.addEventListener("plusready", function() {
   var webview = plus.webview.currentWebview();
+  mui.init({
+    swipeBack: true //启用右滑关闭功能
+  });
   plus.key.addEventListener("backbutton", function() {
     webview.canBack(function(e) {
       mui.plusReady(function() {
