@@ -2,7 +2,7 @@
 <div class="circle-time">
     <div class="circle-wrapper">
         <!-- circle组件 -->
-        <xCircle :percent="percent" :stroke-color="strokeColor" :trail-color="trailColor" :size="140">
+        <xCircle :percent="percent" :stroke-color="strokeColor" trail-color="#fff" :size="140">
             <Icon v-if="percent == 100" type="ios-checkmark-empty" size="50" style="color: #fff"></Icon>
             <span v-else style="font-size:15px; color:#fff">
               剩余时间<br><br>
@@ -21,9 +21,6 @@
 
       <span class="text">时长：</span>
       <Slider v-model="newDuration" show-input :step="10"></Slider>
-      <!-- <Select v-model="newDuration" style="width:70px">
-        <Option v-for="(item, index) in durationList" :value="item" :key="index">{{ item }}</Option>
-      </Select> -->
       <span>分钟</span>
       <br><br>
       <span class="text">标签：</span>
@@ -80,7 +77,6 @@ import {
   Icon,
   Modal,
   Input,
-  TimePicker,
   Select,
   Option,
   Slider
@@ -92,21 +88,12 @@ Vue.prototype.$Modal = Modal;
 export default {
   data() {
     return {
-      durationList: ["0.1", "25", "35", "45", "60"],
       labelList: ["学习", "运动", "工作"],
-      percent: 0,
-
-      now: Date.parse(new Date()),
 
       // 设置番茄的三个参数
       newDuration: 30,
       newLabel: "学习",
       newInfo: "",
-
-      // 自定义时长参数
-      customizeDurationProps: "",
-      // 自定义标签参数
-      customizeLabelProps: "",
 
       // 点击设置番茄后弹出模态框
       showConfigModal: false,
@@ -115,12 +102,12 @@ export default {
       // 番茄时钟完成后弹出模态框
       showFinish: false,
 
+      percent: 0,
       min: 0,
       sec: 0,
       msec: 0,
       btnName: "设置时钟",
-      clockX: 0,
-      trailColor: "#fff"
+      clockX: 0
     };
   },
   components: {
@@ -129,7 +116,6 @@ export default {
     Icon,
     Modal,
     Input,
-    TimePicker,
     Select,
     Option,
     Slider
@@ -147,35 +133,10 @@ export default {
     durationNum() {
       this.msec = this.newDuration * 60 * 1000;
       return this.msec;
-    },
-    percentCeil() {
-      // 解决显示数据与真实数据的精度问题
-      return Math.ceil(this.percent);
     }
   },
   methods: {
     ...mapMutations(["updateTomato"]),
-    // 时钟开启，当用户点击“中断番茄”，确认中断后执行此函数
-    interruptOk() {
-      this.showInterrupt = false;
-      axios
-        .post("http://120.78.86.45/tomato/interruptClock", {
-          headers: {
-            "Content-Type": "application/json;charset=utf-8"
-          },
-          withCredentials: true
-        })
-        .then(res => {
-          if (res.data.isInterrupt == true) {
-            this.btnName = "设置时钟";
-            this.percent = 100;
-            this.sec = 0;
-            this.min = 0;
-          }
-        })
-        .catch(err => {});
-    },
-    // 用户单击“设置时钟”，各项参数置零，弹出配置面板
     setTomato() {
       if (this.btnName == "设置时钟") {
         this.showConfigModal = true;
@@ -183,7 +144,6 @@ export default {
         this.showInterrupt = true;
       }
     },
-    // 配置番茄完成后，点击确认，提交ajax请求，后台记录该番茄时钟的id
     configerTomato() {
       axios
         .post(
@@ -197,14 +157,13 @@ export default {
         .then(res => {
           this.clockX = res.data.clockId;
         })
-        .catch(err => {});
-
+        .catch();
       this.percent = 0;
       this.showConfigModal = false;
+
       this.btnName = "中断番茄";
 
       let rat = 100 / this.msec * 1000;
-
       let time = setInterval(() => {
         this.percent += rat;
         this.msec -= 1000;
@@ -224,17 +183,25 @@ export default {
         }
       }, 1000);
     },
-    refreshOk() {
-      this.showFinish = false;
-      this.newDuration = this.durationList[0];
-      this.newLabel = this.labelList[0];
-      this.percent = 0;
+    interruptOk() {
       axios
-        .post("http://120.78.86.45/tomato/showTodoList")
+        .post("http://120.78.86.45/tomato/interruptClock")
         .then(res => {
-          this.updateTomato(res.data.clockList);
+          if (res.data.isInterrupt == true) {
+            this.btnName = "设置时钟";
+            this.percent = 100;
+            this.min = 0;
+            this.sec = 0;
+          }
         })
         .catch();
+      this.showInterrupt = false;
+    },
+    refreshOk() {
+      this.showFinish = false;
+      this.newDuration = 30;
+      this.newLabel = this.labelList[0];
+      this.percent = 0;
     }
   }
 };
@@ -269,20 +236,26 @@ export default {
 }
 
 /* modal  修改原生组件css */
-.modal-wrapper .ivu-modal-content {
+/* .modal-wrapper .ivu-modal-content {
   border-radius: 0;
-}
+} */
 .modal-wrapper .ivu-input-wrapper .ivu-input {
   border-radius: 0;
 }
 .modal-wrapper .ivu-input-wrapper .ivu-input:hover {
   border-color: #1cbe99;
 }
+/* 滑块效果 */
 .modal-wrapper .ivu-slider-bar {
   background: #1cbe99;
 }
 .modal-wrapper .ivu-slider-button {
   border: 2px solid #1cbe99;
+}
+/* 选择框颜色 */
+.ivu-select-item-selected,
+.ivu-select-item-selected:hover {
+  background: #1cbe99;
 }
 .ivu-select-item-selected.ivu-select-item-focus {
   background: #1cbe99;

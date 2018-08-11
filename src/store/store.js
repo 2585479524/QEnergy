@@ -53,7 +53,7 @@ const mutations = {
     },
     // 计算
     calculate(state, value) {
-        
+
         if (value === '.' && state.enter == '') {
             value = "0."
         }
@@ -63,11 +63,9 @@ const mutations = {
         } else if (value === '+' || value === '-') {
             state.result = Math.ceil(eval(state.enter))
             state.enter += value;
-        }  else {
+        } else {
             state.enter += value;
             state.result = Math.ceil(eval(state.enter));
-            console.log(state.result);
-            
         }
     },
 }
