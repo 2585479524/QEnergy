@@ -20,9 +20,10 @@
         class="modal-wrapper">
 
       <span class="text">时长：</span>
-      <Select v-model="newDuration" style="width:70px">
+      <Slider v-model="newDuration" show-input :step="10"></Slider>
+      <!-- <Select v-model="newDuration" style="width:70px">
         <Option v-for="(item, index) in durationList" :value="item" :key="index">{{ item }}</Option>
-      </Select>
+      </Select> -->
       <span>分钟</span>
       <br><br>
       <span class="text">标签：</span>
@@ -81,7 +82,8 @@ import {
   Input,
   TimePicker,
   Select,
-  Option
+  Option,
+  Slider
 } from "iview";
 
 axios.defaults.withCredentials = true;
@@ -97,7 +99,7 @@ export default {
       now: Date.parse(new Date()),
 
       // 设置番茄的三个参数
-      newDuration: "25",
+      newDuration: 30,
       newLabel: "学习",
       newInfo: "",
 
@@ -129,7 +131,8 @@ export default {
     Input,
     TimePicker,
     Select,
-    Option
+    Option,
+    Slider
   },
   computed: {
     ...mapState(["clockList"]),
@@ -142,8 +145,7 @@ export default {
       return color;
     },
     durationNum() {
-      let str = this.newDuration;
-      this.msec = Number(str.slice(0, str.length)) * 60 * 1000;
+      this.msec = this.newDuration * 60 * 1000;
       return this.msec;
     },
     percentCeil() {
@@ -275,5 +277,14 @@ export default {
 }
 .modal-wrapper .ivu-input-wrapper .ivu-input:hover {
   border-color: #1cbe99;
+}
+.modal-wrapper .ivu-slider-bar {
+  background: #1cbe99;
+}
+.modal-wrapper .ivu-slider-button {
+  border: 2px solid #1cbe99;
+}
+.ivu-select-item-selected.ivu-select-item-focus {
+  background: #1cbe99;
 }
 </style>

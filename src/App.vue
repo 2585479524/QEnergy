@@ -36,39 +36,10 @@ export default {
           next();
         }
       });
-    }
+    },
+    
   }
 };
-document.addEventListener("plusready", function() {
-  var webview = plus.webview.currentWebview();
-  mui.init({
-    swipeBack: true //启用右滑关闭功能
-  });
-  plus.key.addEventListener("backbutton", function() {
-    webview.canBack(function(e) {
-      mui.plusReady(function() {
-        var first = null;
-        plus.key.addEventListener(
-          "backbutton",
-          function() {
-            if (!first) {
-              first = new Date().getTime();
-              mui.toast("再按一次退出应用");
-              setTimeout(function() {
-                first = null;
-              }, 1000);
-            } else {
-              if (new Date().getTime() - first < 1500) {
-                plus.runtime.quit();
-              }
-            }
-          },
-          false
-        );
-      });
-    });
-  });
-});
 </script>
 
 <style>
