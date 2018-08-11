@@ -15,30 +15,6 @@ export default {
     ...mapState(["count", "userInfo"])
   },
   store,
-  watch: {
-    $route: "checkLogin"
-  },
-  methods: {
-    checkLogin() {
-      router.beforeEach((to, from, next) => {
-        if (to.meta.checkLogined) {
-          if (
-            window.localStorage.getItem("telNumber") &&
-            window.localStorage.getItem("pwd")
-          ) {
-            next();
-          } else {
-            next({
-              path: "/"
-            });
-          }
-        } else {
-          next();
-        }
-      });
-    },
-    
-  }
 };
 </script>
 

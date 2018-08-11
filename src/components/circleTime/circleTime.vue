@@ -9,8 +9,6 @@
               {{ `${min} 分 ${sec} 秒` }}
               </span>
         </xCircle>
-
-        <!-- <span class="time"></span> -->
         <Button class="set-btn" @click="setTomato">{{btnName}}</Button>
     </div>
 
@@ -19,10 +17,8 @@
         title="设置新的番茄时钟"
         class="modal-wrapper">
 
-      <span class="text">时长：</span>
-      <Slider v-model="newDuration" show-input :step="10"></Slider>
-      <span>分钟</span>
-      <br><br>
+      <span class="text">时长：{{newDuration}}分钟</span>
+      <Slider v-model="newDuration" :step="10" :min="1"></Slider>
       <span class="text">标签：</span>
       <Select v-model="newLabel" style="width:70px">
         <Option v-for="(item, index) in labelList" :value="item" :key="index">{{ item }}</Option>
@@ -37,7 +33,7 @@
     </Modal>
 
     <!-- 执行中断番茄操作 -->
-    <Modal v-model="showInterrupt" width="360">
+    <Modal v-model="showInterrupt" width="360" class="interrput">
         <p slot="header" style="color:#f60;text-align:center">
             <Icon type="information-circled"></Icon>
             <span>中断番茄时钟</span>
@@ -79,11 +75,13 @@ import {
   Input,
   Select,
   Option,
-  Slider
+  Slider,
+  Notice
 } from "iview";
 
 axios.defaults.withCredentials = true;
 Vue.prototype.$Modal = Modal;
+Vue.prototype.$Notice = Notice;
 
 export default {
   data() {
@@ -91,7 +89,7 @@ export default {
       labelList: ["学习", "运动", "工作"],
 
       // 设置番茄的三个参数
-      newDuration: 30,
+      newDuration: 25,
       newLabel: "学习",
       newInfo: "",
 
@@ -99,14 +97,6 @@ export default {
       showConfigModal: false,
       // 点击中断番茄后弹出模态框
       showInterrupt: false,
-      // 番茄时钟完成后弹出模态框
-      showFinish: false,
-
-      percent: 0,
-      min: 0,
-      sec: 0,
-      msec: 0,
-      btnName: "设置时钟",
       clockX: 0
     };
   },
@@ -121,7 +111,15 @@ export default {
     Slider
   },
   computed: {
-    ...mapState(["clockList"]),
+    ...mapState([
+      "clockList",
+      "percent",
+      "msec",
+      "min",
+      "sec",
+      "btnName",
+      "showFinish"
+    ]),
     strokeColor() {
       // 番茄红
       let color = "#fa565e";
@@ -131,12 +129,21 @@ export default {
       return color;
     },
     durationNum() {
-      this.msec = this.newDuration * 60 * 1000;
+      this.setMsec(this.newDuration * 60 * 1000);
       return this.msec;
     }
   },
   methods: {
-    ...mapMutations(["updateTomato"]),
+    ...mapMutations([
+      "updateTomato",
+      "setPercent",
+      "setMsec",
+      "todoClick",
+      "setMin",
+      "setSec",
+      "setBtn",
+      "setRefresh"
+    ]),
     setTomato() {
       if (this.btnName == "设置时钟") {
         this.showConfigModal = true;
@@ -158,50 +165,31 @@ export default {
           this.clockX = res.data.clockId;
         })
         .catch();
-      this.percent = 0;
+      this.setPercent(0);
       this.showConfigModal = false;
-
-      this.btnName = "中断番茄";
-
-      let rat = 100 / this.msec * 1000;
-      let time = setInterval(() => {
-        this.percent += rat;
-        this.msec -= 1000;
-
-        let min = parseInt((this.msec / 1000 / 60) % 60);
-        let sec = parseInt((this.msec / 1000) % 60);
-        this.min = min > 9 ? min : "0" + min;
-        this.sec = sec > 9 ? sec : "0" + sec;
-
-        if (this.percent + rat > 100) {
-          this.percent = 100;
-          clearInterval(time);
-          this.min = 0;
-          this.sec = 0;
-          this.showFinish = true;
-          this.btnName = "设置时钟";
-        }
-      }, 1000);
+      this.setBtn("中断番茄");
+      this.todoClick();
     },
     interruptOk() {
       axios
         .post("http://120.78.86.45/tomato/interruptClock")
         .then(res => {
           if (res.data.isInterrupt == true) {
-            this.btnName = "设置时钟";
-            this.percent = 100;
-            this.min = 0;
-            this.sec = 0;
+            clearInterval(window.time);
+            this.setBtn("设置时钟");
+            this.setPercent(0);
+            this.setMin(0);
+            this.setSec(0);
           }
         })
         .catch();
       this.showInterrupt = false;
     },
     refreshOk() {
-      this.showFinish = false;
-      this.newDuration = 30;
+      this.setRefresh(false);
+      this.newDuration = 25;
       this.newLabel = this.labelList[0];
-      this.percent = 0;
+      this.setPercent(0);
     }
   }
 };
@@ -259,5 +247,9 @@ export default {
 }
 .ivu-select-item-selected.ivu-select-item-focus {
   background: #1cbe99;
+}
+.interrput .ivu-modal-content .ivu-btn {
+  background-color: #ed3f14;
+  border-color: #ed3f14;
 }
 </style>

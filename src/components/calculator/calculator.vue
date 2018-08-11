@@ -53,9 +53,14 @@ export default {
   computed: {
     ...mapState(["result", "enter", "icon", "billType"]),
     dateTime() {
+      Date.prototype.toJSON = function() {
+        return this.toLocaleString();
+      };
       let dateTime = new Date();
-      let str = dateTime.toJSON().substring(0, 10);
-      return str;
+      let str = dateTime.toJSON().substring(0, 9);
+      let arr = str.split("/");
+      let strr = arr.join("-");
+      return strr;
     }
   },
   methods: {

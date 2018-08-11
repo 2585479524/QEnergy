@@ -16,7 +16,7 @@ import myDiscuss from '@/components/myDiscuss/myDiscuss'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -99,3 +99,20 @@ export default new Router({
   ],
   linkActiveClass: 'active' //  将 router-link-active  改为 active（方便样式操作）
 })
+router.beforeEach((to, from, next) => {
+  if (to.meta.checkLogined) {
+    if (
+      window.localStorage.getItem("telNumber") &&
+      window.localStorage.getItem("pwd")
+    ) {
+      next();
+    } else {
+      next({
+        path: "/"
+      });
+    }
+  } else {
+    next();
+  }
+});
+export default router;
