@@ -6,8 +6,8 @@
         <div class="content-wrapper">
             <img class="pic" src="../../assets/img/teamlogo.png" alt="">
             <div class="text">
-                <img class="school-logo" src="../../assets/img/logo.png" alt="">
-                <span>青能量项目开发组</span>
+                <img class="school-logo" src="../../assets/img/schoollogo.png" alt="">
+                <span class="team-name">QEnergy 项目组</span>
                 <span>前端：白晨琪、周宣锐</span>
                 <span>后端：董悦、李广源、蒋润泽</span>
                 <span>版权所有</span>
@@ -22,6 +22,11 @@ import { Button } from "iview";
 export default {
   components: {
     Button
+  },
+  methods: {
+    closePage() {
+      this.$router.go(-1);
+    }
   }
 };
 </script>
@@ -47,7 +52,7 @@ export default {
 }
 .about .content-wrapper .pic {
   margin-top: 100px;
-  height: 80px;
+  height: 90px;
   width: 80px;
 }
 .about .content-wrapper .text {
@@ -60,11 +65,13 @@ export default {
   margin: 20px;
   height: 30px;
   width: 110px;
+}.about .content-wrapper .text .team-name {
+    font-size: 20px;
 }
 .about .content-wrapper .text span {
   padding: 10px;
 }
-.text {
+.about .text {
   background-image: -webkit-linear-gradient(
     left,
     blue,
