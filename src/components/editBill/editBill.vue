@@ -286,6 +286,7 @@ export default {
 .bill-edit .header-wrapper .close-btn {
   position: absolute;
   right: 10px;
+  color: #fff;
 }
 
 /* show-wrapper */
@@ -310,7 +311,7 @@ export default {
   height: 50px;
   text-align: center;
   border-radius: 35px;
-  background: #78cfa6;
+  background: #cad4d0;
 }
 .bill-edit .show-wrapper .content-out .content .iconGroup i {
   font-size: 30px;

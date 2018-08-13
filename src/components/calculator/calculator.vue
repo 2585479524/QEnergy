@@ -7,7 +7,7 @@
                   <span>{{enter}}</span>
                   </div>
                 <!-- <Button type="ghost" style="width: 75%"></Button> -->
-                <Button type="ghost">{{result}}</Button>
+                <Button class="result-btn" type="ghost">{{result}}</Button>
             </div>
             <div class="calRow">
                 <Button type="ghost" @click="calculate(7)">7</Button>
@@ -93,12 +93,14 @@ export default {
 <style>
 .calculator {
   width: 100%;
-  background: #1aebba;
+  background: #6ac2d8;
 }
 .calculator .calRow {
   display: flex;
   height: 45px;
   justify-content: space-around;
+}
+.calculator .calMain .result-btn {
 }
 .calculator .calMain :first-child {
   border: none;

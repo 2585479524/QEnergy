@@ -77,7 +77,7 @@ const mutations = {
       console.log(state.percent);
 
       state.msec -= 1000;
-      
+
       let min = parseInt((state.msec / 1000 / 60) % 60);
       let sec = parseInt((state.msec / 1000) % 60);
       state.min = min > 9 ? min : "0" + min;
@@ -95,7 +95,7 @@ const mutations = {
   },
   // 显示计算器
   showCalculator(state, track) {
-    state.result = "0";
+    state.result = "0.00";
     state.enter = "";
 
     if (track.icon) {
@@ -115,14 +115,14 @@ const mutations = {
       value = "0."
     }
     if (value === 'x') {
-      state.result = "0";
+      state.result = "0.00";
       state.enter = "";
     } else if (value === '+' || value === '-') {
-      state.result = Math.ceil(eval(state.enter))
+      state.result = eval(state.enter).toFixed(2)
       state.enter += value;
     } else {
       state.enter += value;
-      state.result = Math.ceil(eval(state.enter));
+      state.result = eval(state.enter).toFixed(2)
     }
   },
 }

@@ -75,8 +75,6 @@ export default {
   computed: {
     replaceContent() {
       let str = this.content;
-      // 清除标签
-      str = str.replace(/<[^<>]+?>/g, "");
       // 限制最多2次换行
       str = str.replace(/((\s|&nbsp;)*\r?\n){3,}/g, "\r\n\r\n");
       // 清除开头换行
