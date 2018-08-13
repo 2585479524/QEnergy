@@ -1,29 +1,12 @@
 <template>
-    <div class="my-tomato">
-      <Button  @click="closePage" type="ghost">取消</Button>
-      <div class="content">
-        <span class="title">累计数据</span>
-        <div class="showDate">
-            <div class="left">
-                <span class="name">番茄个数</span>
-                <span class="count">{{total.totalCount}}</span>
-            </div>
-            <div class="right">
-                <span class="name">累计时长</span>
-                <span class="count">{{total.totalDuration}}<span class="pi">分钟</span></span>
-            </div>
-        </div>
-        <span class="title">当日数据</span>
-        <div class="showDate">
-            <div class="left">
-                <span class="name">番茄个数</span>
-                <span class="count">{{total.todayCount}}</span>
-            </div>
-            <div class="right">
-                <span class="name">累计时长</span>
-                <span class="count">{{total.todayDuration}}<span class="pi">分钟</span></span>
-            </div>
-        </div>
+    <div class="my-tomato" @touchmove.prevent>
+      <div class="header-wrapper">
+        <Button class="close-btn" type="text" @click="closePage">取消</Button>
+      </div>
+
+      <div class="content-wrapper">
+        <totalTomato :name="name[0]" :count="total.totalCount" :duration="total.totalDuration"></totalTomato>
+        <totalTomato :name="name[1]" :count="total.todayCount" :duration="total.todayDuration"></totalTomato>
       </div>
       <VePie :data="chartData" :loading="loading" :data-empty="dataEmpty"></VePie>
     </div>
@@ -33,6 +16,7 @@
 <script>
 import { Card, Button } from "iview";
 import axios from "axios";
+import totalTomato from "../totalTomato/totalTomato"
 import VePie from "v-charts/lib/pie.common";
 export default {
   data() {
@@ -47,6 +31,7 @@ export default {
         todayCount: 0,
         todayDuration: 0
       },
+      name: ["累计数据", "今日数据"],
       loading: false,
       dataEmpty: false
     };
@@ -54,7 +39,8 @@ export default {
   components: {
     Card,
     VePie,
-    Button
+    Button,
+    totalTomato
   },
   created() {
     this.$nextTick(() => {
@@ -91,52 +77,18 @@ export default {
 <style>
 @import "v-charts/lib/style.css";
 
-.my-tomato {
-  background: linear-gradient(to bottom, #b6c7e7, #71ffb8);
+.my-tomato .header-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  height: 55px;
+  background: #1cbe99;
+  border-bottom: 1px solid rgba(28, 190, 153, 0.1);
 }
-
-.my-tomato .ivu-btn-ghost {
+.my-tomato .header-wrapper .close-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  color: azure;
-  background-color: rgba(255, 255, 255, 0.3);
-}
-.my-tomato .content {
-  padding: 35px 20px 10px;
-}
-.my-tomato .showDate {
-  display: flex;
-  font-size: 15px;
-  height: 80px;
-  justify-content: space-around;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  left: 82%;
 }
 
-.my-tomato .title {
-  display: block;
-  padding: 3px 0;
-  font-size: 14px;
-}
-.my-tomato .showDate .left,
-.right {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-.my-tomato .showDate .name {
-  text-align: center;
-  font-size: 13px;
-}
-.my-tomato .showDate .count {
-  display: block;
-  position: relative;
-  font-size: 25px;
-  text-align: center;
-}
-.my-tomato .showDate .pi {
-  font-size: 10px;
-  padding: 3px;
-}
 </style>

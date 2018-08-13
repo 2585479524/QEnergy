@@ -8,6 +8,7 @@ import bill from '@/components/bill/bill'
 import editBill from '@/components/editBill/editBill'
 import calculator from '@/components/calculator/calculator'
 import discuss from '@/components/discuss/discuss'
+import about from '@/components/about/about'
 import mine from '@/components/mine/mine'
 import myTomato from '@/components/myTomato/myTomato'
 import myDiary from '@/components/myDiary/myDiary'
@@ -51,6 +52,12 @@ const router = new Router({
       path: '/editBill',
       name: 'editBill',
       component: editBill,
+      meta: { checkLogined: true },
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: about,
       meta: { checkLogined: true },
     },
     {

@@ -19,7 +19,7 @@
 <script>
 import BScroll from "better-scroll";
 import { Card, Icon, Avatar } from "iview";
-import {mapState, mapMutations} from 'vuex';
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -43,7 +43,7 @@ export default {
     Avatar
   },
   computed: {
-    ...mapState(['userName'])
+    ...mapState(["userName"])
   },
   created() {
     this.$nextTick(function() {
@@ -67,6 +67,8 @@ export default {
         url = "/myBill";
       } else if (name == "我的讨论") {
         url = "/myDiscuss";
+      } else if (name == "关于") {
+        url = "/about";
       } else if (name == "退出") {
         window.localStorage.clear();
         url = "/";
