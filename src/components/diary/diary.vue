@@ -116,8 +116,6 @@ export default {
         yearMonth: this.dateMain
       })
       .then(res => {
-        console.log(res);
-
         this.diaryList = res.data.diaryList;
       })
       .catch();
@@ -158,6 +156,16 @@ export default {
         click: true
       });
     },
+    replaceContent(content) {
+      let str = content;
+      // 限制最多2次换行
+      str = str.replace(/((\s|&nbsp;)*\r?\n){3,}/g, "\r\n\r\n");
+      // 清除开头换行
+      str = str.replace(/^((\s|&nbsp;)*\r?\n)+/g, "");
+      // 清除结尾换行
+      str = str.replace(/((\s|&nbsp;)*\r?\n)+$/g, "");
+      return str;
+    },
     selsectData(time) {
       console.log(time);
       if (time != "") {
@@ -190,13 +198,13 @@ export default {
     },
     changeDiary(index) {
       if (index == -1) {
-        if (this.diaryEdit.content != "") {
+        if (this.replaceContent(this.diaryEdit.content) != "") {
           axios
             .post("http://120.78.86.45/diary/createDiary", {
               yearMonth: this.dateMain,
               weather: this.diaryEdit.weather,
               mood: this.diaryEdit.mood,
-              content: this.diaryEdit.content
+              content: this.replaceContent(this.diaryEdit.content)
             })
             .then(res => {
               if (res.data.isCreated) {
@@ -216,7 +224,7 @@ export default {
             yearMonth: this.dateMain,
             weather: this.diaryList[index].weather,
             mood: this.diaryList[index].mood,
-            content:this.diaryList[index].content
+            content: this.replaceContent(this.diaryList[index].content)
           })
           .then(res => {
             if (res.data.isChange) {

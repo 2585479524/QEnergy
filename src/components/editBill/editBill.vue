@@ -11,9 +11,9 @@
 
       <div class="show-wrapper" ref="showWrapper" :style="oHeight">
           <div class="content-out">
-              <div class="content" v-for="(icons, index) in showIcon">
-                  <div class="content-in" v-for="(icon, index) in icons">
-                      <div class="iconGroup" @click="showCalculator({btnType: 0,icon: icon,billType: showSwitch})">
+              <div class="content" v-for="(icons, index1) in showIcon">
+                  <div class="content-in" v-for="(icon, index2) in icons">
+                      <div class="iconGroup" @click="showCalculator({btnType: 0,icon: icon,billType: showSwitch});">
                           <div class="iconShowCode">
                               <i class="iconfont" :class="icon.iconCode"></i>
                           </div>

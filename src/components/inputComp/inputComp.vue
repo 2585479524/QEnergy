@@ -99,7 +99,7 @@ export default {
 
 .input__field--hoshi {
   margin-top: 1em;
-  padding: 0.85em 0.15em;
+  padding: 0 0.15em;
   width: 100%;
   background: transparent;
   color: #ffffff;

@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-cloak>
+  <div id="app" v-cloak @touchmove.prevent>
     <router-view/>
   </div>
 </template>

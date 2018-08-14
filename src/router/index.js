@@ -109,6 +109,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if (to.meta.checkLogined) {
     if (
+      window.localStorage.getItem("remember") ||
       window.localStorage.getItem("telNumber") &&
       window.localStorage.getItem("pwd")
     ) {

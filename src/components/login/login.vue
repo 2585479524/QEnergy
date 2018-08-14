@@ -126,7 +126,7 @@ export default {
     ...mapState(["userId", "pwd", "userName"])
   },
   methods: {
-    ...mapMutations(['update']),
+    ...mapMutations(["update"]),
     _newInput() {
       [].slice
         .call(document.querySelectorAll("input.input__field"))
@@ -211,7 +211,9 @@ export default {
     },
     _loginPost(userLogin) {
       // 如果localStroge中没有登录缓存,记录缓存
-      if (!window.localStorage.getItem("telNumber")) {
+      if (!this.remember) {
+        window.localStorage.setItem("remember", this.remember);
+      } else if (this.remember && !window.localStorage.getItem("telNumber")) {
         window.localStorage.setItem("telNumber", this.userLogin.telNumber);
         window.localStorage.setItem("pwd", this.userLogin.pwd);
       }
@@ -244,7 +246,9 @@ export default {
 
     // 正则检测手机号
     checkTel() {
-      if (
+      if (this.userInfo.telNumber == "") {
+        this.$Message.warning("请输入手机号");
+      } else if (
         this.userInfo.telNumber != "" &&
         !this.regUser.telNumber.test(this.userInfo.telNumber)
       ) {
@@ -255,7 +259,9 @@ export default {
     },
     // 正则检测用户名
     checkName() {
-      if (
+      if (this.userInfo.userName == "") {
+        this.$Message.warning("请输入昵称");
+      } else if (
         this.userInfo.userName != "" &&
         !this.regUser.userName.test(this.userInfo.userName)
       ) {
@@ -266,7 +272,9 @@ export default {
     },
     // 正则检测密码
     checkPwd() {
-      if (
+      if (this.userInfo.pwd == "") {
+        this.$Message.warning("请输入密码");
+      } else if (
         this.userInfo.pwd != "" &&
         !this.regUser.pwd.test(this.userInfo.pwd)
       ) {
@@ -285,7 +293,10 @@ export default {
     },
     // 正则检测身份证号
     checkCard() {
-      if (
+      console.log(this.userInfo.idCard);
+      if (this.userInfo.idCard == "") {
+        this.$Message.warning("请输入身份证号");
+      } else if (
         this.userInfo.idCard != "" &&
         !this.regUser.idCard.test(this.userInfo.idCard)
       ) {
@@ -331,7 +342,7 @@ document.addEventListener("plusready", function() {
     function() {
       // 事件处理
       plus.nativeUI.confirm(
-        "退出程序？",
+        "若开启了番茄时钟，退出应用将中断番茄，是否确定退出？",
         function(event) {
           if (!event.index) {
             window.localStorage.clear();
