@@ -2,8 +2,20 @@
     <div class="login" >
       <div class="mainLogin" :style="oHeight">
         <img src="../../assets/img/title2.png" alt="青能量">
-        <Input v-model="userLogin.telNumber" icon="person" placeholder="请输入账号" style="width: 200px"></Input>
-        <Input v-model="userLogin.pwd" icon="locked" type="password" placeholder="请输入密码" style="width: 200px"></Input>
+        <div class="input-comp">
+          <span class="input input--hoshi">
+              <input class="input__field input__field--hoshi" type="text" v-model="userLogin.telNumber"/>
+              <label class="input__label input__label--hoshi input__label--hoshi-color-2">
+                  <span class="input__label-content input__label-content--hoshi">账号</span>
+              </label>
+          </span>
+          <span class="input input--hoshi">
+              <input class="input__field input__field--hoshi" type="password" v-model="userLogin.pwd"/>
+              <label class="input__label input__label--hoshi input__label--hoshi-color-2">
+                  <span class="input__label-content input__label-content--hoshi">密码</span>
+              </label>
+          </span>
+        </div>
         <div class="check">
           <Checkbox v-model="remember" class="checkout">记住账号</Checkbox>
           <span>忘记密码？</span>
@@ -106,12 +118,97 @@ export default {
     if (userLogin.telNumber && userLogin.pwd) {
       this._loginPost(userLogin);
     }
+    this.$nextTick(function() {
+      this._newInput();
+    });
   },
   computed: {
     ...mapState(["userId", "pwd", "userName"])
   },
   methods: {
-    ...mapMutations(["update"]),
+    ...mapMutations(['update']),
+    _newInput() {
+      [].slice
+        .call(document.querySelectorAll("input.input__field"))
+        .forEach(function(inputEl) {
+          // in case the input is already filled..
+          if (inputEl.value.trim() !== "") {
+            classie.add(inputEl.parentNode, "input--filled");
+          }
+
+          // events:
+          inputEl.addEventListener("focus", onInputFocus);
+          inputEl.addEventListener("blur", onInputBlur);
+        });
+
+      function onInputFocus(ev) {
+        classie.add(ev.target.parentNode, "input--filled");
+      }
+
+      function onInputBlur(ev) {
+        if (ev.target.value.trim() === "") {
+          classie.remove(ev.target.parentNode, "input--filled");
+        }
+      }
+      function classReg(className) {
+        return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
+      }
+
+      // classList support for class management
+      // altho to be fair, the api sucks because it won't accept multiple classes at once
+      var hasClass, addClass, removeClass;
+
+      if ("classList" in document.documentElement) {
+        hasClass = function(elem, c) {
+          return elem.classList.contains(c);
+        };
+        addClass = function(elem, c) {
+          elem.classList.add(c);
+        };
+        removeClass = function(elem, c) {
+          elem.classList.remove(c);
+        };
+      } else {
+        hasClass = function(elem, c) {
+          return classReg(c).test(elem.className);
+        };
+        addClass = function(elem, c) {
+          if (!hasClass(elem, c)) {
+            elem.className = elem.className + " " + c;
+          }
+        };
+        removeClass = function(elem, c) {
+          elem.className = elem.className.replace(classReg(c), " ");
+        };
+      }
+
+      function toggleClass(elem, c) {
+        var fn = hasClass(elem, c) ? removeClass : addClass;
+        fn(elem, c);
+      }
+
+      var classie = {
+        // full names
+        hasClass: hasClass,
+        addClass: addClass,
+        removeClass: removeClass,
+        toggleClass: toggleClass,
+        // short names
+        has: hasClass,
+        add: addClass,
+        remove: removeClass,
+        toggle: toggleClass
+      };
+
+      // transport
+      if (typeof define === "function" && define.amd) {
+        // AMD
+        define(classie);
+      } else {
+        // browser global
+        window.classie = classie;
+      }
+    },
     _loginPost(userLogin) {
       // 如果localStroge中没有登录缓存,记录缓存
       if (!window.localStorage.getItem("telNumber")) {
@@ -250,7 +347,7 @@ document.addEventListener("plusready", function() {
 });
 </script>
 
-<style>
+<style scoped>
 .mainLogin {
   display: flex;
   flex-direction: column;
@@ -325,5 +422,161 @@ document.addEventListener("plusready", function() {
   color: #fff;
   border-color: rgba(24, 111, 98, 0.219);
   background-color: #1cbe99;
+}
+@import url("../../assets/normalize.css");
+.input-comp {
+  font-size: 130%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  margin: 1em;
+  max-width: 400px;
+  vertical-align: top;
+}
+
+.input__field {
+  position: relative;
+  display: block;
+  float: right;
+  padding: 0.8em;
+  width: 60%;
+  border: none;
+  border-radius: 0;
+  background: #f0f0f0;
+  color: #aaa;
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-appearance: none; /* for box shadows to show on iOS */
+}
+
+.input__field:focus {
+  outline: none;
+}
+
+.input__label {
+  display: inline-block;
+  padding: 0 1em;
+  width: 40%;
+  color: #fff;
+  font-weight: bold;
+  font-size: 70.25%;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.input__label-content {
+  position: relative;
+  display: block;
+  padding: 1.6em 0;
+  width: 100%;
+}
+
+/* Hoshi */
+.input--hoshi {
+  overflow: hidden;
+}
+
+.input__field--hoshi {
+  margin-top: 1em;
+  padding: 0.85em 0.15em;
+  width: 100%;
+  background: transparent;
+  color: #ffffff;
+}
+
+.input__label--hoshi {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0 0.25em;
+  width: 100%;
+  height: calc(100% - 1em);
+  text-align: left;
+  pointer-events: none;
+}
+
+.input__label-content--hoshi {
+  position: absolute;
+}
+
+.input__label--hoshi::before,
+.input__label--hoshi::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 10px);
+  border-bottom: 1px solid #ffffff;
+}
+
+.input__label--hoshi::after {
+  margin-top: 2px;
+  border-bottom: 4px solid red;
+  -webkit-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+}
+
+.input__label--hoshi-color-2::after {
+  border-color: hsl(160, 100%, 50%);
+}
+.input__field--hoshi:focus + .input__label--hoshi::after,
+.input--filled .input__label--hoshi::after {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.input__field--hoshi:focus + .input__label--hoshi .input__label-content--hoshi,
+.input--filled .input__label-content--hoshi {
+  -webkit-animation: anim-1 0.3s forwards;
+  animation: anim-1 0.3s forwards;
+}
+
+@-webkit-keyframes anim-1 {
+  50% {
+    opacity: 0;
+    -webkit-transform: translate3d(1em, 0, 0);
+    transform: translate3d(1em, 0, 0);
+  }
+  51% {
+    opacity: 0;
+    -webkit-transform: translate3d(-1em, -40%, 0);
+    transform: translate3d(-1em, -40%, 0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, -40%, 0);
+    transform: translate3d(0, -40%, 0);
+  }
+}
+
+@keyframes anim-1 {
+  50% {
+    opacity: 0;
+    -webkit-transform: translate3d(1em, 0, 0);
+    transform: translate3d(1em, 0, 0);
+  }
+  51% {
+    opacity: 0;
+    -webkit-transform: translate3d(-1em, -40%, 0);
+    transform: translate3d(-1em, -40%, 0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, -40%, 0);
+    transform: translate3d(0, -40%, 0);
+  }
 }
 </style>
