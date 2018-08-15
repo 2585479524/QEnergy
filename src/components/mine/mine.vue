@@ -1,7 +1,8 @@
 <template>
     <div class="mine">
         <div class="header-wrapper">
-            <Avatar icon="person"></Avatar>
+            <img :src="avator" alt="" v-if="avator">
+            <Avatar icon="person" v-else></Avatar>
             <span class="userName">{{userName}}</span>
         </div>
         <div class="down-wrapper" ref="downWrapper" :style="oHeight">
@@ -43,7 +44,7 @@ export default {
     Avatar
   },
   computed: {
-    ...mapState(["userName"])
+    ...mapState(["avator", "userName"])
   },
   created() {
     this.$nextTick(function() {
@@ -89,6 +90,14 @@ export default {
   background: #1cbe99;
 }
 .mine .header-wrapper .ivu-avatar {
+  font-size: 40px;
+  line-height: 70px;
+  margin: 30px 10px 10px;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+}
+.mine .header-wrapper img {
   font-size: 40px;
   line-height: 70px;
   margin: 30px 10px 10px;

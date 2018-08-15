@@ -4,7 +4,7 @@ Vue.use(Vuex);
 
 const state = {
   // 用户信息相关参数
-  userId: '',
+  avator: "",
   pwd: '',
   userName: '',
 
@@ -35,7 +35,7 @@ const state = {
 const mutations = {
   // 更新账号密码
   update(state, userInfo) {
-    state.userId = userInfo.userId;
+    state.avator = userInfo.avator;
     state.pwd = userInfo.pwd;
     state.userName = userInfo.userName;
   },

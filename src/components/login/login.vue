@@ -72,6 +72,7 @@ export default {
   data() {
     return {
       userLogin: {
+        avator: "",
         telNumber: "",
         pwd: ""
       },
@@ -123,7 +124,7 @@ export default {
     });
   },
   computed: {
-    ...mapState(["userId", "pwd", "userName"])
+    ...mapState([ "avator", "pwd", "userName"])
   },
   methods: {
     ...mapMutations(["update"]),
@@ -225,7 +226,7 @@ export default {
           if (res.data.isLogin == true) {
             this.$Message.success(res.data.message);
             this.update({
-              userId: res.data.userId,
+              avator: res.data.avator,
               pwd: res.data.pwd,
               userName: res.data.userName
             });
