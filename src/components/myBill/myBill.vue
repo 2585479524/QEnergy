@@ -66,6 +66,8 @@ export default {
         yearMonth: this.dateMain
       })
       .then(res => {
+        console.log(res);
+        
         if (res.status === 200) {
           this.loading = false;
           if (res.data.isGet == true) {

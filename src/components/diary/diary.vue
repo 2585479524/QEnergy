@@ -11,7 +11,8 @@
             <Card v-show="diaryList" v-for="(item, index) in diaryList" :key="index" @click.native="showModal(index)">
                 <span class="label" :class="`color-${item.weather}`"><i class="iconfont" :class="item.weather"></i></span>
                 <Button class="del-btn" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
-                <span class="text">{{item.date}}</span><br><br>
+                <span class="text">{{item.date}}</span>
+                <br><br>
                 <span class="remarks">
                   <pre v-html="item.content"></pre>
                 </span>
@@ -21,6 +22,7 @@
             <span>暂无数据</span>
           </div>
       </div>
+
       <Modal class="detailModal" v-model="showDetailModal" width="360" :styles="{top: '30px'}">
           <p slot="header" style="color:#1cbe99; text-align:center">
               <Icon type="edit"></Icon>
@@ -28,21 +30,21 @@
           </p>
           <div style="text-align:center">
             <span class="textDate">{{diaryEdit.date}}</span>
-            <br>
+            <br><br>
             <span class="text">天气：</span>
             <RadioGroup v-model="diaryEdit.weather" type="button">
               <Radio v-for="(item, index) in weatherRadio" :label="item" :key="index">
                 <i class="iconfont" :class="item"></i>
               </Radio>
             </RadioGroup>
-            <br>
+            <br><br>
             <span class="text">心情：</span>
             <RadioGroup v-model="diaryEdit.mood" type="button">
               <Radio v-for="(item, index) in moodRadio" :label="item" :key="index">
                 <i class="iconfont" :class="item"></i>
               </Radio>
             </RadioGroup>
-            <br>
+            <br><br>
             <span class="text">日记内容</span>
             <Input v-model="diaryEdit.content" type="textarea" :autosize="{minRows: 10,maxRows: 15}" placeholder="记录你的点点滴滴..."></Input>
             <br>
@@ -78,7 +80,6 @@ export default {
       diaryList: [],
       diaryEdit: {},
       showDetailModal: false,
-      showModalEdit: false,
       index: -1,
       weatherRadio: [
         "icon-weibiaoti--4",
@@ -166,20 +167,20 @@ export default {
       str = str.replace(/((\s|&nbsp;)*\r?\n)+$/g, "");
       return str;
     },
+    // 按月查找日记
     selsectData(time) {
-      console.log(time);
       if (time != "") {
         axios
           .post("http://120.78.86.45/diary/showTodoList", {
             yearMonth: time
           })
           .then(res => {
-            console.log(res);
             this.diaryList = res.data.diaryList;
           })
           .catch();
       }
     },
+    // 弹出编辑面板，需要判断是初次编辑还是二次编辑
     showModal(index) {
       this.showDetailModal = true;
       if (index == -1) {
@@ -196,6 +197,7 @@ export default {
       }
       this.index = -1;
     },
+    // 二次编辑提交
     changeDiary(index) {
       if (index == -1) {
         if (this.replaceContent(this.diaryEdit.content) != "") {

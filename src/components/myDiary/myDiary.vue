@@ -120,7 +120,7 @@ export default {
       return strr;
     },
     myDiaryShow() {
-      if (this.diaryList != "") {
+      if (this.diaryList == "") {
         return false;
       } else {
         return true;
@@ -141,16 +141,6 @@ export default {
         probeType: 3,
         click: true
       });
-    },
-    // 显示日记详情
-    showDetail(index) {
-      this.showModalDetail = true;
-      this.diaryEdit = this.diaryList[index];
-    },
-    // 关闭日记详情
-    closeDetail() {
-      this._initGet();
-      this.showModalDetail = false;
     },
     // 恢复删除的日记
     reDeleteDiary(index) {

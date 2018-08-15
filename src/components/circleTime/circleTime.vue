@@ -240,6 +240,11 @@ export default {
 .modal-wrapper .ivu-slider-button {
   border: 2px solid #1cbe99;
 }
+
+.modal-wrapper .ivu-btn-primary {
+  background-color: #1cbe99;
+  border-color: #1cbe99;
+}
 /* 选择框颜色 */
 .ivu-select-item-selected,
 .ivu-select-item-selected:hover {
@@ -252,4 +257,5 @@ export default {
   background-color: #ed3f14;
   border-color: #ed3f14;
 }
+
 </style>
