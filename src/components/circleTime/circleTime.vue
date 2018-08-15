@@ -86,7 +86,7 @@ Vue.prototype.$Notice = Notice;
 export default {
   data() {
     return {
-      labelList: ["学习", "运动", "工作"],
+      labelList: ["学习", "运动", "工作", "阅读", "其他"],
 
       // 设置番茄的三个参数
       newDuration: 25,

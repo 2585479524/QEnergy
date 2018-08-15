@@ -7,7 +7,7 @@
             <img class="pic" src="../../assets/img/teamlogo.png" alt="">
             <div class="text">
                 <img class="school-logo" src="../../assets/img/schoollogo.png" alt="">
-                <span class="team-name">QEnergy 项目组</span>
+                <span class="team-name">QE 项目组</span>
                 <span>前端：白晨琪、周宣锐</span>
                 <span>后端：董悦、李广源、蒋润泽</span>
                 <span>版权所有</span>

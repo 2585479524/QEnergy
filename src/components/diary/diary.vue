@@ -11,7 +11,7 @@
             <Card v-show="diaryList" v-for="(item, index) in diaryList" :key="index" @click.native="showModal(index)">
                 <span class="label" :class="`color-${item.weather}`"><i class="iconfont" :class="item.weather"></i></span>
                 <Button class="del-btn" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
-                <span class="text">{{item.date}}</span><br>
+                <span class="text">{{item.date}}</span><br><br>
                 <span class="remarks">
                   <pre v-html="item.content"></pre>
                 </span>
@@ -310,11 +310,12 @@ pre {
 }
 .diary .show-wrapper .ivu-card {
   margin: 0 20px 20px;
-  border-radius: 0;
 }
 .diary .show-wrapper .ivu-card-body {
   position: relative;
   height: 100px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px rgb(231, 229, 229);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -369,12 +370,13 @@ pre {
   position: absolute;
   top: 15px;
   left: 70px;
-  /* white-space: nowrap; */
-  overflow: hidden;
-  /* text-overflow: ellipsis; */
 }
 .diary .show-wrapper .remarks {
+  display: block;
   padding-left: 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 /* detailModal  修改原生组件css */
 .detailModal .ivu-radio-group-button .ivu-radio-wrapper:first-child {

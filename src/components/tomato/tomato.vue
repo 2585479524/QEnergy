@@ -4,7 +4,7 @@
     <div class="down-wrapper" ref="downWrapper" :style="oHeight">
         <div class="content" v-if="tomatoShow">
           <Card v-for="(item, index) in clockList" :key="index">
-              <span class="label">{{item.clockLabel}}</span>
+              <span class="label" :class="`label-${item.clockLabel}`">{{item.clockLabel}}</span>
               <div class="text">
                   <span>开始时间：{{item.clockStart}}</span><br>
                   <span>番茄时长：{{item.clockDuration}}</span>
@@ -45,6 +45,8 @@ export default {
       axios
         .post("http://120.78.86.45/tomato/showTodoList")
         .then(res => {
+          console.log(res);
+          
           this.updateTomato(res.data.clockList);
         })
         .catch(err => {});
@@ -98,7 +100,7 @@ export default {
   position: relative;
   height: 100px;
   border-radius: 5px;
-  box-shadow: 1px 1px 1px 1px rgb(180, 197, 183);
+  box-shadow: 1px 1px 1px 1px rgb(231, 229, 229);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -114,12 +116,29 @@ export default {
   text-align: center;
   color: #fff;
 }
+.tomato .down-wrapper .label-学习 {
+  background: rgb(97, 161, 245);
+}
+.tomato .down-wrapper .label-运动 {
+  background: rgb(144, 245, 97);
+}
+.tomato .down-wrapper .label-工作 {
+  background: rgb(245, 156, 97);
+}
+.tomato .down-wrapper .label-阅读 {
+  background: rgb(245, 107, 97);
+}
+.tomato .down-wrapper .label-其他 {
+  background: rgb(245, 97, 225);
+}
 .tomato .down-wrapper .text {
   position: absolute;
   top: 15px;
   right: 15px;
 }
 .tomato .down-wrapper .remarks {
+  display: block;
   padding-left: 8px;
+  padding-top: 10px;
 }
 </style>

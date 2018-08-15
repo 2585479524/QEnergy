@@ -359,6 +359,8 @@ document.addEventListener("plusready", function() {
 </script>
 
 <style scoped>
+@import url("../../assets/normalize.css");
+
 .mainLogin {
   display: flex;
   flex-direction: column;
@@ -376,6 +378,7 @@ document.addEventListener("plusready", function() {
 .mainLogin .ivu-input-icon {
   left: 0;
 }
+
 .mainLogin .ivu-input-wrapper {
   background: hsla(0, 0%, 100%, 0.3);
   margin: 20px 0 0;
@@ -389,7 +392,11 @@ document.addEventListener("plusready", function() {
   color: #fff;
   justify-content: space-between;
 }
-.mainLogin .check .ivu-checkbox-checked .ivu-checkbox-inner {
+.ivu-checkbox-checked .ivu-checkbox-inner {
+  
+  background-color: #1cbe99 !important;
+}
+.ivu-checkbox-inner {
   border-color: #ffffff6c;
   background-color: #1cbe99;
 }
@@ -415,7 +422,6 @@ document.addEventListener("plusready", function() {
 }
 /* 注册Modal */
 .registerModal .ivu-modal-content {
-  border-radius: 0;
   background-color: #ffffffe3;
 }
 .registerModal .ivu-input-focus :hover {
@@ -434,7 +440,8 @@ document.addEventListener("plusready", function() {
   border-color: rgba(24, 111, 98, 0.219);
   background-color: #1cbe99;
 }
-@import url("../../assets/normalize.css");
+
+/* input */
 .input-comp {
   font-size: 130%;
   display: flex;
@@ -442,16 +449,15 @@ document.addEventListener("plusready", function() {
   align-items: center;
 }
 
-.input {
+.input-comp .input {
   position: relative;
   z-index: 1;
   display: inline-block;
-  margin: 1em;
   max-width: 400px;
   vertical-align: top;
 }
 
-.input__field {
+.input-comp .input__field {
   position: relative;
   display: block;
   float: right;
@@ -466,11 +472,11 @@ document.addEventListener("plusready", function() {
   -webkit-appearance: none; /* for box shadows to show on iOS */
 }
 
-.input__field:focus {
+.input-comp .input__field:focus {
   outline: none;
 }
 
-.input__label {
+.input-comp .input__label {
   display: inline-block;
   padding: 0 1em;
   width: 40%;
@@ -485,7 +491,7 @@ document.addEventListener("plusready", function() {
   user-select: none;
 }
 
-.input__label-content {
+.input-comp .input__label-content {
   position: relative;
   display: block;
   padding: 1.6em 0;
@@ -493,11 +499,11 @@ document.addEventListener("plusready", function() {
 }
 
 /* Hoshi */
-.input--hoshi {
+.input-comp .input--hoshi {
   overflow: hidden;
 }
 
-.input__field--hoshi {
+.input-comp .input__field--hoshi {
   margin-top: 1em;
   padding: 0.85em 0.15em;
   width: 100%;
@@ -505,7 +511,7 @@ document.addEventListener("plusready", function() {
   color: #ffffff;
 }
 
-.input__label--hoshi {
+.input-comp .input__label--hoshi {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -516,11 +522,11 @@ document.addEventListener("plusready", function() {
   pointer-events: none;
 }
 
-.input__label-content--hoshi {
+.input-comp .input__label-content--hoshi {
   position: absolute;
 }
 
-.input__label--hoshi::before,
+.input-comp .input__label--hoshi::before,
 .input__label--hoshi::after {
   content: "";
   position: absolute;
@@ -531,7 +537,7 @@ document.addEventListener("plusready", function() {
   border-bottom: 1px solid #ffffff;
 }
 
-.input__label--hoshi::after {
+.input-comp .input__label--hoshi::after {
   margin-top: 2px;
   border-bottom: 4px solid red;
   -webkit-transform: translate3d(-100%, 0, 0);
@@ -540,16 +546,16 @@ document.addEventListener("plusready", function() {
   transition: transform 0.3s;
 }
 
-.input__label--hoshi-color-2::after {
+.input-comp .input__label--hoshi-color-2::after {
   border-color: hsl(160, 100%, 50%);
 }
-.input__field--hoshi:focus + .input__label--hoshi::after,
+.input-comp .input__field--hoshi:focus + .input__label--hoshi::after,
 .input--filled .input__label--hoshi::after {
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
 
-.input__field--hoshi:focus + .input__label--hoshi .input__label-content--hoshi,
+.input-comp .input__field--hoshi:focus + .input__label--hoshi .input__label-content--hoshi,
 .input--filled .input__label-content--hoshi {
   -webkit-animation: anim-1 0.3s forwards;
   animation: anim-1 0.3s forwards;
