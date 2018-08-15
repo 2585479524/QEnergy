@@ -3,7 +3,7 @@
       <div class="header-wrapper">
         <div class="date-picker">
           <DatePicker :value="dateMain" :editable="false" placeholder="选择日期" type="month" style="width: 100px" @on-change="selsectData"></DatePicker>
-          <Button class="close-btn" type="text" @click="showModal(index)">编辑</Button>
+          <Button class="close-btn" type="text" @click="showModal(dex)">编辑</Button>
         </div>
       </div>
       <div class="show-wrapper" ref="showWrapper" :style="oHeight">
@@ -50,7 +50,7 @@
             <br>
           </div>
           <div slot="footer">
-              <Button type="primary" size="large" long @click="changeDiary(index)">完成编辑</Button>
+              <Button type="primary" size="large" long @click="changeDiary">完成编辑</Button>
           </div>
       </Modal>
     </div>
@@ -80,7 +80,7 @@ export default {
       diaryList: [],
       diaryEdit: {},
       showDetailModal: false,
-      index: -1,
+      dex: -1,
       weatherRadio: [
         "icon-weibiaoti--4",
         "icon-weibiaoti--2",
@@ -126,10 +126,13 @@ export default {
   },
   computed: {
     dateTime() {
+      Date.prototype.toJSON = function() {
+        return this.toLocaleString();
+      };
       let dateTime = new Date();
       let str = dateTime.toJSON().substring(0, 16);
-      let arr = str.split("T");
-      let strr = arr.join(" ");
+      let arr = str.split("/");
+      let strr = arr.join("-");
       return strr;
     },
     dateMain() {
@@ -190,16 +193,16 @@ export default {
           mood: "icon-cool",
           content: ""
         };
-        this.index = -1;
       } else {
-        this.index = index;
         this.diaryEdit = this.diaryList[index];
+        this.dex = index;
       }
-      this.index = -1;
     },
     // 二次编辑提交
-    changeDiary(index) {
-      if (index == -1) {
+    changeDiary() {
+      console.log(this.dex);
+      
+      if (this.dex == -1) {
         if (this.replaceContent(this.diaryEdit.content) != "") {
           axios
             .post("http://120.78.86.45/diary/createDiary", {
@@ -222,11 +225,11 @@ export default {
       } else {
         axios
           .post("http://120.78.86.45/diary/editDiary", {
-            id: this.diaryList[index].id,
+            id: this.diaryList[this.dex].id,
             yearMonth: this.dateMain,
-            weather: this.diaryList[index].weather,
-            mood: this.diaryList[index].mood,
-            content: this.replaceContent(this.diaryList[index].content)
+            weather: this.diaryList[this.dex].weather,
+            mood: this.diaryList[this.dex].mood,
+            content: this.replaceContent(this.diaryList[this.dex].content)
           })
           .then(res => {
             if (res.data.isChange) {
@@ -237,7 +240,7 @@ export default {
           .catch();
         this.showDetailModal = false;
       }
-      this.index = -1;
+      this.dex = -1;
     },
     // 删除日记
     deleteDiary(index) {
