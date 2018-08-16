@@ -45,8 +45,6 @@ export default {
       axios
         .post("http://120.78.86.45/tomato/showTodoList")
         .then(res => {
-          console.log(res);
-          
           this.updateTomato(res.data.clockList);
         })
         .catch(err => {});
