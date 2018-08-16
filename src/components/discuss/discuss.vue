@@ -22,11 +22,9 @@
                         <img :src="avator" alt="" v-if="avator">
                     </div>
 
-                    <div class="right">
+                    <div class="right" :style="oWidth">
                         <span class="userInfo">{{item.userName}}</span>
-                        <div class="text">
-                            <pre v-html="item.text">
-                            </pre>
+                        <div class="text" v-html="item.text">
                         </div>
                         <div class="footer">
                             <span class="footer-date">{{item.date}}</span>
@@ -62,8 +60,11 @@ export default {
       oHeight: {
         height: window.screen.height - 100 + "px"
       },
+      oWidth: {
+        width: window.screen.width - 80 + "px",
+      },
       iconColor: {
-        color: "#495060",
+        color: "#495060"
       }
     };
   },
@@ -145,12 +146,12 @@ export default {
         })
         .then(res => {
           console.log(res);
-          
+
           if (res.data.isChange) {
             this.discussList[index].fabCount = res.data.like;
-            this.iconColor.color ="#1cbe99"
+            this.iconColor.color = "#1cbe99";
           } else {
-            this.iconColor.color ="#495060"
+            this.iconColor.color = "#495060";
           }
         })
         .catch();
@@ -214,7 +215,6 @@ export default {
 }
 .discuss .down-wrapper .content .ivu-card-body .right {
   padding: 5px 10px 0;
-  width: 100%;
 }
 .discuss .down-wrapper .content .ivu-card-body .userInfo {
   font-size: 15px;
@@ -222,8 +222,11 @@ export default {
 }
 .discuss .down-wrapper .content .ivu-card-body .text {
   min-height: 120px;
+  min-width: 250px;
   padding-top: 10px;
-  white-space: nowrap;
+  word-wrap: break-word;
+  word-break: normal;
+  white-space: break-word;
   overflow: hidden;
   text-overflow: ellipsis;
 }
