@@ -311,7 +311,7 @@ export default {
   height: 50px;
   text-align: center;
   border-radius: 35px;
-  background: #cad4d0;
+  background: #c3c3c3;
 }
 .bill-edit .show-wrapper .content-out .content .iconGroup i {
   font-size: 30px;

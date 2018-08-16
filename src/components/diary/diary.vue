@@ -13,8 +13,7 @@
                 <Button class="del-btn" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
                 <span class="text">{{item.date}}</span>
                 <br><br>
-                <span class="remarks">
-                  <pre v-html="item.content"></pre>
+                <span class="remarks" v-html="item.content">
                 </span>
             </Card>
           </div>

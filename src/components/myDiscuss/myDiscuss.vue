@@ -3,42 +3,40 @@
         <div class="header-wrapper">
             <Button class="close-btn" type="text" @click="back">返回</Button>
         </div>
-
-        <div class="down-wrapper" ref="downWrapper" :style="oHeight">
+          <div class="down-wrapper" ref="downWrapper" :style="oHeight">
             <div class="content" v-if="myDiscussShow">
-              <Card v-for="(item, index) in discussList" :key="index">
-                  <Button class="delButton" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiary(index)"></Button>
-                  <div class="user">
-                      <Icon type="ionic"></Icon>
-                      <div class="userInfo">
-                          <span class="userName">{{item.userName}}</span>
-                          <span class="info">{{item.date}}</span>
-                      </div>
-                  </div>
-                  <div class="text" >
-                    <pre v-html="item.text"></pre>
-                  </div>
-                  <div class="footer">
-                    <div class="footerIcon">
-                        <Icon type="share"></Icon>
-                        <span v-if="item.zhuan">{{item.zhuan}}</span>
-                        <span v-else>转发</span>
+                <Card v-for="(item, index) in discussList" :key="index">
+                  <Button class="del-btn" type="ghost" shape="circle" icon="trash-a" @click.stop="deleteDiscuss(index)"></Button>
+                    <div class="up">
+                        <div class="avator-name">
+                            <img :src="avator" alt="" v-if="avator">
+                            <span class="userInfo">{{item.userName}}</span>
+                        </div>
+                        <div class="discuss-info" :style="oWidth">
+                            <div class="text" v-html="item.text">
+                            </div>
+                            <div class="footer">
+                                <span class="footer-date">{{item.date}}</span>
+                                <div class="footerIcon">
+                                    <i class="ivu-icon ivu-icon-share"></i>
+                                    <i class="ivu-icon ivu-icon-compose"></i>
+                                    <i class="iconfont icon-dianzan2" :style="iconColor" @click="thumbDiscuss(index)"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="footerIcon">
-                        <Icon type="compose"></Icon>
-                        <span v-if="item.ping">{{item.ping}}</span>
-                        <span v-else>评论</span>
+                    <div class="remark">
+                        <i class="iconfont icon-dianzan2" :style="iconColor"></i> <a href="">xxx、xxx、xxx、xxx、xxx、xxx、xxx等10人觉得很赞</a><br>
+                        <a href="">小明:</a><span>吃了没</span><br>
+                        <a href="">小明:</a><span>吃了没</span><br>
+                        <a href="">小明:</a><span>吃了没</span><br>
+                        <a href="">小明:</a><span>吃了没</span><br>
+                        <a href="">小明:</a><span>吃了没</span><br>
                     </div>
-                    <div class="footerIcon" @click="thumbDiscuss(index)">
-                        <Icon type="thumbsup"></Icon>
-                        <span v-if="item.fabCount">{{item.fabCount}}</span>
-                        <span v-else>赞</span>
-                    </div>
-                  </div>
-              </Card>
+                </Card>
             </div>
             <div class="noData" v-else>
-              <span>暂无数据</span>
+                <span>暂无数据</span>
             </div>
         </div>
     </div>
@@ -48,6 +46,7 @@
 import Vue from "vue";
 import BScroll from "better-scroll";
 import axios from "axios";
+import { mapState, mapMutations } from "vuex";
 import { Card, Icon, Button, Modal, Input, Message } from "iview";
 Vue.prototype.$Message = Message;
 export default {
@@ -58,6 +57,9 @@ export default {
       content: "",
       oHeight: {
         height: window.screen.height - 50 + "px"
+      },
+      oWidth: {
+        width: window.screen.width - 40 + "px"
       }
     };
   },
@@ -71,6 +73,7 @@ export default {
     Message
   },
   computed: {
+    ...mapState(["avator"]),
     myDiscussShow() {
       if (this.discussList == "") {
         return false;
@@ -100,7 +103,7 @@ export default {
     editDiscuss() {
       this.showModalEdit = true;
     },
-    deleteDiary(index) {
+    deleteDiscuss(index) {
       axios
         .post("http://120.78.86.45/discuss/deleteDiscuss", {
           postId: this.discussList[index].id
@@ -157,7 +160,11 @@ export default {
   color: #fff;
   right: 10px;
 }
-
+.my-discuss .down-wrapper .del-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+}
 .ivu-modal-content .ivu-btn {
   background-color: #1cbe99;
   border-color: #1cbe99;
@@ -172,10 +179,82 @@ export default {
 .my-discuss .down-wrapper .content {
   padding: 20px 0;
 }
-.my-discuss .down-wrapper .delButton {
-  position: absolute;
-  top: 10px;
-  right: 15px;
+.my-discuss .down-wrapper .ivu-card {
+  margin: 0 20px;
+  border-radius: 0;
+}
+.my-discuss .down-wrapper .content .ivu-card-bordered {
+  border: none;
+  border-bottom: 1px solid rgba(201, 201, 201, 0.6);
+}
+.my-discuss .down-wrapper .content :last-child {
+  border: none;
+}
+.my-discuss .down-wrapper .content .ivu-card-body {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0 4px;
+}
+.my-discuss .down-wrapper .content .ivu-card-body .up {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 4px;
+}
+.my-discuss .down-wrapper .content :first-child .ivu-card-body {
+  padding: 0 0 5px;
+}
+.my-discuss .down-wrapper .content .ivu-card-body img {
+  padding: 5px;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  border: 1px solid rgba(201, 201, 201, 0.6);
+}
+.my-discuss .down-wrapper .content .ivu-card-body .discuss-info {
+  padding: 15px 10px 0;
+}
+.my-discuss .down-wrapper .content .ivu-card-body .avator-name {
+  display: flex;
+}
+.my-discuss .down-wrapper .content .ivu-card-body .userInfo {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-size: 15px;
+  color: #1cbe99;
+}
+.my-discuss .down-wrapper .content .ivu-card-body .text {
+  min-height: 120px;
+  min-width: 250px;
+  word-wrap: break-word;
+  word-break: normal;
+  white-space: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+pre {
+  margin: 0;
+}
+.my-discuss .down-wrapper .content .footer {
+  display: flex;
+  justify-content: space-between;
+}
+.my-discuss .down-wrapper .content .footer .footer-date {
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+}
+.my-discuss .down-wrapper .content .footer .footerIcon * {
+  padding-right: 10px;
+  font-size: 20px;
+}
+.my-discuss .down-wrapper .content .remark {
+  border-top: 1px solid rgba(201, 201, 201, 0.2);
+  width: 100%;
+}
+.my-discuss .down-wrapper .content .footer .footerIcon :last-child {
+  padding-right: 0;
+  font-weight: 500;
 }
 .my-discuss .down-wrapper .noData {
   display: flex;
@@ -187,49 +266,5 @@ export default {
   font-size: 15px;
   width: 15px;
   top: 200px;
-}
-.my-discuss .down-wrapper .ivu-card {
-  background-color: #f7f3f3;
-  margin: 0 20px 20px;
-}
-.my-discuss .down-wrapper .ivu-card-body {
-  padding: 0;
-}
-.my-discuss .down-wrapper .content .user {
-  display: flex;
-  padding: 10px 10px 0;
-}
-.my-discuss .down-wrapper .content .user i {
-  font-size: 40px;
-  margin-right: 10px;
-}
-.my-discuss .down-wrapper .content .userInfo {
-  display: flex;
-  flex-direction: column;
-}
-.my-discuss .down-wrapper .content .userInfo .info {
-  font-size: 12px;
-}
-.my-discuss .down-wrapper .content .text {
-  height: 80px;
-  padding: 0 10px;
-}
-.my-discuss .down-wrapper .content .footer {
-  display: flex;
-  bottom: 10px;
-  justify-content: space-around;
-}
-.my-discuss .down-wrapper .content .footer .footerIcon {
-  display: inline-block;
-  width: 33.3%;
-  height: 25px;
-  line-height: 24px;
-  border-right: 1px solid #fff;
-  background: #1cbe99;
-  text-align: center;
-  color: #fff;
-}
-.my-discuss .down-wrapper .content .footer :last-child {
-  border: none;
 }
 </style>

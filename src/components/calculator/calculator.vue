@@ -6,8 +6,9 @@
                 <div class="enter">
                   <span>{{enter}}</span>
                   </div>
-                <!-- <Button type="ghost" style="width: 75%"></Button> -->
-                <Button class="result-btn" type="ghost">{{result}}</Button>
+                  <div class="result">
+                    {{result}}
+                  </div>
             </div>
             <div class="calRow">
                 <Button type="ghost" @click="calculate(7)">7</Button>
@@ -93,11 +94,12 @@ export default {
 <style>
 .calculator {
   width: 100%;
-  background: #6ac2d8;
+  background: #1cbe99;
+  /* background: linear-gradient(to right, rgb(62, 183, 231) , #1cbe99);  */
 }
 .calculator .calRow {
   display: flex;
-  height: 45px;
+  height: 50px;
   justify-content: space-around;
 }
 .calculator .calMain .result-btn {
@@ -111,8 +113,19 @@ export default {
   justify-content: center;
   padding: 5px;
   font-size: 12px;
+  border-top: 1px solid #c3c3c3;
   background: #fff;
   width: 75%;
+}
+.calculator .calMain .result {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  font-size: 22px;
+  border-top: 1px solid #c3c3c3;
+  background: #fff;
+  width: 25%;
 }
 .calculator .calRow .ivu-input {
   height: 100%;
@@ -120,9 +133,12 @@ export default {
   border-top: 1px solid #e9e9e9;
 }
 .calculator .calRow .ivu-btn {
+  margin: 5px;
   width: 25%;
   font-size: 16px;
-  border-radius: 0;
-  border: 1px solid #fff;
+  border-radius: 5px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 1px 1px 1px 2px #8b8b8ba4;
 }
 </style>

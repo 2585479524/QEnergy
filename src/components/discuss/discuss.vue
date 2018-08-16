@@ -18,30 +18,33 @@
         <div class="down-wrapper" ref="downWrapper" :style="oHeight">
             <div class="content" v-if="discussShow">
                 <Card v-for="(item, index) in discussList" :key="index">
-                    <div class="left">
-                        <img :src="avator" alt="" v-if="avator">
-                    </div>
-
-                    <div class="right" :style="oWidth">
-                        <span class="userInfo">{{item.userName}}</span>
-                        <div class="text" v-html="item.text">
+                    <div class="up">
+                        <div class="avator-name">
+                            <img :src="avator" alt="" v-if="avator">
+                            <span class="userInfo">{{item.userName}}</span>
                         </div>
-                        <div class="footer">
-                            <span class="footer-date">{{item.date}}</span>
-                            <div class="footerIcon">
-                              <i class="ivu-icon ivu-icon-share"></i>
-                              <i class="ivu-icon ivu-icon-compose"></i>
-                              <i class="iconfont icon-dianzan2" :style="iconColor" @click="thumbDiscuss(index)"></i>
+                        <div class="discuss-info" :style="oWidth">
+                            <div class="text" v-html="item.text">
+                            </div>
+                            <div class="footer">
+                                <span class="footer-date">{{item.date}}</span>
+                                <div class="footerIcon">
+                                    <i class="ivu-icon ivu-icon-share"></i>
+                                    <i class="ivu-icon ivu-icon-compose"></i>
+                                    <i class="iconfont icon-dianzan2" :style="iconColor" @click="thumbDiscuss(index)"></i>
+                                </div>
                             </div>
                         </div>
-                        <div class="remark">
-                          <i class="iconfont icon-dianzan2" :style="iconColor"></i> <a href="">xxx、xxx、xxx、xxx、xxx、xxx、xxx等10人觉得很赞</a><br>
-                          <a href="">小明:</a><span>吃了没</span><br>
-                          <a href="">小明:</a><span>吃了没</span><br>
-                          <a href="">小明:</a><span>吃了没</span><br>
-                          <a href="">小明:</a><span>吃了没</span><br>
-                          <a href="">小明:</a><span>吃了没</span>
-                        </div>
+                    </div>
+                    <div class="remark">
+                        <i class="iconfont icon-dianzan2" :style="iconColor"></i> <a href="">xxx、xxx、xxx、xxx、xxx、xxx、xxx等10人觉得很赞</a><br>
+                        <a href="">小明:</a><span>吃了没</span><br>
+                        <a href="">小明:</a><span>吃了没</span><br>
+                        <a href="">小明:</a><span>吃了没</span><br>
+                        <a href="">小明:</a><span>吃了没</span><br>
+                        <a href="">小明:</a><span>吃了没</span><br>
+                        <Input v-model="remarkInfo" placeholder="评论" style="width: 200px"></Input>
+                        <Button type="success">发送</Button>
                     </div>
                 </Card>
             </div>
@@ -69,11 +72,12 @@ export default {
         height: window.screen.height - 100 + "px"
       },
       oWidth: {
-        width: window.screen.width - 80 + "px",
+        width: window.screen.width - 40 + "px",
       },
       iconColor: {
         color: "#495060"
-      }
+      },
+      remarkInfo: "",
     };
   },
   computed: {
@@ -202,36 +206,47 @@ export default {
 }
 .discuss .down-wrapper .content .ivu-card-bordered {
   border: none;
-  border-bottom: 1px solid rgba(201, 201, 201, 0.568);
+  border-bottom: 1px solid rgba(201, 201, 201, 0.6);
 }
 .discuss .down-wrapper .content :last-child {
   border: none;
 }
 .discuss .down-wrapper .content .ivu-card-body {
   display: flex;
+  flex-direction: column;
   padding: 16px 0 4px;
+}
+.discuss .down-wrapper .content .ivu-card-body .up {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 4px;
 }
 .discuss .down-wrapper .content :first-child .ivu-card-body {
   padding: 0 0 5px;
 }
-.discuss .down-wrapper .content .ivu-card-body .left img {
+.discuss .down-wrapper .content .ivu-card-body img {
   padding: 5px;
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  border: 1px solid rgba(201, 201, 201, 0.568);
+  border: 1px solid rgba(201, 201, 201, 0.6);
 }
-.discuss .down-wrapper .content .ivu-card-body .right {
-  padding: 5px 10px 0;
+.discuss .down-wrapper .content .ivu-card-body .discuss-info {
+  padding: 15px 10px 0;
+}
+.discuss .down-wrapper .content .ivu-card-body .avator-name {
+  display: flex;
 }
 .discuss .down-wrapper .content .ivu-card-body .userInfo {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
   font-size: 15px;
   color: #1cbe99;
 }
 .discuss .down-wrapper .content .ivu-card-body .text {
   min-height: 120px;
   min-width: 250px;
-  padding-top: 10px;
   word-wrap: break-word;
   word-break: normal;
   white-space: break-word;
@@ -255,7 +270,7 @@ pre {
   font-size: 20px;
 }
 .discuss .down-wrapper .content .remark {
-  border-top: 1px solid rgba(201, 201, 201, 0.568);
+  border-top: 1px solid rgba(201, 201, 201, 0.2);
   width: 100%;
 }
 .discuss .down-wrapper .content .footer .footerIcon :last-child {
