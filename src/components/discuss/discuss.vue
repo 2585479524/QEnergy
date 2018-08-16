@@ -18,38 +18,29 @@
         <div class="down-wrapper" ref="downWrapper" :style="oHeight">
             <div class="content" v-if="discussShow">
                 <Card v-for="(item, index) in discussList" :key="index">
-                    <div class="user">
-                        <Icon type="ionic"></Icon>
-                        <div class="userInfo">
-                            <span class="userName">{{item.userName}}</span>
-                            <span class="info">{{item.date}}</span>
-                        </div>
+                    <div class="left">
+                        <img :src="avator" alt="" v-if="avator">
                     </div>
-                    <div class="text">
-                      <pre v-html="item.text">
-                      </pre>
-                    </div>
-                    <div class="footer">
-                        <div class="footerIcon">
-                            <Icon type="share"></Icon>
-                            <span v-if="item.zhuan">{{item.zhuan}}</span>
-                            <span v-else>转发</span>
+
+                    <div class="right">
+                        <span class="userInfo">{{item.userName}}</span>
+                        <div class="text">
+                            <pre v-html="item.text">
+                            </pre>
                         </div>
-                        <div class="footerIcon">
-                            <Icon type="compose"></Icon>
-                            <span v-if="item.ping">{{item.ping}}</span>
-                            <span v-else>评论</span>
-                        </div>
-                        <div class="footerIcon" @click="thumbDiscuss(index)">
-                            <Icon type="thumbsup"></Icon>
-                            <span v-if="item.fabCount">{{item.fabCount}}</span>
-                            <span v-else>赞</span>
+                        <div class="footer">
+                            <span class="footer-date">{{item.date}}</span>
+                            <div class="footerIcon">
+                              <i class="ivu-icon ivu-icon-share"></i>
+                              <i class="ivu-icon ivu-icon-compose"></i>
+                              <i class="iconfont icon-dianzan2" :style="iconColor" @click="thumbDiscuss(index)"></i>
+                            </div>
                         </div>
                     </div>
                 </Card>
             </div>
             <div class="noData" v-else>
-              <span>暂无数据</span>
+                <span>暂无数据</span>
             </div>
         </div>
     </div>
@@ -59,6 +50,7 @@
 import Vue from "vue";
 import BScroll from "better-scroll";
 import axios from "axios";
+import { mapState, mapMutations } from "vuex";
 import { Card, Icon, Button, Modal, Input, Message } from "iview";
 Vue.prototype.$Message = Message;
 export default {
@@ -69,10 +61,14 @@ export default {
       content: "",
       oHeight: {
         height: window.screen.height - 100 + "px"
+      },
+      iconColor: {
+        color: "#495060",
       }
     };
   },
   computed: {
+    ...mapState(["avator"]),
     replaceContent() {
       let str = this.content;
       // 限制最多2次换行
@@ -148,8 +144,13 @@ export default {
           postId: this.discussList[index].id
         })
         .then(res => {
+          console.log(res);
+          
           if (res.data.isChange) {
             this.discussList[index].fabCount = res.data.like;
+            this.iconColor.color ="#1cbe99"
+          } else {
+            this.iconColor.color ="#495060"
           }
         })
         .catch();
@@ -179,11 +180,72 @@ export default {
 .ivu-input-wrapper .ivu-input:hover {
   border-color: #1cbe99;
 }
+
 .discuss .down-wrapper {
   overflow: hidden;
 }
 .discuss .down-wrapper .content {
   padding: 20px 0;
+}
+.discuss .down-wrapper .ivu-card {
+  margin: 0 20px;
+  border-radius: 0;
+}
+.discuss .down-wrapper .content .ivu-card-bordered {
+  border: none;
+  border-bottom: 1px solid rgba(201, 201, 201, 0.568);
+}
+.discuss .down-wrapper .content :last-child {
+  border: none;
+}
+.discuss .down-wrapper .content .ivu-card-body {
+  display: flex;
+  padding: 16px 0 4px;
+}
+.discuss .down-wrapper .content :first-child .ivu-card-body {
+  padding: 0 0 5px;
+}
+.discuss .down-wrapper .content .ivu-card-body .left img {
+  padding: 5px;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  border: 1px solid rgba(201, 201, 201, 0.568);
+}
+.discuss .down-wrapper .content .ivu-card-body .right {
+  padding: 5px 10px 0;
+  width: 100%;
+}
+.discuss .down-wrapper .content .ivu-card-body .userInfo {
+  font-size: 15px;
+  color: #1cbe99;
+}
+.discuss .down-wrapper .content .ivu-card-body .text {
+  min-height: 120px;
+  padding-top: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+pre {
+  margin: 0;
+}
+.discuss .down-wrapper .content .footer {
+  display: flex;
+  justify-content: space-between;
+}
+.discuss .down-wrapper .content .footer .footer-date {
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+}
+.discuss .down-wrapper .content .footer .footerIcon * {
+  padding-right: 10px;
+  font-size: 20px;
+}
+.discuss .down-wrapper .content .footer .footerIcon :last-child {
+  padding-right: 0;
+  font-weight: 500;
 }
 .discuss .down-wrapper .noData {
   display: flex;
@@ -195,55 +257,5 @@ export default {
   font-size: 15px;
   width: 15px;
   top: 200px;
-}
-.discuss .down-wrapper .ivu-card {
-  background-color: #f7f3f3;
-  margin: 0 20px 20px;
-}
-.discuss .down-wrapper .ivu-card-body {
-  padding: 0;
-}
-.discuss .down-wrapper .content .user {
-  display: flex;
-  padding: 10px 10px 0;
-}
-.discuss .down-wrapper .content .user i {
-  font-size: 40px;
-  margin-right: 10px;
-}
-.discuss .down-wrapper .content .userInfo {
-  display: flex;
-  flex-direction: column;
-}
-.discuss .down-wrapper .content .userInfo .info {
-  font-size: 12px;
-}
-.discuss .down-wrapper .content .text {
-  height: 70px;
-  padding: 2px 10px;
-  /* white-space: nowrap; */
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-pre {
-  margin: 0;
-}
-.discuss .down-wrapper .content .footer {
-  display: flex;
-  bottom: 10px;
-  justify-content: space-around;
-}
-.discuss .down-wrapper .content .footer .footerIcon {
-  display: inline-block;
-  width: 33.3%;
-  height: 25px;
-  line-height: 24px;
-  border-right: 1px solid #fff;
-  background: #1cbe99;
-  text-align: center;
-  color: #fff;
-}
-.discuss .down-wrapper .content .footer :last-child {
-  border: none;
 }
 </style>
