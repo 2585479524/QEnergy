@@ -112,7 +112,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   padding: 5px;
-  font-size: 12px;
+  font-size: 22px;
   border-top: 1px solid #c3c3c3;
   background: #fff;
   width: 75%;
@@ -124,6 +124,7 @@ export default {
   text-align: center;
   font-size: 22px;
   border-top: 1px solid #c3c3c3;
+  border-left: 1px solid #c3c3c3;
   background: #fff;
   width: 25%;
 }
@@ -131,6 +132,9 @@ export default {
   height: 100%;
   border-radius: 0;
   border-top: 1px solid #e9e9e9;
+}
+.ivu-btn-ghost:hover {
+  color: #1cbe99
 }
 .calculator .calRow .ivu-btn {
   margin: 5px;
