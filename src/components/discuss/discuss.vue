@@ -34,6 +34,14 @@
                               <i class="iconfont icon-dianzan2" :style="iconColor" @click="thumbDiscuss(index)"></i>
                             </div>
                         </div>
+                        <div class="remark">
+                          <i class="iconfont icon-dianzan2" :style="iconColor"></i> <a href="">xxx、xxx、xxx、xxx、xxx、xxx、xxx等10人觉得很赞</a><br>
+                          <a href="">小明:</a><span>吃了没</span><br>
+                          <a href="">小明:</a><span>吃了没</span><br>
+                          <a href="">小明:</a><span>吃了没</span><br>
+                          <a href="">小明:</a><span>吃了没</span><br>
+                          <a href="">小明:</a><span>吃了没</span>
+                        </div>
                     </div>
                 </Card>
             </div>
@@ -245,6 +253,10 @@ pre {
 .discuss .down-wrapper .content .footer .footerIcon * {
   padding-right: 10px;
   font-size: 20px;
+}
+.discuss .down-wrapper .content .remark {
+  border-top: 1px solid rgba(201, 201, 201, 0.568);
+  width: 100%;
 }
 .discuss .down-wrapper .content .footer .footerIcon :last-child {
   padding-right: 0;
