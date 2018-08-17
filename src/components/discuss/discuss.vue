@@ -164,8 +164,6 @@ export default {
         .catch();
     },
     remarkDiscuss(index) {
-      console.log(index);
-
       if (this.remarkInfo != "") {
         axios
           .post("http://120.78.86.45/discuss/commentPost", {
@@ -174,6 +172,8 @@ export default {
           })
           .then(res => {
             console.log(res);
+            
+            this.discussList = res.data.discussMap;
           })
           .catch();
       }
@@ -195,12 +195,12 @@ export default {
   left: 82%;
 }
 
-.discuss .ivu-modal-content .ivu-btn {
+.ivu-modal-content .ivu-btn {
   background-color: #1cbe99;
   border-color: #1cbe99;
   color: #fff;
 }
-.discuss .ivu-input-wrapper .ivu-input:hover {
+.ivu-input-wrapper .ivu-input:hover {
   border-color: #1cbe99;
 }
 
@@ -259,7 +259,7 @@ export default {
   color: #1cbe99;
 }
 .discuss .down-wrapper .content .ivu-card-body .text {
-  min-height: 120px;
+  min-height: 80px;
   min-width: 250px;
   word-wrap: break-word;
   word-break: normal;
@@ -298,15 +298,15 @@ export default {
   font-size: 14px;
 }
 .discuss .down-wrapper .content .remark a {
-  font-size: 10px;
+  font-size: 12px;
 }
-.discuss .down-wrapper .content .remarkList {
-  font-size: 14px;
+.discuss .down-wrapper .content .remark .remarkList {
+  font-size: 12px;
 }
-.discuss .down-wrapper .content .remarkList .remarkName {
+.discuss .down-wrapper .content .remark .remarkList .remarkName {
   color: #2d8cf0;
 }
-.discuss .down-wrapper .content .remarkList .remarkInfo {
+.discuss .down-wrapper .content .remark .remarkList .remarkInfo {
 }
 .discuss .down-wrapper .content .ivu-input {
   background-color: rgb(221, 218, 218, 0.7);

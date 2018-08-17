@@ -26,12 +26,15 @@
                         </div>
                     </div>
                     <div class="remark">
-                        <i class="iconfont icon-dianzan2"></i> <a href="">xxx、xxx、xxx、xxx、xxx、xxx、xxx等10人觉得很赞</a><br>
-                        <a href="">小明:</a><span>吃了没</span><br>
-                        <a href="">小明:</a><span>吃了没</span><br>
-                        <a href="">小明:</a><span>吃了没</span><br>
-                        <a href="">小明:</a><span>吃了没</span><br>
-                        <a href="">小明:</a><span>吃了没</span><br>
+                        <i class="iconfont icon-dianzan2" :class="{'iconColor' : item.isFab}"></i>
+                        <a href="">{{item.fabMsg}}</a><br>
+                        <div class="remarkList" v-for="(comm, index) in item.commList">
+                          <span class="remarkName">{{comm.commUserName}}: </span>
+                          <span class="remarkInfo">{{comm.commText}}</span><br>
+                        </div>
+                        
+                        <Input v-model="remarkInfo" placeholder="评论" style="width: 200px"></Input>
+                        <Button type="success" @click="remarkDiscuss(index)">发送</Button>
                     </div>
                 </Card>
             </div>
@@ -169,7 +172,7 @@ export default {
 .my-discuss .down-wrapper .content {
   padding: 20px 0;
 }
-.my-discuss .down-wrapper .ivu-card {
+.my-discuss .down-wrapper .content .ivu-card {
   margin: 0 20px;
   border-radius: 0;
 }
@@ -193,6 +196,9 @@ export default {
 .my-discuss .down-wrapper .content :first-child .ivu-card-body {
   padding: 0 0 5px;
 }
+.my-discuss .iconColor {
+  color: #1cbe99;
+}
 .my-discuss .down-wrapper .content .ivu-card-body img {
   padding: 5px;
   width: 50px;
@@ -214,7 +220,7 @@ export default {
   color: #1cbe99;
 }
 .my-discuss .down-wrapper .content .ivu-card-body .text {
-  min-height: 120px;
+  min-height: 80px;
   min-width: 250px;
   word-wrap: break-word;
   word-break: normal;
@@ -225,6 +231,7 @@ export default {
 .my-discuss pre {
   margin: 0;
 }
+/* footer */
 .my-discuss .down-wrapper .content .footer {
   display: flex;
   justify-content: space-between;
@@ -238,14 +245,34 @@ export default {
   padding-right: 10px;
   font-size: 20px;
 }
-.my-discuss .down-wrapper .content .remark {
-  border-top: 1px solid rgba(201, 201, 201, 0.2);
-  width: 100%;
-}
 .my-discuss .down-wrapper .content .footer .footerIcon :last-child {
   padding-right: 0;
   font-weight: 500;
 }
+
+/* remark */
+.my-discuss .down-wrapper .content .remark {
+  border-top: 1px solid rgba(201, 201, 201, 0.2);
+  width: 100%;
+}
+.my-discuss .down-wrapper .content .remark i {
+  font-size: 14px;
+}
+.my-discuss .down-wrapper .content .remark a {
+  font-size: 12px;
+}
+.my-discuss .down-wrapper .content .remark .remarkList {
+  font-size: 12px;
+}
+.my-discuss .down-wrapper .content .remark .remarkList .remarkName {
+  color: #2d8cf0;
+}
+.my-discuss .down-wrapper .content .remark .remarkList .remarkInfo {
+}
+.my-discuss .down-wrapper .content .ivu-input {
+  background-color: rgb(221, 218, 218, 0.7);
+}
+
 .my-discuss .down-wrapper .noData {
   display: flex;
   justify-content: center;
