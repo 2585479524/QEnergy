@@ -195,25 +195,14 @@ export default {
 }
 
 .my-diary .show-wrapper {
-  height: 635px;
+  background: #fff;
   overflow: hidden;
 }
-.my-diary .show-wrapper .content-out {
+.my-diary .show-wrapper .content {
   padding: 20px 0;
 }
 .ivu-modal {
   top: 20px;
-}
-.my-diary .addBtn {
-  display: block;
-  position: absolute;
-  bottom: 10px;
-  right: 30px;
-  background: #26b9bb;
-}
-.my-diary .addBtn .ivu-icon {
-  font-size: 30px;
-  font-weight: 700;
 }
 .my-diary .show-wrapper .ivu-card {
   margin: 0 20px 20px;
@@ -221,6 +210,8 @@ export default {
 .my-diary .show-wrapper .ivu-card-body {
   position: relative;
   height: 100px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px rgb(231, 229, 229);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -243,7 +234,6 @@ export default {
   height: 24px;
   line-height: 24px;
   border-radius: 5px;
-  background: rgb(231, 58, 130);
   text-align: center;
   color: #fff;
 }
@@ -262,11 +252,6 @@ export default {
 .my-diary .show-wrapper .ivu-card-body .color-icon-weibiaoti-- {
   background: rgb(245, 97, 225);
 }
-.my-diary .show-wrapper .ivu-card-body .re-del-btn {
-  position: absolute;
-  top: 10px;
-  right: 55px;
-}
 .my-diary .show-wrapper .ivu-card-body .del-btn {
   position: absolute;
   top: 10px;
@@ -277,11 +262,21 @@ export default {
   padding: 6px 5px;
 }
 .my-diary .show-wrapper .text {
+  display: block;
   position: absolute;
   top: 15px;
   left: 70px;
 }
 .my-diary .show-wrapper .remarks {
+  display: block;
   padding-left: 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.my-diary .show-wrapper .ivu-card-body .re-del-btn {
+  position: absolute;
+  top: 10px;
+  right: 55px;
 }
 </style>

@@ -143,6 +143,6 @@ export default {
   border-radius: 5px;
   border: 0;
   background: rgba(255, 255, 255, 0.75);
-  box-shadow: 1px 1px 1px 2px #8b8b8ba4;
+  box-shadow: 1px 1px 1px 1px #8b8b8ba4;
 }
 </style>

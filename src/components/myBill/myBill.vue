@@ -11,7 +11,7 @@
     <VeLine :data="charLine" height="300px" :settings="chartSetLine":loading="loading" :data-empty="dataEmpty"></VeLine>
   </div>
   <div class="bar-wrapper">
-    <VeBar :data="chartBar" height="300px" :settings="chartSetBar":loading="loading" :data-empty="dataEmpty"></VeBar>
+    <VeBar :data="chartBar" height="300px" :legend-visible="false" :settings="chartSetBar":loading="loading" :data-empty="dataEmpty"></VeBar>
   </div>
   </div>
   
@@ -171,11 +171,12 @@ export default {
 
 .my-bill .line-wrapper {
   position: relative;
+  top: 20px;
   left: -2%;
 }
 .my-bill .bar-wrapper {
   position: relative;
-  top: -20px;
+  top: -30px;
   left: -2%;
 }
 </style>

@@ -10,20 +10,13 @@
       </div>
 
       <div class="show-wrapper" ref="showWrapper" :style="oHeight">
-          <div class="content-out">
-              <div class="content" v-for="(icons, index1) in showIcon">
-                  <div class="content-in" v-for="(icon, index2) in icons">
-                      <div class="iconGroup" @click="showCalculator({btnType: 0,icon: icon,billType: showSwitch});">
-                          <div class="iconShowCode">
-                              <i class="iconfont" :class="icon.iconCode"></i>
-                          </div>
-                          <span class="text">{{icon.iconName}}</span>
-                      </div>
-                  </div>
+          <div class="content">
+              <div class="iconGroup" :class="{'iconColor': nowIndex === index}" v-for="(icon, index) in showIcon" @click="showCalculator({btnType: 0,icon: icon,billType: showSwitch}); changeColor(index);">
+                  <i class="iconfont iconShowCode" :class="icon.iconCode"></i>
+                  <span class="text">{{icon.iconName}}</span>
               </div>
           </div>
       </div>
-
       <calculator class="cal-show" v-show="calShow"></calculator>
   </div>
 </template>
@@ -41,153 +34,136 @@ export default {
       showSwitch: "支出",
       money: 0,
       payIcon: [
-        [
-          {
-            iconName: "餐饮",
-            iconCode: "icon-icon-"
-          },
-          {
-            iconName: "购物",
-            iconCode: "icon-gouwu"
-          },
-          {
-            iconName: "通信",
-            iconCode: "icon-tongxun"
-          },
-          {
-            iconName: "交通",
-            iconCode: "icon-jiaotong"
-          }
-        ],
-        [
-          {
-            iconName: "书籍",
-            iconCode: "icon-iconset0116"
-          },
-          {
-            iconName: "旅行",
-            iconCode: "icon-lvxing"
-          },
-          {
-            iconName: "学习",
-            iconCode: "icon-xuexi"
-          },
-          {
-            iconName: "住房",
-            iconCode: "icon-zhufang"
-          }
-        ],
-
-        [
-          {
-            iconName: "医疗",
-            iconCode: "icon-yiliao"
-          },
-          {
-            iconName: "水果",
-            iconCode: "icon-shuiguo"
-          },
-          {
-            iconName: "运动",
-            iconCode: "icon-yundong"
-          },
-          {
-            iconName: "居家",
-            iconCode: "icon-jujia"
-          }
-        ],
-        [
-          {
-            iconName: "宠物",
-            iconCode: "icon-chongwu"
-          },
-          {
-            iconName: "日常",
-            iconCode: "icon-riyongpin"
-          },
-          {
-            iconName: "办公",
-            iconCode: "icon-bangong"
-          },
-          {
-            iconName: "烟酒",
-            iconCode: "icon-jiushuihongjiuhongjiubei"
-          }
-        ],
-        [
-          {
-            iconName: "社交",
-            iconCode: "icon-shejiao"
-          },
-          {
-            iconName: "娱乐",
-            iconCode: "icon-yule"
-          },
-          {
-            iconName: "捐赠",
-            iconCode: "icon-juanzeng"
-          },
-          {
-            iconName: "修理",
-            iconCode: "icon-weixiu"
-          }
-        ],
-        [
-          {
-            iconName: "家人",
-            iconCode: "icon-shouye"
-          },
-          {
-            iconName: "美容",
-            iconCode: "icon-meirong-heicopy"
-          },
-          {
-            iconName: "长辈",
-            iconCode: "icon-changbei"
-          },
-          {
-            iconName: "快递",
-            iconCode: "icon-kuaidi"
-          }
-        ],
-        [
-          {
-            iconName: "孩子",
-            iconCode: "icon-haizi"
-          },
-          {
-            iconName: "礼物",
-            iconCode: "icon-liwu"
-          },
-          {
-            iconName: "服饰",
-            iconCode: "icon-yifu"
-          },
-          {
-            iconName: "科技",
-            iconCode: "icon-shouji"
-          }
-        ]
+        {
+          iconName: "餐饮",
+          iconCode: "icon-icon-"
+        },
+        {
+          iconName: "购物",
+          iconCode: "icon-gouwu"
+        },
+        {
+          iconName: "通信",
+          iconCode: "icon-tongxun"
+        },
+        {
+          iconName: "交通",
+          iconCode: "icon-jiaotong"
+        },
+        {
+          iconName: "书籍",
+          iconCode: "icon-iconset0116"
+        },
+        {
+          iconName: "旅行",
+          iconCode: "icon-lvxing"
+        },
+        {
+          iconName: "学习",
+          iconCode: "icon-xuexi"
+        },
+        {
+          iconName: "住房",
+          iconCode: "icon-zhufang"
+        },
+        {
+          iconName: "医疗",
+          iconCode: "icon-yiliao"
+        },
+        {
+          iconName: "水果",
+          iconCode: "icon-shuiguo"
+        },
+        {
+          iconName: "运动",
+          iconCode: "icon-yundong"
+        },
+        {
+          iconName: "居家",
+          iconCode: "icon-jujia"
+        },
+        {
+          iconName: "宠物",
+          iconCode: "icon-chongwu"
+        },
+        {
+          iconName: "日常",
+          iconCode: "icon-riyongpin"
+        },
+        {
+          iconName: "办公",
+          iconCode: "icon-bangong"
+        },
+        {
+          iconName: "烟酒",
+          iconCode: "icon-jiushuihongjiuhongjiubei"
+        },
+        {
+          iconName: "社交",
+          iconCode: "icon-shejiao"
+        },
+        {
+          iconName: "娱乐",
+          iconCode: "icon-yule"
+        },
+        {
+          iconName: "捐赠",
+          iconCode: "icon-juanzeng"
+        },
+        {
+          iconName: "修理",
+          iconCode: "icon-weixiu"
+        },
+        {
+          iconName: "家人",
+          iconCode: "icon-shouye"
+        },
+        {
+          iconName: "美容",
+          iconCode: "icon-meirong-heicopy"
+        },
+        {
+          iconName: "长辈",
+          iconCode: "icon-changbei"
+        },
+        {
+          iconName: "快递",
+          iconCode: "icon-kuaidi"
+        },
+        {
+          iconName: "孩子",
+          iconCode: "icon-haizi"
+        },
+        {
+          iconName: "礼物",
+          iconCode: "icon-liwu"
+        },
+        {
+          iconName: "服饰",
+          iconCode: "icon-yifu"
+        },
+        {
+          iconName: "科技",
+          iconCode: "icon-shouji"
+        }
       ],
       incomeIcon: [
-        [
-          {
-            iconName: "工资",
-            iconCode: "icon-gongzi"
-          },
-          {
-            iconName: "兼职",
-            iconCode: "icon-jianzhi"
-          },
-          {
-            iconName: "彩票",
-            iconCode: "icon-caipiao"
-          },
-          {
-            iconName: "理财",
-            iconCode: "icon-licaishouyi"
-          }
-        ]
+        {
+          iconName: "工资",
+          iconCode: "icon-gongzi"
+        },
+        {
+          iconName: "兼职",
+          iconCode: "icon-jianzhi"
+        },
+        {
+          iconName: "彩票",
+          iconCode: "icon-caipiao"
+        },
+        {
+          iconName: "理财",
+          iconCode: "icon-licaishouyi"
+        }
       ],
       oHeight: {
         height: window.screen.height - 55 + "px"
@@ -204,8 +180,11 @@ export default {
     calculator
   },
   computed: {
-    ...mapState(["calShow"]),
+    ...mapState(["calShow", "nowIndex"]),
     showIcon() {
+      // 切换“收入”和“支出”重置index并收起计算器
+      this.updateIndex(-1);
+      this.showCalculator({ btnType: 1 });
       if (this.showSwitch == "支出") {
         return this.payIcon;
       } else if (this.showSwitch == "收入") {
@@ -232,12 +211,15 @@ export default {
   },
   store,
   methods: {
-    ...mapMutations(["showCalculator"]),
+    ...mapMutations(["showCalculator", "updateIndex", "showCalculator"]),
     _initScroll() {
       this.showScroll = new BScroll(this.$refs.showWrapper, {
         probeType: 3,
         click: true
       });
+    },
+    changeColor(index) {
+      this.updateIndex(index);
     },
     closeEdit() {
       this.$router.go(-1);
@@ -247,7 +229,6 @@ export default {
 </script>
 
 <style>
-/* @import url("//at.alicdn.com/t/font_765377_wa7cj0ab72l.css"); */
 @import url("../../assets/iconfont.css");
 
 .bill-edit {
@@ -293,32 +274,41 @@ export default {
 .bill-edit .show-wrapper {
   overflow: hidden;
 }
-.bill-edit .show-wrapper .content-out {
+.bill-edit .show-wrapper .content {
   padding: 20px 0;
-}
-.bill-edit .show-wrapper .content-out .content {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
 }
-.bill-edit .show-wrapper .content-out .content .iconGroup {
+.bill-edit .show-wrapper .content .iconGroup {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 10px;
+  margin: 10px 20px;
 }
-.bill-edit .show-wrapper .content-out .content .iconGroup .iconShowCode {
+
+.bill-edit .show-wrapper .content .iconGroup .iconShowCode {
   width: 50px;
   height: 50px;
   text-align: center;
+  background: #c2c2c2;
   border-radius: 35px;
-  background: #c3c3c3;
+  box-shadow: 1px 1px 1px 1px #0000005b;
 }
-.bill-edit .show-wrapper .content-out .content .iconGroup i {
+
+.bill-edit .show-wrapper .content .iconColor .iconShowCode {
+  background: #1cbe99;
+  box-shadow: 1px 1px 1px 1px #1cbe995b;
+}
+.bill-edit .show-wrapper .content .iconGroup i {
   font-size: 30px;
   color: #fff;
 }
-.bill-edit .show-wrapper .content-out .content .iconGroup .text {
+.bill-edit .show-wrapper .content .iconGroup .text {
   text-align: center;
+  margin-top: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
 }
 .cal-show {
   position: absolute;

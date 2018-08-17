@@ -37,14 +37,13 @@
                         </div>
                     </div>
                     <div class="remark">
-                        <i class="iconfont icon-dianzan2" :style="iconColor"></i> <a href="">xxx、xxx、xxx、xxx、xxx、xxx、xxx等10人觉得很赞</a><br>
-                        <a href="">小明:</a><span>吃了没</span><br>
-                        <a href="">小明:</a><span>吃了没</span><br>
-                        <a href="">小明:</a><span>吃了没</span><br>
-                        <a href="">小明:</a><span>吃了没</span><br>
-                        <a href="">小明:</a><span>吃了没</span><br>
+                        <i class="iconfont icon-dianzan2" :style="iconColor"></i> <a href="">{{item.fabMsg}}</a><br>
+                        <div class="remarkList" v-for="(comm, index) in item.commList">
+                          <span>{{comm.commText}}</span><br>
+                        </div>
+                        
                         <Input v-model="remarkInfo" placeholder="评论" style="width: 200px"></Input>
-                        <Button type="success">发送</Button>
+                        <Button type="success" @click="remarkDiscuss(index)">发送</Button>
                     </div>
                 </Card>
             </div>
@@ -72,12 +71,12 @@ export default {
         height: window.screen.height - 100 + "px"
       },
       oWidth: {
-        width: window.screen.width - 40 + "px",
+        width: window.screen.width - 40 + "px"
       },
       iconColor: {
         color: "#495060"
       },
-      remarkInfo: "",
+      remarkInfo: ""
     };
   },
   computed: {
@@ -113,8 +112,15 @@ export default {
     axios
       .post("http://120.78.86.45/discuss/showDiscussList")
       .then(res => {
+        console.log(res);
+        
         if (res.status === 200) {
-          this.discussList = res.data.discussList;
+          this.discussList = res.data.discussMap;
+          if (!res.data.isFab) {
+            this.iconColor.color = "#1cbe99";
+          } else {
+            this.iconColor.color = "#495060";
+          }
         }
       })
       .catch();
@@ -141,7 +147,7 @@ export default {
           })
           .then(res => {
             if (res.status === 200) {
-              this.discussList = res.data.discussList;
+              this.discussList = res.data.discussMap;
               this.$Message.success("发布成功");
             }
           })
@@ -159,14 +165,29 @@ export default {
         .then(res => {
           console.log(res);
 
-          if (res.data.isChange) {
-            this.discussList[index].fabCount = res.data.like;
+          if (res.data.isCancel) {
             this.iconColor.color = "#1cbe99";
           } else {
             this.iconColor.color = "#495060";
           }
         })
         .catch();
+    },
+    remarkDiscuss(index) {
+      console.log(index);
+      
+      if (this.remarkInfo != "") {
+         axios
+        .post("http://120.78.86.45/discuss/commentPost", {
+          postId: this.discussList[index].id,
+          commText: this.remarkInfo
+        })
+        .then(res => {
+          console.log(res);
+        })
+        .catch();
+      }
+     
     }
   }
 };

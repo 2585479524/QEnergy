@@ -129,7 +129,7 @@ export default {
         return this.toLocaleString();
       };
       let dateTime = new Date();
-      let str = dateTime.toJSON().substring(0, 16);
+      let str = dateTime.toJSON().substring(0, 17);
       let arr = str.split("/");
       let strr = arr.join("-");
       return strr;
@@ -150,6 +150,9 @@ export default {
       } else {
         return true;
       }
+    },
+    contentToHtml() {
+      return this.HTMLDecode(this.diaryEdit.content);
     }
   },
   methods: {
@@ -158,6 +161,13 @@ export default {
         probeType: 3,
         click: true
       });
+    },
+    HTMLDecode(text) {
+      var temp = document.createElement("div");
+      temp.innerHTML = text;
+      var output = temp.innerText || temp.textContent;
+      temp = null;
+      return output;
     },
     replaceContent(content) {
       let str = content;
@@ -199,8 +209,6 @@ export default {
     },
     // 二次编辑提交
     changeDiary() {
-      console.log(this.dex);
-      
       if (this.dex == -1) {
         if (this.replaceContent(this.diaryEdit.content) != "") {
           axios

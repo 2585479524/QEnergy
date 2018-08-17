@@ -9,6 +9,7 @@ const state = {
   userName: '',
 
   // 计算器相关参数
+  nowIndex: -1,
   calShow: false,
   result: "0.00",
   enter: "",
@@ -93,6 +94,10 @@ const mutations = {
       }
     }, 1000);
   },
+
+  updateIndex(state, index) {
+    state.nowIndex = index;
+  },
   // 显示计算器
   showCalculator(state, track) {
     state.result = "0.00";
@@ -106,6 +111,7 @@ const mutations = {
       state.calShow = true;
     } else if (track.btnType == 1) {
       state.calShow = false;
+      state.nowIndex = -1;
     }
   },
   // 计算
