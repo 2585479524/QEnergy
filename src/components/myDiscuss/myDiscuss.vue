@@ -20,13 +20,13 @@
                                 <div class="footerIcon">
                                     <i class="ivu-icon ivu-icon-share"></i>
                                     <i class="ivu-icon ivu-icon-compose"></i>
-                                    <i class="iconfont icon-dianzan2" :style="iconColor" @click="thumbDiscuss(index)"></i>
+                                    <i class="iconfont icon-dianzan2"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="remark">
-                        <i class="iconfont icon-dianzan2" :style="iconColor"></i> <a href="">xxx、xxx、xxx、xxx、xxx、xxx、xxx等10人觉得很赞</a><br>
+                        <i class="iconfont icon-dianzan2"></i> <a href="">xxx、xxx、xxx、xxx、xxx、xxx、xxx等10人觉得很赞</a><br>
                         <a href="">小明:</a><span>吃了没</span><br>
                         <a href="">小明:</a><span>吃了没</span><br>
                         <a href="">小明:</a><span>吃了没</span><br>
@@ -86,7 +86,9 @@ export default {
     axios
       .post("http://120.78.86.45/discuss/showUserDiscuss")
       .then(res => {
-        this.discussList = res.data.discussList;
+        console.log(res);
+        
+        this.discussList = res.data.discussMap;
       })
       .catch();
     this.$nextTick(function() {
@@ -110,7 +112,7 @@ export default {
         })
         .then(res => {
           if (res.data.isDelete) {
-            this.discussList = res.data.discussList;
+            this.discussList = res.data.discussMap;
             this.$Message.success(res.data.message);
           }
         });
@@ -127,18 +129,6 @@ export default {
         })
         .catch();
       this.showModalEdit = false;
-    },
-    thumbDiscuss(index) {
-      axios
-        .post("http://120.78.86.45/discuss/like", {
-          postId: this.discussList[index].id
-        })
-        .then(res => {
-          if (res.data.isChange) {
-            this.discussList[index].fabCount = res.data.like;
-          }
-        })
-        .catch();
     },
     back() {
       this.$router.go(-1);
@@ -165,12 +155,12 @@ export default {
   top: 10px;
   right: 15px;
 }
-.ivu-modal-content .ivu-btn {
+.my-discuss .ivu-modal-content .ivu-btn {
   background-color: #1cbe99;
   border-color: #1cbe99;
   color: #fff;
 }
-.ivu-input-wrapper .ivu-input:hover {
+.my-discuss .ivu-input-wrapper .ivu-input:hover {
   border-color: #1cbe99;
 }
 .my-discuss .down-wrapper {
@@ -232,7 +222,7 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-pre {
+.my-discuss pre {
   margin: 0;
 }
 .my-discuss .down-wrapper .content .footer {

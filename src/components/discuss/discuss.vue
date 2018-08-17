@@ -31,15 +31,17 @@
                                 <div class="footerIcon">
                                     <i class="ivu-icon ivu-icon-share"></i>
                                     <i class="ivu-icon ivu-icon-compose"></i>
-                                    <i class="iconfont icon-dianzan2" :style="iconColor" @click="thumbDiscuss(index)"></i>
+                                    <i class="iconfont icon-dianzan2" :class="{'iconColor' : item.isFab}" @click="thumbDiscuss(index)"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="remark">
-                        <i class="iconfont icon-dianzan2" :style="iconColor"></i> <a href="">{{item.fabMsg}}</a><br>
+                        <i class="iconfont icon-dianzan2" :class="{'iconColor' : item.isFab}"></i>
+                        <a href="">{{item.fabMsg}}</a><br>
                         <div class="remarkList" v-for="(comm, index) in item.commList">
-                          <span>{{comm.commText}}</span><br>
+                          <span class="remarkName">{{comm.commUserName}}: </span>
+                          <span class="remarkInfo">{{comm.commText}}</span><br>
                         </div>
                         
                         <Input v-model="remarkInfo" placeholder="评论" style="width: 200px"></Input>
@@ -72,9 +74,6 @@ export default {
       },
       oWidth: {
         width: window.screen.width - 40 + "px"
-      },
-      iconColor: {
-        color: "#495060"
       },
       remarkInfo: ""
     };
@@ -112,15 +111,10 @@ export default {
     axios
       .post("http://120.78.86.45/discuss/showDiscussList")
       .then(res => {
-        console.log(res);
-        
+        console.log(res.data);
+
         if (res.status === 200) {
           this.discussList = res.data.discussMap;
-          if (!res.data.isFab) {
-            this.iconColor.color = "#1cbe99";
-          } else {
-            this.iconColor.color = "#495060";
-          }
         }
       })
       .catch();
@@ -148,6 +142,7 @@ export default {
           .then(res => {
             if (res.status === 200) {
               this.discussList = res.data.discussMap;
+              this.remarkInfo = "";
               this.$Message.success("发布成功");
             }
           })
@@ -164,30 +159,24 @@ export default {
         })
         .then(res => {
           console.log(res);
-
-          if (res.data.isCancel) {
-            this.iconColor.color = "#1cbe99";
-          } else {
-            this.iconColor.color = "#495060";
-          }
+          this.discussList = res.data.discussMap;
         })
         .catch();
     },
     remarkDiscuss(index) {
       console.log(index);
-      
+
       if (this.remarkInfo != "") {
-         axios
-        .post("http://120.78.86.45/discuss/commentPost", {
-          postId: this.discussList[index].id,
-          commText: this.remarkInfo
-        })
-        .then(res => {
-          console.log(res);
-        })
-        .catch();
+        axios
+          .post("http://120.78.86.45/discuss/commentPost", {
+            postId: this.discussList[index].id,
+            commText: this.remarkInfo
+          })
+          .then(res => {
+            console.log(res);
+          })
+          .catch();
       }
-     
     }
   }
 };
@@ -206,22 +195,23 @@ export default {
   left: 82%;
 }
 
-.ivu-modal-content .ivu-btn {
+.discuss .ivu-modal-content .ivu-btn {
   background-color: #1cbe99;
   border-color: #1cbe99;
   color: #fff;
 }
-.ivu-input-wrapper .ivu-input:hover {
+.discuss .ivu-input-wrapper .ivu-input:hover {
   border-color: #1cbe99;
 }
 
+/* content */
 .discuss .down-wrapper {
   overflow: hidden;
 }
 .discuss .down-wrapper .content {
   padding: 20px 0;
 }
-.discuss .down-wrapper .ivu-card {
+.discuss .down-wrapper .content .ivu-card {
   margin: 0 20px;
   border-radius: 0;
 }
@@ -244,6 +234,9 @@ export default {
 }
 .discuss .down-wrapper .content :first-child .ivu-card-body {
   padding: 0 0 5px;
+}
+.discuss .iconColor {
+  color: #1cbe99;
 }
 .discuss .down-wrapper .content .ivu-card-body img {
   padding: 5px;
@@ -274,9 +267,10 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-pre {
+.discuss pre {
   margin: 0;
 }
+/* footer */
 .discuss .down-wrapper .content .footer {
   display: flex;
   justify-content: space-between;
@@ -290,14 +284,34 @@ pre {
   padding-right: 10px;
   font-size: 20px;
 }
-.discuss .down-wrapper .content .remark {
-  border-top: 1px solid rgba(201, 201, 201, 0.2);
-  width: 100%;
-}
 .discuss .down-wrapper .content .footer .footerIcon :last-child {
   padding-right: 0;
   font-weight: 500;
 }
+
+/* remark */
+.discuss .down-wrapper .content .remark {
+  border-top: 1px solid rgba(201, 201, 201, 0.2);
+  width: 100%;
+}
+.discuss .down-wrapper .content .remark i {
+  font-size: 14px;
+}
+.discuss .down-wrapper .content .remark a {
+  font-size: 10px;
+}
+.discuss .down-wrapper .content .remarkList {
+  font-size: 14px;
+}
+.discuss .down-wrapper .content .remarkList .remarkName {
+  color: #2d8cf0;
+}
+.discuss .down-wrapper .content .remarkList .remarkInfo {
+}
+.discuss .down-wrapper .content .ivu-input {
+  background-color: rgb(221, 218, 218, 0.7);
+}
+
 .discuss .down-wrapper .noData {
   display: flex;
   justify-content: center;
