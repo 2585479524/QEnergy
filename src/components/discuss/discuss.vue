@@ -306,9 +306,7 @@ export default {
 .discuss .down-wrapper .content .remark .remarkList .remarkName {
   color: #2d8cf0;
 }
-.discuss .down-wrapper .content .remark .remarkList .remarkInfo {
-}
-.discuss .down-wrapper .content .ivu-input {
+.discuss .down-wrapper .content .remark .ivu-input {
   background-color: rgb(221, 218, 218, 0.7);
 }
 

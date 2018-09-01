@@ -294,7 +294,6 @@ export default {
     },
     // 正则检测身份证号
     checkCard() {
-      console.log(this.userInfo.idCard);
       if (this.userInfo.idCard == "") {
         this.$Message.warning("请输入身份证号");
       } else if (
@@ -324,8 +323,12 @@ export default {
             userInfo: this.userInfo
           })
           .then(res => {
+            console.log(res);
+            
             if (res.data.isRegister == true) {
               this.$Message.success(res.data.message);
+              console.log(123);
+              
               this.$router.push("/footer/tomato");
             } else {
               this.$Message.error(res.data.message);

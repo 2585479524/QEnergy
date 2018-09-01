@@ -89,7 +89,7 @@ export default {
       labelList: ["学习", "运动", "工作", "阅读", "其他"],
 
       // 设置番茄的三个参数
-      newDuration: 25,
+      newDuration: 0.1,
       newLabel: "学习",
       newInfo: "",
 
@@ -171,25 +171,27 @@ export default {
       this.todoClick();
     },
     interruptOk() {
-      axios
-        .post("http://120.78.86.45/tomato/interruptClock")
-        .then(res => {
-          if (res.data.isInterrupt == true) {
-            clearInterval(window.time);
-            this.setBtn("设置时钟");
-            this.setPercent(0);
-            this.setMin(0);
-            this.setSec(0);
-          }
-        })
-        .catch();
+      clearInterval(window.time);
+      this.setBtn("设置时钟");
+      this.setPercent(0);
+      this.setMin(0);
+      this.setSec(0);
       this.showInterrupt = false;
     },
     refreshOk() {
-      this.setRefresh(false);
-      this.newDuration = 25;
-      this.newLabel = this.labelList[0];
-      this.setPercent(0);
+      axios
+        .post("http://120.78.86.45/tomato/finishClock")
+        .then(res => {
+          if (res.data.isFinish) {
+            this.updateTomato(res.data.clockList);
+            this.setRefresh(false);
+            this.newDuration = 25;
+            this.newLabel = this.labelList[0];
+            this.setPercent(0);
+          }
+        })
+        .catch();
+      
     }
   }
 };

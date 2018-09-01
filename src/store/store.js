@@ -75,7 +75,6 @@ const mutations = {
     let rat = 100 / state.msec * 1000;
     window.time = setInterval(() => {
       state.percent += rat;
-      console.log(state.percent);
 
       state.msec -= 1000;
 
