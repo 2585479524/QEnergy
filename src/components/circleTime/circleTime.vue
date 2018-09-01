@@ -89,7 +89,7 @@ export default {
       labelList: ["学习", "运动", "工作", "阅读", "其他"],
 
       // 设置番茄的三个参数
-      newDuration: 0.1,
+      newDuration: 25,
       newLabel: "学习",
       newInfo: "",
 

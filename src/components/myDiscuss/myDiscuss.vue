@@ -20,7 +20,7 @@
                                 <div class="footerIcon">
                                     <i class="ivu-icon ivu-icon-share"></i>
                                     <i class="ivu-icon ivu-icon-compose"></i>
-                                    <i class="iconfont icon-dianzan2"></i>
+                                    <i class="iconfont icon-dianzan2" :class="{'iconColor' : item.isFab}"></i>
                                 </div>
                             </div>
                         </div>
@@ -32,9 +32,6 @@
                           <span class="remarkName">{{comm.commUserName}}: </span>
                           <span class="remarkInfo">{{comm.commText}}</span><br>
                         </div>
-                        
-                        <Input v-model="remarkInfo" placeholder="评论" style="width: 200px"></Input>
-                        <Button type="success" @click="remarkDiscuss(index)">发送</Button>
                     </div>
                 </Card>
             </div>

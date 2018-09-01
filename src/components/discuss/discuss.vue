@@ -17,7 +17,7 @@
         </div>
         <div class="down-wrapper" ref="downWrapper" :style="oHeight">
             <div class="content" v-if="discussShow">
-                <Card v-for="(item, index) in discussList" :key="index">
+                <Card v-for="(item, index) in discussList" :key="index" dis-hover >
                     <div class="up">
                         <div class="avator-name">
                             <img :src="avator" alt="" v-if="avator">
@@ -44,7 +44,7 @@
                           <span class="remarkInfo">{{comm.commText}}</span><br>
                         </div>
                         
-                        <Input v-model="remarkInfo" placeholder="评论" style="width: 200px"></Input>
+                        <Input v-model="remarkInfo[index]" placeholder="评论" style="width: 200px"></Input>
                         <Button type="success" @click="remarkDiscuss(index)">发送</Button>
                     </div>
                 </Card>
@@ -75,7 +75,7 @@ export default {
       oWidth: {
         width: window.screen.width - 40 + "px"
       },
-      remarkInfo: ""
+      remarkInfo: [],
     };
   },
   computed: {
@@ -111,8 +111,6 @@ export default {
     axios
       .post("http://120.78.86.45/discuss/showDiscussList")
       .then(res => {
-        console.log(res.data);
-
         if (res.status === 200) {
           this.discussList = res.data.discussMap;
         }
@@ -142,7 +140,7 @@ export default {
           .then(res => {
             if (res.status === 200) {
               this.discussList = res.data.discussMap;
-              this.remarkInfo = "";
+              this.remarkInfo = [];
               this.$Message.success("发布成功");
             }
           })
@@ -158,22 +156,20 @@ export default {
           postId: this.discussList[index].id
         })
         .then(res => {
-          console.log(res);
           this.discussList = res.data.discussMap;
         })
         .catch();
     },
     remarkDiscuss(index) {
-      if (this.remarkInfo != "") {
+      if (this.remarkInfo[index] != "") {
         axios
           .post("http://120.78.86.45/discuss/commentPost", {
             postId: this.discussList[index].id,
-            commText: this.remarkInfo
+            commText: this.remarkInfo[index]
           })
           .then(res => {
-            console.log(res);
-            
             this.discussList = res.data.discussMap;
+              this.remarkInfo[index] = "";
           })
           .catch();
       }
@@ -307,7 +303,7 @@ export default {
   color: #2d8cf0;
 }
 .discuss .down-wrapper .content .remark .ivu-input {
-  background-color: rgb(221, 218, 218, 0.7);
+  background-color: rgba(235, 232, 232, 0.7);
 }
 
 .discuss .down-wrapper .noData {

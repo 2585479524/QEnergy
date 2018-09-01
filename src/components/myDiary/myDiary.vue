@@ -150,12 +150,12 @@ export default {
         })
         .then(res => {
           if (res.data.isRegain) {
+            
             this.$Message.success(res.data.message);
+          this.diaryList = res.data.diaryList;
           }
         })
         .catch();
-
-      this._initGet();
     },
     // 彻底删除日记
     deleteDiary(index) {
@@ -166,10 +166,10 @@ export default {
         .then(res => {
           if (res.data.isDelete) {
             this.$Message.warning(res.data.message);
+          this.diaryList = res.data.diaryList;
           }
         })
         .catch();
-      this._initGet();
     },
     back() {
       this.$router.go(-1);
