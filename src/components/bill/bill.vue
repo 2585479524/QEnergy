@@ -65,9 +65,18 @@ export default {
         return this.toLocaleString();
       };
       let dateTime = new Date();
-      let str = dateTime.toJSON().substring(0, 6);
+      let month = dateTime.toJSON().substring(5, 7);
+      let x = 0;
+      if (month >= 10) {
+        x = 7;
+      }else {
+        x = 6;
+      }
+      let str = dateTime.toJSON().substring(0, x);
       let arr = str.split("/");
       let strr = arr.join("-");
+      console.log(str);
+      
       return strr;
     },
     billShow() {
@@ -79,6 +88,8 @@ export default {
     }
   },
   created() {
+    console.log(this.dateMain);
+    
     axios
       .post("http://120.78.86.45/bill/showTodoList", {
         yearMonth: this.dateMain

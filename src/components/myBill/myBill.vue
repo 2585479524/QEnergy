@@ -67,12 +67,12 @@ export default {
       })
       .then(res => {
         console.log(res);
-        
+
         if (res.status === 200) {
           this.loading = false;
           if (res.data.isGet == true) {
             this.dataEmpty = false;
-            
+
             this.charLine.rows = res.data.lineList;
             this.chartBar.rows = res.data.pieList.labelPayList;
             console.log(this.chartBar.rows);
@@ -89,7 +89,14 @@ export default {
         return this.toLocaleString();
       };
       let dateTime = new Date();
-      let str = dateTime.toJSON().substring(0, 6);
+      let month = dateTime.toJSON().substring(5, 7);
+      let x = 0;
+      if (month >= 10) {
+        x = 7;
+      } else {
+        x = 6;
+      }
+      let str = dateTime.toJSON().substring(0, x);
       let arr = str.split("/");
       let strr = arr.join("-");
       return strr;
