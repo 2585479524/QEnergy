@@ -75,7 +75,6 @@ export default {
       let str = dateTime.toJSON().substring(0, x);
       let arr = str.split("/");
       let strr = arr.join("-");
-      console.log(str);
       
       return strr;
     },
@@ -88,8 +87,6 @@ export default {
     }
   },
   created() {
-    console.log(this.dateMain);
-    
     axios
       .post("http://120.78.86.45/bill/showTodoList", {
         yearMonth: this.dateMain
