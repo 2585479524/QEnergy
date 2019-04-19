@@ -219,3 +219,7 @@ mockjs高级用法
 字符转义与显示还有问题
 
 验证码，取消
+
+### 2019.4.19
+
+升级webpack4之后，MiniCssExtractPlugin问题暂未解决
