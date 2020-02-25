@@ -6,6 +6,7 @@
   <img width="200" src="https://github.com/2585479524/git_pic/blob/master/QEnergy/Discuss.jpg"/>
 </div>
 
+
 项目采用前后端分离，是一款帮助大学生提高生活规划能力的移动端应用
 
 ## 基本功能
